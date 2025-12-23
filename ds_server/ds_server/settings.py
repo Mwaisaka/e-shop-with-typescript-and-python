@@ -39,7 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #Local apps
-    'e_shop','accounts','cart','categories','orders','products','reviews',
+    'accounts',
+    # 'cart',
+    # 'categories',
+    # 'orders',
+    # 'products',
+    # 'reviews',
+    # 'e_shop',
     # # Third-party
     "rest_framework", "rest_framework.authtoken", "corsheaders",
 ]
@@ -130,4 +136,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = "accounts.User"
+# AUTH_USER_MODEL = "accounts.User"
