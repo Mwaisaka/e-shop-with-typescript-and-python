@@ -11,8 +11,15 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from .serializers import UserSerializer
 
 
+@api_view(["GET"])
+@permission_classes([IsAdminUser])
+def get_all_users(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data, status=200)
 
 @api_view(["POST"])
 def register(request):
