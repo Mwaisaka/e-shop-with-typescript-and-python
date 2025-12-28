@@ -9,6 +9,14 @@ class Product(models.Model):
     stock = models.PositiveIntegerField()
     image = models.ImageField(upload_to="uploads/products/", blank=True, null=True)
     
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["category", "name"],
+                name="unique_product_name_per_category"
+            )
+        ]
+    
     def save(self, *args, **kwargs):
         if self.stock < 0:
             raise ValueError("Stock cannot be negative")
