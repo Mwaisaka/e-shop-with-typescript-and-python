@@ -28,3 +28,9 @@ class ProductSerializer(serializers.ModelSerializer):
     
     def get_formatted_price(self, obj):
         return f"{obj.price:,.2f}"
+    
+    def get_average_rating(self, obj):
+        return round(obj.average_rating(), 1)
+
+    def get_reviews_count(self, obj):
+        return obj.reviews_count()

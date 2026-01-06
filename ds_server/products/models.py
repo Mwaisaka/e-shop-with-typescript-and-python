@@ -1,5 +1,6 @@
 from django.db import models
 from categories.models import Category
+from django.db.models import Avg
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
@@ -21,6 +22,14 @@ class Product(models.Model):
         if self.stock < 0:
             raise ValueError("Stock cannot be negative")
         super().save(*args, **kwargs)
+    
+    def average_rating(self):
+        return self.reviews.aggregate(
+            avg=Avg("rating")
+        )["avg"] or 0
+
+    def reviews_count(self):
+        return self.reviews.count()
     
     def __str__(self):
         return self.name

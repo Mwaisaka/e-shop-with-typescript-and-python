@@ -45,9 +45,8 @@ INSTALLED_APPS = [
     'products',
     'orders',
     'cart',    
-    
-    
-    # 'reviews',
+    'reviews',    
+
     # 'e_shop',
     # # Third-party
     "rest_framework", "rest_framework.authtoken", "corsheaders",
