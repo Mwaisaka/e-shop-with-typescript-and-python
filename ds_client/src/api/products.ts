@@ -1,0 +1,4 @@
+import api from "./axios"
+
+export const fetchProducts = ()=> api.get("/products/product-list-create/"); //For creating new products/fetching all products
+export const fetchProduct = (product_id:number) => api.get(`/products/product-detail/${product_id}`);
