@@ -1,11 +1,12 @@
 import { Heart, ShoppingCart, Star } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface Product {
     id: number;
     name: string;
-    price: number;
-    image: string;
+    formatted_price: string;
+    image: string | null;
     rating: number;
     stock: number;
     isWishListed: boolean;
@@ -28,14 +29,14 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
     const isOutOfStock = product.stock <= 0;
 
     return (
-        <div className="relative border rounded-xl p-4 bg-white hover: shadow-lg transition">
+        <div className="relative border rounded-xl p-4 bg-white hover:shadow-lg transition">
             {/*Wish list icon*/}
             <button
                 onClick={handleWishList}
                 aria-label="Add to wishlist"
                 className="absolute top-3 right-3 group">
                 <Heart
-                    className={`w-5 h-5 tion-all duration-300 ease-out
+                    className={`w-5 h-5 transition-all duration-300 ease-out
                         ${wishListed
                             ? "fill-red-500 text-red-500 scale-125 animate-pulse"
                             : "text-gray-400 group-hover:scale-110"
@@ -43,13 +44,15 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
                 />
             </button>
             {/* Image of the product */}
-            <img
-                src={product.image || "/placeholder.png"}
-                alt={product.name}
-                className="h-40 w-full object-cover rounded-md"
-            />
-            {/* Name of the product */}
-            <h3 className="font-semibold mt-2">{product.name}</h3>
+            <Link to={`/products/${product.id}/`}>
+                <img
+                    src={product.image || "/placeholder.png"}
+                    alt={product.name}
+                    className="h-40 w-full object-cover rounded-md"
+                />
+                {/* Name of the product */}
+                <h3 className="font-semibold mt-2">{product.name}</h3>
+            </Link>
 
             {/* Rating of the product */}
             <div className="flex items-center gap-1 mt-1">
@@ -66,11 +69,11 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
 
             {/* Price of the product */}
             <p className="text-sm text-gray-600 mt-1">
-                ${product.price}
+                Kes.{product.formatted_price}
             </p>
             {/* Status of the stock */}
-            {isOutOfStock? (<p className="text-sm text-red-500 mt-1">Out of Stock</p>): 
-            (<p className="text-sm text-green-600 mt-1">In Stock</p>)
+            {isOutOfStock ? (<p className="text-sm text-red-500 mt-1">Out of Stock</p>) :
+                (<p className="text-sm text-green-600 mt-1">In Stock</p>)
             }
 
             {/* 🛒 Add to Cart */}
@@ -86,7 +89,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
                     `}
             >
                 <ShoppingCart className="w-4 h-4" />
-               {isOutOfStock ? "Unavailable" : "Add to Cart"}
+                {isOutOfStock ? "Unavailable" : "Add to Cart"}
             </button>
         </div>
     );

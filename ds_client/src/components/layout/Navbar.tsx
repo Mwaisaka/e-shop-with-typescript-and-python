@@ -22,13 +22,64 @@ export default function Navbar() {
     }, [])
 
     return (
-        <nav className="bg-white dark:bg-gray-100 border-b">
+        <nav className="bg-white dark:bg-gray-100 border-b relative z-50">
             <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Left */}
                 <div className="flex items-center gap-4">
                     <button className="md:hidden" onClick={() => setMobile(true)}>
                         Menu
                     </button>
+
+                    {mobile && (
+                        <div className="absolute top-full left-0 w-full bg-white dark:bg-gray-100 shadow-md md:hidden z-50">
+                            <div className="flex flex-col p-4 space-y-2">
+                                {/* Close button */}
+                                <button
+                                    className="self-end mb-2 font-bold"
+                                    onClick={() => setMobile(false)}
+                                >
+                                    ✕ Close
+                                </button>
+
+                                {/* Categories */}
+                                {categories.map(c => (
+                                    <Link
+                                        key={c.id}
+                                        to={`/category/${c.slug}`}
+                                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-200"
+                                        onClick={() => setMobile(false)} // close menu on click
+                                    >
+                                        {c.name}
+                                    </Link>
+                                ))}
+
+                                {/* Auth Links */}
+                                {user ? (
+                                    <button onClick={logout} className="text-left px-4 py-2">
+                                        Logout
+                                    </button>
+                                ) : (
+                                    <>
+                                        <Link
+                                            to="/login"
+                                            className="block px-4 py-2 hover:bg-gray-100"
+                                            onClick={() => setMobile(false)}
+                                        >
+                                            Login
+                                        </Link>
+                                        <Link
+                                            to="/register"
+                                            className="block px-4 py-2 hover:bg-indigo-50"
+                                            onClick={() => setMobile(false)}
+                                        >
+                                            Register
+                                        </Link>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
 
                     {/* Shop Logo */}
                     <Link to="/" className="text-xl font-bold text-indigo-600">
@@ -38,7 +89,7 @@ export default function Navbar() {
                     {/* Categories dropdown */}
                     <div className="hidden md:block relative group">
                         <button className="font-medium">Categories</button>
-                        <div className="absolute hidden group-hover:block bg-white shadow rounded mt-2">
+                        <div className="absolute z-50 hidden group-hover:block bg-white shadow rounded mt-2">
                             {categories.map(c => (
                                 <Link
                                     key={c.id}

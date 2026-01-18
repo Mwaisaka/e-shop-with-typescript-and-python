@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Product
 
 class ProductSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(required=False)
+    image = serializers.SerializerMethodField()
     formatted_price = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Product
@@ -34,3 +34,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_reviews_count(self, obj):
         return obj.reviews_count()
+    
+    def get_image(self, obj):
+        request = self.context.get("request")
+        if obj.image:
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
