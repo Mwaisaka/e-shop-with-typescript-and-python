@@ -66,7 +66,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
 
             {/* Price of the product */}
             <p className="text-sm text-gray-600 mt-1">
-                ${product.price.toFixed(2)}
+                ${product.price}
             </p>
             {/* Status of the stock */}
             {isOutOfStock? (<p className="text-sm text-red-500 mt-1">Out of Stock</p>): 

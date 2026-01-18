@@ -8,3 +8,7 @@ export const updateReview = (review_id:number) =>
     api.get(`/reviews/${review_id}/update_review/`);
 export const deleteReview = (review_id: number) =>
     api.get(`/reviews/${review_id}/delete_review/`)
+
+export const fetchAverageRating = (productId: number) =>
+    api.get(`/reviews/average/${productId}/`);
+
