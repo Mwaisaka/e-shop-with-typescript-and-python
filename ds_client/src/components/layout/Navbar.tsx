@@ -22,7 +22,7 @@ export default function Navbar() {
     }, [])
 
     return (
-        <nav className="bg-white dark:bg-gray-100 border-b relative z-50">
+        <nav className="bg-white dark:bg-gray-900 border-b relative z-50">
             <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Left */}
                 <div className="flex items-center gap-4">

@@ -10,11 +10,13 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <CartProvider>
-          <Navbar />
-          <main className="max-w-7xl mx-auto px-4 py-6">
-            <AppRoutes />
-          </main>
-          <Footer />
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-gray-100 transition-colors">
+            <Navbar />
+            <main className="max-w-7xl mx-auto px-4 py-6">
+              <AppRoutes />
+            </main>
+            <Footer />
+          </div>
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>

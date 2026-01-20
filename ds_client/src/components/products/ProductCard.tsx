@@ -29,20 +29,8 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
     const isOutOfStock = product.stock <= 0;
 
     return (
-        <div className="relative border rounded-xl p-4 bg-white hover:shadow-lg transition">
-            {/*Wish list icon*/}
-            <button
-                onClick={handleWishList}
-                aria-label="Add to wishlist"
-                className="absolute top-3 right-3 group">
-                <Heart
-                    className={`w-5 h-5 transition-all duration-300 ease-out
-                        ${wishListed
-                            ? "fill-red-500 text-red-500 scale-125 animate-pulse"
-                            : "text-gray-400 group-hover:scale-110"
-                        }`}
-                />
-            </button>
+        <div className="relative border rounded-xl p-4 bg-white transform transition duration-300 ease-in-out hover:scale-105">
+
             {/* Image of the product */}
             <Link to={`/products/${product.id}/`}>
                 <img
@@ -51,6 +39,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
                     className="h-40 w-full object-cover rounded-md"
                 />
                 {/* Name of the product */}
+
                 <h3 className="font-semibold mt-2">{product.name}</h3>
             </Link>
 
@@ -65,6 +54,19 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
                             }`}
                     />
                 ))}
+                {/*Wish list icon*/}
+                <button
+                    onClick={handleWishList}
+                    aria-label="Add to wishlist"
+                    className="relative top-1- right-1 left-4 group">
+                    <Heart
+                        className={`w-5 h-5 transition-all duration-300 ease-out
+                        ${wishListed
+                                ? "fill-red-500 text-red-500 scale-125 animate-pulse"
+                                : "text-gray-400 group-hover:scale-110"
+                            }`}
+                    />
+                </button>
             </div>
 
             {/* Price of the product */}

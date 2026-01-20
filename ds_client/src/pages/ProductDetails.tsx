@@ -34,7 +34,7 @@ export default function ProductDetails() {
             />
             <div>
                 <h1 className="text-2xl font-bold">{product.name}</h1>
-                <p className="my-6 text-gray-600">{product.description}</p>
+                <p className="my-6 text-gray-500">{product.description}</p>
                 <ReviewList productId={product.id} />
             </div>
         </div>
