@@ -1,19 +1,25 @@
 import { Heart, ShoppingCart, Star } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Product } from "../../types/product";
 
-interface Product {
-    id: number;
-    name: string;
-    formatted_price: string;
-    image: string | null;
-    rating: number;
-    stock: number;
-    isWishListed: boolean;
-}
+// interface Product {
+//     id: number;
+//     name: string;
+//     category : string,
+//     formatted_price: string;
+//     image: string | null;
+//     rating: number;
+//     stock: number;
+//     isWishListed: boolean;
+// }
+
+// interface Props{
+//     product : Product[];
+// }
 
 interface ProductCardProps {
-    product: Product;
+    product : Product;
     onAddToCart?: (product: Product) => void;
     onToggleWishlist?: (product: Product) => void;
 }
@@ -39,8 +45,8 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
                     className="h-40 w-full object-cover rounded-md"
                 />
                 {/* Name of the product */}
-
                 <h3 className="font-semibold mt-2">{product.name}</h3>
+                {/* <h3 className="font-semibold mt-2">{product.category}</h3> */}
             </Link>
 
             {/* Rating of the product */}

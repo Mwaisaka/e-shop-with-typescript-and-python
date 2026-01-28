@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { Menu, ShoppingCart, Moon, Sun } from "lucide-react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { fetchCategories } from "../../api/categories";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
 import { useTheme } from "../../context/ThemeContext"
 import CartPreview from "../cart/CartPreview";
+import { Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -14,6 +16,15 @@ export default function Navbar() {
     const [categories, setCategories] = useState<any[]>([]);
     const [showCart, setShowCart] = useState(false);
     const [mobile, setMobile] = useState(false);
+    const navigate = useNavigate();
+    const [query, setQuery] = useState("");
+    
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!query.trim()) return;
+        navigate(`?q=${encodeURIComponent(query)}`)
+    };
 
     useEffect(() => {
         fetchCategories()
@@ -26,6 +37,10 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Left */}
                 <div className="flex items-center gap-4">
+                     {/* Shop Logo */}
+                    <Link to="/" className="text-xl font-bold text-indigo-600">
+                        ShopIt
+                    </Link>
                     <button className="md:hidden" onClick={() => setMobile(true)}>
                         Menu
                     </button>
@@ -40,18 +55,28 @@ export default function Navbar() {
                                 >
                                     ✕ Close
                                 </button>
+                               <form onSubmit={handleSearch} className="flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
+                                 <Search size={18} className="text-gray-500" />
+                                 <input
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                    className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-800"
+                                    placeholder="Search products..."
+                                />                                
+                               </form>                              
 
                                 {/* Categories */}
                                 {categories.map(c => (
                                     <Link
                                         key={c.id}
-                                        to={`/category/${c.slug}`}
+                                        to={`?q=${c.slug}`}
                                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-200"
                                         onClick={() => setMobile(false)} // close menu on click
                                     >
                                         {c.name}
                                     </Link>
                                 ))}
+
 
                                 {/* Auth Links */}
                                 {user ? (
@@ -81,19 +106,25 @@ export default function Navbar() {
                     )}
 
 
-                    {/* Shop Logo */}
-                    <Link to="/" className="text-xl font-bold text-indigo-600">
-                        ShopIt
-                    </Link>
+                   
 
                     {/* Categories dropdown */}
                     <div className="hidden md:block relative group">
-                        <button className="font-medium">Categories</button>
+                        <button className="font-medium">All Categories</button>
                         <div className="absolute z-50 hidden group-hover:block bg-white shadow rounded mt-2">
-                            {categories.map(c => (
+                            {/* {categories.map(c => (
                                 <Link
                                     key={c.id}
                                     to={`/category/${c.slug}`}
+                                    className="block px-4 py-2 hover:bg-gray-100"
+                                >
+                                    {c.name}
+                                </Link>
+                            ))} */}
+                            {categories.map(c => (
+                                <Link
+                                    key={c.id}
+                                    to={`?q=${c.slug}`}
                                     className="block px-4 py-2 hover:bg-gray-100"
                                 >
                                     {c.name}
@@ -102,6 +133,18 @@ export default function Navbar() {
                         </div>
                     </div>
                 </div>
+
+                {/* Search Bar */}
+                <form onSubmit={handleSearch} className="hidden md:flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
+                    <Search size={18} className="text-gray-500" />
+                    <input
+                        type="text"
+                        value={query}
+                        placeholder="Search products ..."
+                        onChange={(e) => setQuery(e.target.value)}
+                        className="bg-transparent outline-none px-2 text-sm w-90"
+                    />
+                </form>
 
                 {/* Right */}
                 <div className="flex items-center gap-4 relative">

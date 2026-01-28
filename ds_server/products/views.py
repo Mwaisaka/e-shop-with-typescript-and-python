@@ -2,12 +2,22 @@ from .models import Product
 from .serializers import ProductSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.db.models import Q
 
 #View product list or create a product
 @api_view(["GET","POST"])
 def product_list_create(request):
     if request.method == "GET":
+        q = request.GET.get("q","")
+        category = request.GET.get("category")
         products = Product.objects.select_related("category").all()
+        if q:
+            products=products.filter(
+                Q(name__icontains=q) | Q(category__name__icontains=q)
+            )
+        if category:
+            products=products.filter(category__slug=category)
+            
         serializer = ProductSerializer(
             products, 
             many=True,

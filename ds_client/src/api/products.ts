@@ -1,6 +1,9 @@
-import api from "./axios"
+import api from "./axios";
 
-export const fetchProducts = ()=> api.get("/products/product-list-create/"); //For creating new products/fetching all products
-export const fetchProduct = (product_id:number) => api.get(`/products/product-detail/${product_id}`);
+export const fetchProducts = () => api.get("/products"); //For creating new products/fetching all products
+export const fetchProduct = (product_id: number) =>
+  api.get(`/products/product-detail/${product_id}`);
 export const fetchRelatedProducts = (categoryId: number) =>
-    api.get(`/products/?category=${categoryId}`);
+  api.get(`/products/?category=${categoryId}`);
+export const searchProducts = (params: { q?: string; category?: string }) =>
+  api.get("/products",{params});
