@@ -7,7 +7,7 @@ import { useCart } from "../../context/CartContext";
 import { useTheme } from "../../context/ThemeContext"
 import CartPreview from "../cart/CartPreview";
 import { Search } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, replace } from "react-router-dom";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -18,13 +18,19 @@ export default function Navbar() {
     const [mobile, setMobile] = useState(false);
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
-    
+    const [categoriesOpen, setCategoriesOpen] = useState(false);
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!query.trim()) return;
-        navigate(`?q=${encodeURIComponent(query)}`)
-    };
+    useEffect(() => {
+        const delay = setTimeout(() => {
+            if (query.trim()) {
+                navigate(`?q=${encodeURIComponent(query)}`, { replace: true });
+            } else {
+                navigate("", { replace: true });
+            }
+        }, 400); //Debounce time
+
+        return () => clearTimeout(delay)
+    }, [query, navigate]);
 
     useEffect(() => {
         fetchCategories()
@@ -32,12 +38,23 @@ export default function Navbar() {
             .catch(() => setCategories([]))
     }, [])
 
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (!target.closest("#categories-dropdown")) {
+                setCategoriesOpen(false);
+            }
+        };
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
+
     return (
         <nav className="bg-white dark:bg-gray-900 border-b relative z-50">
             <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Left */}
                 <div className="flex items-center gap-4">
-                     {/* Shop Logo */}
+                    {/* Shop Logo */}
                     <Link to="/" className="text-xl font-bold text-indigo-600">
                         ShopIt
                     </Link>
@@ -55,15 +72,15 @@ export default function Navbar() {
                                 >
                                     ✕ Close
                                 </button>
-                               <form onSubmit={handleSearch} className="flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
-                                 <Search size={18} className="text-gray-500" />
-                                 <input
-                                    value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
-                                    className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-800"
-                                    placeholder="Search products..."
-                                />                                
-                               </form>                              
+                                <form className="flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
+                                    <Search size={18} className="text-gray-500" />
+                                    <input
+                                        value={query}
+                                        onChange={(e) => setQuery(e.target.value)}
+                                        className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-800"
+                                        placeholder="Search products..."
+                                    />
+                                </form>
 
                                 {/* Categories */}
                                 {categories.map(c => (
@@ -105,37 +122,33 @@ export default function Navbar() {
                         </div>
                     )}
 
-
-                   
-
                     {/* Categories dropdown */}
-                    <div className="hidden md:block relative group">
-                        <button className="font-medium">All Categories</button>
-                        <div className="absolute z-50 hidden group-hover:block bg-white shadow rounded mt-2">
-                            {/* {categories.map(c => (
-                                <Link
-                                    key={c.id}
-                                    to={`/category/${c.slug}`}
-                                    className="block px-4 py-2 hover:bg-gray-100"
-                                >
-                                    {c.name}
-                                </Link>
-                            ))} */}
-                            {categories.map(c => (
-                                <Link
-                                    key={c.id}
-                                    to={`?q=${c.slug}`}
-                                    className="block px-4 py-2 hover:bg-gray-100"
-                                >
-                                    {c.name}
-                                </Link>
-                            ))}
-                        </div>
+                    <div id="categories-dropdown" className="relative">
+                        <button
+                            className="font-medium px-4 py-2 bg-gray-100 rounded hover:bg-gray-200"
+                            onClick={() => setCategoriesOpen(!categoriesOpen)}
+                        >
+                            All Categories
+                        </button>
+                        {categoriesOpen && (
+                            <div className="absolute z-50 mt-2 w-48 bg-white dark:bg-gray-800 shadow rounded">
+                                {categories.map(c => (
+                                    <Link
+                                        key={c.id}
+                                        to={`?q=${c.slug}`}
+                                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                        onClick={() => setCategoriesOpen(false)} // close after click
+                                    >
+                                        {c.name}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
 
                 {/* Search Bar */}
-                <form onSubmit={handleSearch} className="hidden md:flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
+                <form className="hidden md:flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
                     <Search size={18} className="text-gray-500" />
                     <input
                         type="text"

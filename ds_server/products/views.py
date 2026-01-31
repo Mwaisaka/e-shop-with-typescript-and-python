@@ -8,7 +8,7 @@ from django.db.models import Q, Avg
 @api_view(["GET","POST"])
 def product_list_create(request):
     if request.method == "GET":
-        q = request.GET.get("q","")
+        q = request.GET.get("q", "")
         category = request.GET.get("category")
         min_price = request.GET.get("min_price")
         max_price = request.GET.get("max_price")

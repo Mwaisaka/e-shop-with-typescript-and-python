@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { replace, useNavigate} from "react-router-dom";
 
 interface FiltersProps {
     categories: string[],
@@ -14,6 +15,8 @@ export interface FilterState {
 }
 
 export default function FiltersSidebar({ categories, onFilterChange }: FiltersProps) {
+    const navigate = useNavigate();
+    const [query, setQuery] = useState("");    
     const [filters, setFilters] = useState<FilterState>(
         {
             search: "",
@@ -30,16 +33,42 @@ export default function FiltersSidebar({ categories, onFilterChange }: FiltersPr
         onFilterChange(newFilters);
     };
 
+    // const handleSearch = (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     if (!query.trim()) return;
+    //     navigate(`?q=${encodeURIComponent(query)}`)
+    // };
+
+    // useEffect(()=>{
+    //     const q = searchParams.get("q")  || "";
+    //     setQuery(q);
+    // });
+
+    useEffect(()=>{
+        const delay = setTimeout(()=>{
+            if (query.trim()){
+                navigate(`?q=${encodeURIComponent(query)}`,{replace: true});
+            }else{
+                navigate("", {replace : true});
+            }
+        },400); //Debounce time
+        
+        return ()=>clearTimeout(delay)
+    }, [query, navigate]);
+
     return (
         <aside className="w-full md:w-64 bg-white dark:bg-gray-900 p-4 border rounded-xl dark:border-gray-700 mt-4">
             <h2 className="text-lg font-semibold mb-4">Filters</h2>
             {/* Search */}
-            <input
-                type="text"
-                placeholder="Search products..."
-                onChange={(e) => updateFilters({ search: e.target.value })}
-                className="w-full mb-4 px-3 py-2 border rounded dark:bg-gray-800"
-            />
+            <form className="w-full mb-4 px-3 py-2 border rounded dark:bg-gray-300">
+                <input
+                    type="text"
+                    value={query}
+                    placeholder="Search products ..."
+                    onChange={(e) => setQuery(e.target.value)}
+                    className=" bg-transparent outline-none w-full"
+                />
+            </form>
 
             {/* Categories */}
             <select
