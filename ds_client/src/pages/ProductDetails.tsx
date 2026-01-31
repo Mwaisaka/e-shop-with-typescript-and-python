@@ -12,7 +12,9 @@ export default function ProductDetails() {
         if (!id) return;
 
         fetchProduct(Number(id))
-            .then(res => setProduct(res.data))
+            .then(res => {
+                console.log("ProductDetails mounted", id);
+                setProduct(res.data)})
             .catch(() => alert("Product details not found"))
             .finally(() => setLoading(false));
     }, [id]);

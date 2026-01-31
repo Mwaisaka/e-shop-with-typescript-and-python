@@ -6,7 +6,7 @@ export default function AppRoutes(){
     return(
         <Routes>
             <Route path="/" element = {<Home />}/>
-            <Route path="/products/:id" element={<ProductDetails />} />
+            <Route path="/products/:id/" element={<ProductDetails />} />
         </Routes>
     )
 }

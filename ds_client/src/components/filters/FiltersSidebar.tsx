@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { replace, useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 interface FiltersProps {
     categories: string[],
@@ -46,6 +46,8 @@ export default function FiltersSidebar({ categories, onFilterChange }: FiltersPr
 
     useEffect(()=>{
         const delay = setTimeout(()=>{
+            updateFilters({ search: query });
+            
             if (query.trim()){
                 navigate(`?q=${encodeURIComponent(query)}`,{replace: true});
             }else{
@@ -60,7 +62,7 @@ export default function FiltersSidebar({ categories, onFilterChange }: FiltersPr
         <aside className="w-full md:w-64 bg-white dark:bg-gray-900 p-4 border rounded-xl dark:border-gray-700 mt-4">
             <h2 className="text-lg font-semibold mb-4">Filters</h2>
             {/* Search */}
-            <form className="w-full mb-4 px-3 py-2 border rounded dark:bg-gray-300">
+            <div className="w-full mb-4 px-3 py-2 border rounded dark:bg-gray-300">
                 <input
                     type="text"
                     value={query}
@@ -68,7 +70,7 @@ export default function FiltersSidebar({ categories, onFilterChange }: FiltersPr
                     onChange={(e) => setQuery(e.target.value)}
                     className=" bg-transparent outline-none w-full"
                 />
-            </form>
+            </div>
 
             {/* Categories */}
             <select
@@ -80,7 +82,7 @@ export default function FiltersSidebar({ categories, onFilterChange }: FiltersPr
                     <option key={cat} value={cat}>
                         {cat}
                     </option>
-                ))};
+                ))}
             </select>
 
             {/* Price */}

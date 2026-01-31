@@ -1,10 +1,12 @@
 from .models import Product
 from .serializers import ProductSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.db.models import Q, Avg
+from rest_framework.permissions import AllowAny
 
 # View product list or create a product
+@permission_classes([AllowAny])
 @api_view(["GET","POST"])
 def product_list_create(request):
     if request.method == "GET":
@@ -18,7 +20,7 @@ def product_list_create(request):
         
         products = Product.objects.select_related("category").annotate(
             avg_rating=Avg("reviews__rating")
-    )
+            )
         
         # Search product by name or category
         if q:

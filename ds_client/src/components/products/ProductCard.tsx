@@ -19,7 +19,7 @@ import { Product } from "../../types/product";
 // }
 
 interface ProductCardProps {
-    product : Product;
+    product: Product;
     onAddToCart?: (product: Product) => void;
     onToggleWishlist?: (product: Product) => void;
 }

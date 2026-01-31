@@ -15,9 +15,12 @@ import { fetchProducts } from "../api/products";
 // }
 
 export default function Home() {
+
     const [params] = useSearchParams();
+
     const q = params.get("q") || "";
     const category = params.get("category") || "";
+
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -42,8 +45,6 @@ export default function Home() {
 
     return (
         <div>
-            {/* Loading indicator... */}
-            {/* {loading && <p className="text-center py-4">Loading products...</p>} */}
 
             <h2 className="text-xl font-semibold mb-4">
                 Search results {q && `for "${q}"`}

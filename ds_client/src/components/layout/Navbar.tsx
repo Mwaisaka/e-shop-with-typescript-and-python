@@ -7,7 +7,7 @@ import { useCart } from "../../context/CartContext";
 import { useTheme } from "../../context/ThemeContext"
 import CartPreview from "../cart/CartPreview";
 import { Search } from "lucide-react";
-import { useNavigate, replace } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -72,7 +72,7 @@ export default function Navbar() {
                                 >
                                     ✕ Close
                                 </button>
-                                <form className="flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
+                                <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
                                     <Search size={18} className="text-gray-500" />
                                     <input
                                         value={query}
@@ -80,20 +80,19 @@ export default function Navbar() {
                                         className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-800"
                                         placeholder="Search products..."
                                     />
-                                </form>
+                                </div>
 
                                 {/* Categories */}
                                 {categories.map(c => (
                                     <Link
                                         key={c.id}
-                                        to={`?q=${c.slug}`}
+                                        to={`/?q=${c.slug}`}
                                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-200"
                                         onClick={() => setMobile(false)} // close menu on click
                                     >
                                         {c.name}
                                     </Link>
                                 ))}
-
 
                                 {/* Auth Links */}
                                 {user ? (
@@ -135,7 +134,7 @@ export default function Navbar() {
                                 {categories.map(c => (
                                     <Link
                                         key={c.id}
-                                        to={`?q=${c.slug}`}
+                                        to={`/?q=${c.slug}`}
                                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                                         onClick={() => setCategoriesOpen(false)} // close after click
                                     >
@@ -148,7 +147,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Search Bar */}
-                <form className="hidden md:flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
+                <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
                     <Search size={18} className="text-gray-500" />
                     <input
                         type="text"
@@ -157,7 +156,7 @@ export default function Navbar() {
                         onChange={(e) => setQuery(e.target.value)}
                         className="bg-transparent outline-none px-2 text-sm w-90"
                     />
-                </form>
+                </div>
 
                 {/* Right */}
                 <div className="flex items-center gap-4 relative">
