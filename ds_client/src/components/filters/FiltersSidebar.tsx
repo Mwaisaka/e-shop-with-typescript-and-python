@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate} from "react-router-dom";
+import { useSearchQuery } from "../../hooks/useSearchQuery";
 
 interface FiltersProps {
     categories: string[],
@@ -15,8 +15,8 @@ export interface FilterState {
 }
 
 export default function FiltersSidebar({ categories, onFilterChange }: FiltersProps) {
-    const navigate = useNavigate();
-    const [query, setQuery] = useState("");    
+      
+    const { q, category, setQuery } = useSearchQuery();
     const [filters, setFilters] = useState<FilterState>(
         {
             search: "",
@@ -44,19 +44,21 @@ export default function FiltersSidebar({ categories, onFilterChange }: FiltersPr
     //     setQuery(q);
     // });
 
-    useEffect(()=>{
-        const delay = setTimeout(()=>{
-            updateFilters({ search: query });
-            
-            if (query.trim()){
-                navigate(`?q=${encodeURIComponent(query)}`,{replace: true});
-            }else{
-                navigate("", {replace : true});
-            }
-        },400); //Debounce time
-        
-        return ()=>clearTimeout(delay)
-    }, [query, navigate]);
+    // useEffect(()=>{
+    //     if (location.pathname !== "/") return; 
+
+    //     const delay = setTimeout(()=>{
+    //         // updateFilters({ search: query });
+
+    //         if (query.trim()){
+    //             navigate(`/?q=${encodeURIComponent(query)}`,{replace: true});
+    //         }else{
+    //             navigate("/", {replace : true});
+    //         }
+    //     },400); //Debounce time
+
+    //     return ()=>clearTimeout(delay)
+    // }, [query, navigate, location.pathname]);
 
     return (
         <aside className="w-full md:w-64 bg-white dark:bg-gray-900 p-4 border rounded-xl dark:border-gray-700 mt-4">
@@ -65,17 +67,18 @@ export default function FiltersSidebar({ categories, onFilterChange }: FiltersPr
             <div className="w-full mb-4 px-3 py-2 border rounded dark:bg-gray-300">
                 <input
                     type="text"
-                    value={query}
+                    value={q}
                     placeholder="Search products ..."
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => setQuery("q", e.target.value)}
                     className=" bg-transparent outline-none w-full"
                 />
             </div>
 
             {/* Categories */}
             <select
+                value={category}
                 className="w-full mb-4 px-3 py-2 border rounded dark:bg-gray-800"
-                onChange={(e) => updateFilters({ category: e.target.value })}
+                onChange={(e) => setQuery("category", e.target.value)}
             >
                 <option value="">All Categories</option>
                 {categories.map((cat) => (

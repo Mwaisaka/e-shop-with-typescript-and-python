@@ -6,7 +6,7 @@ export default function Footer(){
             <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
                 {/* Brand details */}
                 <div>
-                    <h2 className="text-xl font-bold text-gray-500">ShopIt</h2>
+                    <h2 className="text-xl font-bold text-gray-500">Nzisa Fashions</h2>
                     <p className="mt-3 text-sm">
                          Your trusted online marketplace for quality products at unbelievable prices.
                     </p>

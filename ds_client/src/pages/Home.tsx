@@ -1,37 +1,12 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../components/products/ProductCard";
-import { useSearchParams } from "react-router-dom";
 import { searchProducts } from "../api/products";
-
-import { Product } from "../types/product";
-import { fetchProducts } from "../api/products";
-
-// interface Product {
-//     id: number;
-//     name: string;
-//     price: number;
-//     image: string;
-//     stock: number;
-// }
+import { useSearchQuery } from "../hooks/useSearchQuery";
 
 export default function Home() {
-
-    const [params] = useSearchParams();
-
-    const q = params.get("q") || "";
-    const category = params.get("category") || "";
-
-    const [products, setProducts] = useState<Product[]>([]);
+    const {q, category} = useSearchQuery();
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    // useEffect(() => {
-    //     setLoading(true);
-    //     searchProducts({q,category})
-    //     fetchProducts()
-    //         .then(res => setProducts(res.data))
-    //         .catch(() => alert("Failed to load products"))
-    //         .finally(() => setLoading(false));
-    // }, []);
 
     useEffect(() => {
         setLoading(true);
@@ -45,9 +20,8 @@ export default function Home() {
 
     return (
         <div>
-
             <h2 className="text-xl font-semibold mb-4">
-                Search results {q && `for "${q}"`}
+                {q ? `Search results for "${q}"` : "All Products"}
             </h2>
             {products.length === 0 ? (
                 <p>No products found</p>
@@ -58,14 +32,6 @@ export default function Home() {
                     ))}
                 </div>
             )}
-            {/* Products display grid */}
-            {/* {!loading && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {products.map((p: any) => (
-                        <ProductCard key={p.id} product={p} />
-                    ))}
-                </div>
-            )} */}
         </div>
     )
 }

@@ -7,7 +7,7 @@ import { useCart } from "../../context/CartContext";
 import { useTheme } from "../../context/ThemeContext"
 import CartPreview from "../cart/CartPreview";
 import { Search } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useSearchQuery } from "../../hooks/useSearchQuery";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -16,21 +16,22 @@ export default function Navbar() {
     const [categories, setCategories] = useState<any[]>([]);
     const [showCart, setShowCart] = useState(false);
     const [mobile, setMobile] = useState(false);
-    const navigate = useNavigate();
-    const [query, setQuery] = useState("");
+    const { q, setQuery } = useSearchQuery();
     const [categoriesOpen, setCategoriesOpen] = useState(false);
 
-    useEffect(() => {
-        const delay = setTimeout(() => {
-            if (query.trim()) {
-                navigate(`?q=${encodeURIComponent(query)}`, { replace: true });
-            } else {
-                navigate("", { replace: true });
-            }
-        }, 400); //Debounce time
+    // useEffect(() => {
+    //     if (location.pathname !== "/") return; 
 
-        return () => clearTimeout(delay)
-    }, [query, navigate]);
+    //     const delay = setTimeout(() => {
+    //         if (query.trim()) {
+    //             navigate(`/?q=${encodeURIComponent(query)}`, { replace: true });
+    //         } else {
+    //             navigate("/", { replace: true });
+    //         }
+    //     }, 400); //Debounce time
+
+    //     return () => clearTimeout(delay)
+    // }, [query, navigate, location.pathname]);
 
     useEffect(() => {
         fetchCategories()
@@ -55,8 +56,8 @@ export default function Navbar() {
                 {/* Left */}
                 <div className="flex items-center gap-4">
                     {/* Shop Logo */}
-                    <Link to="/" className="text-xl font-bold text-indigo-600">
-                        ShopIt
+                    <Link to="/" className="text-2xl italic font-bold text-indigo-600">
+                        Nzisa Fashions
                     </Link>
                     <button className="md:hidden" onClick={() => setMobile(true)}>
                         Menu
@@ -75,8 +76,8 @@ export default function Navbar() {
                                 <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
                                     <Search size={18} className="text-gray-500" />
                                     <input
-                                        value={query}
-                                        onChange={(e) => setQuery(e.target.value)}
+                                        value={q}
+                                        onChange={(e) => setQuery("q",e.target.value)}
                                         className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-800"
                                         placeholder="Search products..."
                                     />
@@ -134,7 +135,7 @@ export default function Navbar() {
                                 {categories.map(c => (
                                     <Link
                                         key={c.id}
-                                        to={`/?q=${c.slug}`}
+                                        to={`/?q=${c.slug}&category=${c.slug}`}
                                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                                         onClick={() => setCategoriesOpen(false)} // close after click
                                     >
@@ -151,9 +152,9 @@ export default function Navbar() {
                     <Search size={18} className="text-gray-500" />
                     <input
                         type="text"
-                        value={query}
+                        value={q}
                         placeholder="Search products ..."
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={(e) => setQuery("q",e.target.value)}
                         className="bg-transparent outline-none px-2 text-sm w-90"
                     />
                 </div>
