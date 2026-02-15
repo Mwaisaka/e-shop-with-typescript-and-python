@@ -9,4 +9,6 @@ export interface Product {
     rating: number;
     stock: number;
     isWishListed: boolean;
+    avg_rating : number;
+    review_count : number;
 }

@@ -16,28 +16,16 @@ export default function Navbar() {
     const [categories, setCategories] = useState<any[]>([]);
     const [showCart, setShowCart] = useState(false);
     const [mobile, setMobile] = useState(false);
-    const { q, setQuery } = useSearchQuery();
+    const { q, category, setQuery } = useSearchQuery();
     const [categoriesOpen, setCategoriesOpen] = useState(false);
 
-    // useEffect(() => {
-    //     if (location.pathname !== "/") return; 
-
-    //     const delay = setTimeout(() => {
-    //         if (query.trim()) {
-    //             navigate(`/?q=${encodeURIComponent(query)}`, { replace: true });
-    //         } else {
-    //             navigate("/", { replace: true });
-    //         }
-    //     }, 400); //Debounce time
-
-    //     return () => clearTimeout(delay)
-    // }, [query, navigate, location.pathname]);
+    const selectedCategory = categories.find((cat) => cat.slug === category)?.name || "All Categories";
 
     useEffect(() => {
         fetchCategories()
             .then(res => setCategories(res.data))
             .catch(() => setCategories([]))
-    }, [])
+    }, [category])
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -77,7 +65,7 @@ export default function Navbar() {
                                     <Search size={18} className="text-gray-500" />
                                     <input
                                         value={q}
-                                        onChange={(e) => setQuery("q",e.target.value)}
+                                        onChange={(e) => setQuery("q", e.target.value)}
                                         className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-800"
                                         placeholder="Search products..."
                                     />
@@ -123,19 +111,29 @@ export default function Navbar() {
                     )}
 
                     {/* Categories dropdown */}
-                    <div id="categories-dropdown" className="relative">
+                    <div id="categories-dropdown" className=" hidden md:flex ml-14 relative"
+                        onMouseEnter={() => setCategoriesOpen(true)}
+                        onMouseLeave={() => setCategoriesOpen(false)}
+                    >
                         <button
-                            className="font-medium px-4 py-2 bg-gray-100 rounded hover:bg-gray-200"
-                            onClick={() => setCategoriesOpen(!categoriesOpen)}
+                            className="font-medium px-4 py-2 bg-gray-100 rounded text-black "
+                        // onClick={() => setCategoriesOpen(!categoriesOpen)}
                         >
-                            All Categories
+                            {selectedCategory}
                         </button>
                         {categoriesOpen && (
-                            <div className="absolute z-50 mt-2 w-48 bg-white dark:bg-gray-800 shadow rounded">
+                            <div className="absolute z-50 mt-10 w-48 bg-white dark:bg-gray-800 shadow rounded">
+                                <Link
+                                    to="/"
+                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    onClick={() => setCategoriesOpen(false)}
+                                >
+                                    All Categories
+                                </Link>
                                 {categories.map(c => (
                                     <Link
                                         key={c.id}
-                                        to={`/?q=${c.slug}&category=${c.slug}`}
+                                        to={`/?category=${c.slug}`}
                                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                                         onClick={() => setCategoriesOpen(false)} // close after click
                                     >
@@ -148,14 +146,14 @@ export default function Navbar() {
                 </div>
 
                 {/* Search Bar */}
-                <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
+                <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-300 rounded px-3 py-1">
                     <Search size={18} className="text-gray-500" />
                     <input
                         type="text"
                         value={q}
                         placeholder="Search products ..."
-                        onChange={(e) => setQuery("q",e.target.value)}
-                        className="bg-transparent outline-none px-2 text-sm w-90"
+                        onChange={(e) => setQuery("q", e.target.value)}
+                        className="bg-transparent outline-none px-2 text-sm w-90 text-black py-2"
                     />
                 </div>
 

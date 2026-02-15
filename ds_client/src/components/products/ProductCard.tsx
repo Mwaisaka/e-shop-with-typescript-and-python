@@ -1,22 +1,7 @@
 import { Heart, ShoppingCart, Star } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Product } from "../../types/product";
-
-// interface Product {
-//     id: number;
-//     name: string;
-//     category : string,
-//     formatted_price: string;
-//     image: string | null;
-//     rating: number;
-//     stock: number;
-//     isWishListed: boolean;
-// }
-
-// interface Props{
-//     product : Product[];
-// }
 
 interface ProductCardProps {
     product: Product;
@@ -25,14 +10,16 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onAddToCart, onToggleWishlist, }: ProductCardProps) {
+
     const [wishListed, setWishListed] = useState(product.isWishListed ?? false);
+    const isOutOfStock = product.stock <= 0;
+    const rating = product.avg_rating ?? 0;
+    const rounded = Math.round(rating);
 
     const handleWishList = () => {
         setWishListed(!wishListed);
         onToggleWishlist?.(product);
     };
-
-    const isOutOfStock = product.stock <= 0;
 
     return (
         <div className="relative border rounded-xl p-4 bg-white transform transition duration-300 ease-in-out hover:scale-105">
@@ -46,20 +33,26 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
                 />
                 {/* Name of the product */}
                 <h3 className="font-semibold mt-2">{product.name}</h3>
-                {/* <h3 className="font-semibold mt-2">{product.category}</h3> */}
             </Link>
 
             {/* Rating of the product */}
             <div className="flex items-center gap-1 mt-1">
-                {[...Array(5)].map((_, i) => (
-                    <Star
-                        key={i}
-                        className={`w-4 h-4 ${i < product.rating
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
-                            }`}
-                    />
-                ))}
+                <div className="flex items-center gap-1 mt-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                            key={star}
+                            className={`w-4 h-4 ${star <= rounded
+                                    ? "fill-yellow-400 text-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                        />
+                    ))}
+
+                    <span className="text-xs text-gray-500 ml-1">
+                        ({rating.toFixed(1)} • {product.review_count ?? 0})
+                    </span>
+                </div>
+
                 {/*Wish list icon*/}
                 <button
                     onClick={handleWishList}
@@ -79,6 +72,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
             <p className="text-sm text-gray-600 mt-1">
                 Kes.{product.formatted_price}
             </p>
+            
             {/* Status of the stock */}
             {isOutOfStock ? (<p className="text-sm text-red-500 mt-1">Out of Stock</p>) :
                 (<p className="text-sm text-green-600 mt-1">In Stock</p>)

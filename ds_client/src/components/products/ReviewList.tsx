@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchReviews } from "../../api/reviews"
-
-interface Review {
-    id: number;
-    rating: number;
-    comment: string;
-}
+import { Review } from "../../types/reviews";
 
 export default function ReviewList({ productId }: { productId: number }) {
     const [reviews, setReviews] = useState<Review[]>([]);

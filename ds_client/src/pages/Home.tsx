@@ -4,17 +4,17 @@ import { searchProducts } from "../api/products";
 import { useSearchQuery } from "../hooks/useSearchQuery";
 
 export default function Home() {
-    const {q, category} = useSearchQuery();
+    const { q, category, maxPrice, rating } = useSearchQuery();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setLoading(true);
-        searchProducts({ q, category })
-            .then(res => setProducts(res.data))
+        searchProducts({ q, category, max_price: maxPrice, rating })
+            .then((res) => setProducts(res.data))
             .catch(() => alert("Failed to load products"))
             .finally(() => setLoading(false));
-    }, [q, category]);
+    }, [q, category, maxPrice, rating]);
 
     if (loading) return <p>Loading...</p>;
 
@@ -33,5 +33,5 @@ export default function Home() {
                 </div>
             )}
         </div>
-    )
+    );
 }

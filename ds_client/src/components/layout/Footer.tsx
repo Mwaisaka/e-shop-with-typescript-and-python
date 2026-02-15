@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 export default function Footer(){
     return(
-        <footer className="bg-white dark:bg-gray-900 text-gray-500 mt-16 border-t">
-            <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <footer className="bg-white dark:bg-gray-900 text-gray-500 mt-2 border-t">
+            <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 md:grid-cols-4 gap-8">
                 {/* Brand details */}
                 <div>
                     <h2 className="text-xl font-bold text-gray-500">Nzisa Fashions</h2>
@@ -14,7 +14,7 @@ export default function Footer(){
 
                 {/* E-Shop */}
                 <div>
-                    <h3 className="text-gray-500 font-semibold mb-3">Shop</h3>
+                    <h3 className="text-gray-500 font-bold mb-3">Shop</h3>
                     <ul className="space-y-2 text-sm">
                         <li><Link to="/" className="hover:text-white">All Products</Link></li>
                         <li><Link to="/categories" className="hover:text-white">Categories</Link></li>
@@ -24,7 +24,7 @@ export default function Footer(){
 
                 {/* User Account Navigation */}
                 <div>
-                    <h3 className="text-gray-500 font-semibold mb-3">My Account</h3>
+                    <h3 className="text-gray-500 font-bold mb-3">My Account</h3>
                     <ul className="space-y-2 text-sm">
                         <li><Link to="/login" className="hover:text-white">Login</Link></li>
                         <li><Link to="/register" className="hover:text-white">Register</Link></li>
@@ -34,7 +34,7 @@ export default function Footer(){
 
                 {/* Contact */}
                 <div>
-                    <h3 className="text-gray-500 font-semibold mb-3">Contact</h3>
+                    <h3 className="text-gray-500 font-bold mb-3">Contact</h3>
                     <p className="text-sm">Email: support@shopit.co.ke</p>
                     <p className="text-sm mt-1">Phone: +254 xxx xxx xxx</p>
                 </div>
