@@ -4,13 +4,14 @@ import { searchProducts } from "../api/products";
 import { useSearchQuery } from "../hooks/useSearchQuery";
 
 export default function Home() {
-    const { q, category, maxPrice, rating } = useSearchQuery();
-    const [products, setProducts] = useState([]);
+    const { q, category, maxPrice, rating, page, setQuery} = useSearchQuery();
+    const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         setLoading(true);
-        searchProducts({ q, category, max_price: maxPrice, rating })
+        searchProducts({ q, category, max_price: maxPrice, rating, page})
             .then((res) => setProducts(res.data))
             .catch(() => alert("Failed to load products"))
             .finally(() => setLoading(false));
