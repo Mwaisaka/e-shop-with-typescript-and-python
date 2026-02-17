@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.db.models import Q, Avg, Count
 from rest_framework.permissions import AllowAny
-
+from .pagination import ProductPagination
 
 # View product list or create a product
 @permission_classes([AllowAny])
@@ -44,11 +44,15 @@ def product_list_create(request):
         # Filter by rating
         if rating:
             products = products.filter(avg_rating__gte=rating)
+        
+        paginator = ProductPagination()
+        paginated_products = paginator.paginate_queryset(products, request)
 
         serializer = ProductSerializer(
-            products, many=True, context={"request": request}
+            paginated_products, many=True, context={"request": request}
         )
-        return Response(serializer.data, status=200)
+        return paginator.get_paginated_response(serializer.data)
+    
     elif request.method == "POST":
         serializer = ProductSerializer(data=request.data, context={"request": request})
         if serializer.is_valid():
