@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import register, admin_delete_user, delete_my_account, reset_password, admin_reset_password,forgot_password,reset_password_confirm, get_all_users
+from .views import login_view, register, admin_delete_user, delete_my_account, reset_password, admin_reset_password,forgot_password,reset_password_confirm, get_all_users
 
 urlpatterns = [
+    path("login/", login_view),
     path("register/", register),
     path("delete-user/<int:user_id>/", admin_delete_user),
     path("delete-account/", delete_my_account),

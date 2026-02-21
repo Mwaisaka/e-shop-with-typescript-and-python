@@ -171,9 +171,48 @@ export default function Navbar() {
                         {showCart && <CartPreview />}
                     </div>
                     {user ? (
-                        <button onClick={logout} className="text-sm">
-                            Logout
-                        </button>
+                        // <button onClick={logout} className="text-sm">
+                        //     Logout
+                        // </button>
+                        // <div className="flex items-center gap-3">
+                        //     <span className="text-sm font-medium">
+                        //         Hi, {user? user.username
+                        //             .split(" ")
+                        //             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                        //             .join(" ") : " "
+                        //         }
+                        //     </span>
+                        //     <button
+                        //         onClick={logout}
+                        //         className="text-sm text-red-600 hover:underline"
+                        //     >
+                        //         Logout
+                        //     </button>
+                        // </div>
+                        <div className="relative group">
+                            <button className="text-sm font-medium px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                                 Hi, {user? user.username
+                                    .split(" ")
+                                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                    .join(" ") : " "
+                                }
+                            </button>
+
+                            <div className="absolute right-0 mt-0 w-40 bg-white dark:bg-gray-800 shadow-md rounded hidden group-hover:block">
+                                <Link
+                                    to="/profile"
+                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                >
+                                    My Profile
+                                </Link>
+                                <button
+                                    onClick={logout}
+                                    className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
                     ) : (
                         <>
                             <Link
