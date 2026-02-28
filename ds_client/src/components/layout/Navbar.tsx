@@ -216,13 +216,13 @@ export default function Navbar() {
                     ) : (
                         <>
                             <Link
-                                to="/login"
+                                to="/login/"
                                 className="border border-indigo-600 text-indigo-600 px-4 py-1.5 rounded hover:bg-indigo-50"
                             >
                                 Login
                             </Link>
                             <Link
-                                to="/register"
+                                to="/register/"
                                 className="bg-indigo-600 text-white px-4 py-1.5 rounded hover:bg-indigo-700"
                             >
                                 Register
