@@ -3,7 +3,7 @@ import { useSearchQuery } from "../../hooks/useSearchQuery";
 import { fetchCategories } from "../../api/categories";
 
 export default function FiltersSidebar() {
-    const { q, category, maxPrice, rating, setQuery } = useSearchQuery();
+    const { q, category, max_price, rating, setQuery } = useSearchQuery();
     const [categories, setCategories] = useState<any[]>([]);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -66,14 +66,14 @@ export default function FiltersSidebar() {
 
                 {/* Price */}
                 <div className="mb-4">
-                    <label className="text-sm">Max Price : {maxPrice}</label>
+                    <label className="text-sm">Max Price : {max_price}</label>
                     <input
                         type="range"
                         min={0}
                         max={500000}
-                        value={maxPrice}
+                        value={max_price}
                         className="w-full"
-                        onChange={(e) => setQuery("maxPrice", Number(e.target.value))}
+                        onChange={(e) => setQuery("max_price", Number(e.target.value))}
                     />
                 </div>
 

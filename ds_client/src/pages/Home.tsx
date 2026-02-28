@@ -1,32 +1,62 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../components/products/ProductCard";
-import { searchProducts } from "../api/products";
+import { fetchProducts, searchProducts } from "../api/products";
 import { useSearchQuery } from "../hooks/useSearchQuery";
 
 export default function Home() {
-    const { q, category, maxPrice, rating, page, setQuery } = useSearchQuery();
+    const { q, category, max_price, rating, page , setQuery} = useSearchQuery();
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(1);
 
-    useEffect(() => {
+    const fetchData = async () => {
         setLoading(true);
-        searchProducts({ q, category, max_price: maxPrice, rating, page })
-            .then((res) => {
-                setProducts(res.data.results);
-                setTotalPages(Math.ceil(res.data.count / 8));
-            })
-            .catch(() => alert("Failed to load products"))
-            .finally(() => setLoading(false));
-    }, [q, category, maxPrice, rating, page]);
+        try {
+            // const res = await searchProducts({ q, category, max_price, rating });
+            
+            const filters: any = { page };
+
+            if (q) filters.q = q;
+            if (category) filters.category = category;
+            if (max_price !== 500000) filters.max_price = max_price;
+            if (rating > 0) filters.rating = rating;
+
+            const res = await searchProducts(filters);
+            setProducts(res.data.results);
+            setTotalPages(Math.ceil(res.data.count / 8));
+        } catch {
+            alert("Failed to load products");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [q, category, max_price, rating, page]);
+
+    const handleRefresh = async () => {
+        setQuery("page", 1);
+    };
+
 
     if (loading) return <p>Loading...</p>;
 
     return (
         <div>
-            <h2 className="text-xl font-semibold mb-4">
-                {q ? `Search results for "${q}"` : "All Products"}
-            </h2>
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold ">
+                    {q ? `Search results for "${q}"` : "All Products"}
+                </h2>
+                {/* Refresh button */}
+                <button
+                    onClick={handleRefresh}
+                    className="px-3 py-1 border rounded bg-gray-100 hover:bg-gray-200 text-sm"
+                >
+                    🔄 Refresh
+                </button>
+            </div>
+
             {products.length === 0 ? (
                 <p>No products found</p>
             ) : (
@@ -45,7 +75,7 @@ export default function Home() {
                         >First</button>
                         <button
                             disabled={page === 1}
-                            onClick={() => setQuery("page", -1)}
+                            onClick={() => setQuery("page", page - 1)}
                             className="px-3 py-1 border rounded disabled:opacity-50"
                         >Prev</button>
                         <span className="px-4 py-1">
@@ -53,7 +83,7 @@ export default function Home() {
                         </span>
                         <button
                             disabled={page === totalPages}
-                            onClick={() => setQuery("page", +1)}
+                            onClick={() => setQuery("page", page + 1)}
                             className="px-3 py-1 border rounded disabled:opacity-50"
                         >Next</button>
                         <button

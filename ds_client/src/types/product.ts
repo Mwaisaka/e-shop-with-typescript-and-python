@@ -11,4 +11,5 @@ export interface Product {
     isWishListed: boolean;
     avg_rating : number;
     review_count : number;
+    page: number;
 }

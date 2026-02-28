@@ -6,6 +6,7 @@ from django.db.models import Q, Avg, Count
 from rest_framework.permissions import AllowAny
 from .pagination import ProductPagination
 
+
 # View product list or create a product
 @permission_classes([AllowAny])
 @api_view(["GET", "POST"])
@@ -22,7 +23,7 @@ def product_list_create(request):
         products = Product.objects.select_related("category").annotate(
             avg_rating=Avg("reviews__rating"),
             review_count=Count("reviews")
-        )
+        ).order_by("-id")
 
         # Search product by name or category
         if q:

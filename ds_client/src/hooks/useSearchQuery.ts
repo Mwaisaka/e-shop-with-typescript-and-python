@@ -28,7 +28,7 @@ export function useSearchQuery() {
   return {
     q: params.get("q") || "",
     category: params.get("category") || "",
-    maxPrice: getNumber("maxPrice", 500000),
+    max_price: getNumber("max_price", 500000),
     rating: getNumber("rating", 0),
     page: Number(params.get("page") || 1),
     setQuery,
