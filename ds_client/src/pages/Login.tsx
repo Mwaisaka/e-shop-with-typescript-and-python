@@ -75,6 +75,14 @@ export default function Login() {
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                     </div>
+                    <div className="text-right">
+                    <Link
+                        to="/forgot-password/"
+                        className="text-sm text-indigo-600 hover:underline"
+                    >
+                        Forgot Password?
+                    </Link>
+                </div>
                     {/* Submit */}
                     <button
                         type="submit"
@@ -84,11 +92,12 @@ export default function Login() {
                         {loading ? "Logging in..." : "Login"}
                     </button>
                 </form>
+                
                 {/* Register Link */}
                 <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
                     Don't have an account? {" "}
-                    <Link to="/register" className="text-indigo-600 hover:underline">
-                        Register
+                    <Link to="/register/" className="text-indigo-600 hover:underline">
+                        Create account
                     </Link>
                 </p>
             </div>
