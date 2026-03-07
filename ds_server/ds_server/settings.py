@@ -151,14 +151,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #For email notifications
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = "frankkashere@gmail.com"
-EMAIL_HOST_PASSWORD = "123456"
-
-DEFAULT_FROM_EMAIL = "Support <frankkashere@gmail.com>"
+EMAIL_HOST_PASSWORD = "teurcknlnmuqwoar"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"

@@ -4,6 +4,7 @@ import ProductDetails from "../pages/ProductDetails";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ResetPassword from "../pages/ResetPassword";
+import ForgotPassword from "../pages/ForgotPassword";
 
 export default function AppRoutes(){
     return(
@@ -12,7 +13,8 @@ export default function AppRoutes(){
             <Route path="/products/:id/" element={<ProductDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password/" element={<ResetPassword />}/>
+            <Route path="/forgot-password/" element={<ForgotPassword />}/>
+            <Route path="/reset-password/:uid/:token/" element={<ResetPassword />}/>
         </Routes>
     )
 }

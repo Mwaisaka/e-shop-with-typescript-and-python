@@ -137,7 +137,7 @@ def admin_reset_password(request, user_id):
 
 # Reset password via forgot email
 @api_view(["POST"])
-def forgot_password(request):
+def reset_password(request):
     email = request.data.get("email")
 
     if not email:
@@ -154,7 +154,7 @@ def forgot_password(request):
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = PasswordResetTokenGenerator().make_token(user)
 
-    reset_link = f"http://localhost:3000/forgot-password/{uid}/{token}/"
+    reset_link = f"http://localhost:5173/reset-password/{uid}/{token}/"
 
     send_mail(
         subject="Password Reset Request",
@@ -163,7 +163,7 @@ def forgot_password(request):
         recipient_list=[user.email],
     )
 
-    return Response({"message": "Password reset link sent to your email"}, status=200)
+    return Response({"message": "Password reset link sent to your email.", "reset_url": reset_link}, status=200)
 
 
 # Reset password using token
