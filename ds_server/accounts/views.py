@@ -11,27 +11,72 @@ from django.contrib.auth import authenticate, login
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from .serializers import UserSerializer
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.hashers import check_password
 
 
 @csrf_exempt
 def login_view(request):
     if request.method == "POST":
+
         data = json.loads(request.body)
+
         user = authenticate(
             username=data.get("username"),
             password=data.get("password"),
         )
 
         if user:
-            login(request, user)
-            return JsonResponse({"message": "Login successful"})
-        return JsonResponse({"error": "Invalid credentials"}, status=400)
 
+            login(request, user)
+
+            token, created = Token.objects.get_or_create(user=user)
+
+            return JsonResponse(
+                {
+                    "token": token.key,
+                    "user": {
+                        "username": user.username,
+                        "email": user.email,
+                        "first_name": user.first_name,
+                        "last_name": user.last_name,
+                        "is_staff": user.is_staff,
+                        "profile_photo": (
+                            user.profile_photo.url
+                            if hasattr(user, "profile_photo") and user.profile_photo
+                            else None
+                        ),
+                    },
+                }
+            )
+
+            # return JsonResponse({"message": "Login successful"})
+        return JsonResponse({"error": "Invalid credentials"}, status=400)
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    user = request.user
+    
+    old_password = request.data.get("old_password")
+    new_password = request.data.get("new_password")
+    
+    if not user.check_password(old_password):
+        return Response({"detail" : "Current password is incorrect"}, status = 400)
+    
+    try:
+        validate_password(new_password, user)
+    except ValidationError as e:
+        return Response({"detail": e.messages}, status=400)
+    
+    user.set_password(new_password)
+    user.save()
+    
+    return Response({"message" : "Password updated successfully."})
 
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
@@ -163,19 +208,23 @@ def reset_password(request):
         recipient_list=[user.email],
     )
 
-    return Response({"message": "Password reset link sent to your email.", "reset_url": reset_link}, status=200)
+    return Response(
+        {"message": "Password reset link sent to your email.", "reset_url": reset_link},
+        status=200,
+    )
 
 
 # Reset password using token
 @api_view(["POST"])
 def reset_password_confirm(request, uidb64, token):
     try:
-        uid = force_str(urlsafe_base64_encode(uidb64))
+        uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
 
     except (User.DoesNotExist, ValueError, TypeError):
         return Response({"error": "Invalid reset link"}, status=400)
 
+    print(uidb64, token)
     if not PasswordResetTokenGenerator().check_token(user, token):
         return Response({"error": "Invalid or expired token"}, status=400)
 
@@ -191,4 +240,4 @@ def reset_password_confirm(request, uidb64, token):
     user.set_password(new_password)
     user.save()
 
-    return Response({"message": "Password reset sucessful"}, status=200)
+    return Response({"message": "Password reset successful"}, status=200)

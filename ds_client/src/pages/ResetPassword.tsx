@@ -4,7 +4,7 @@ import api from "../api/axios";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function ResetPassword() {
-    const [password, setPassword] = useState("");
+    const [new_password, setNew_Password] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
@@ -16,21 +16,23 @@ export default function ResetPassword() {
         e.preventDefault();
         setError("");
 
-        if (password != confirmPassword) {
+        if (new_password != confirmPassword) {
             setError("Passwords do not match.")
             return;
         }
 
         try {
             setLoading(true);
-            await api.post("/password-reset-confirm/", {
-                uid,
-                token,
-                password,
+            console.log(uid, token);
+            await api.post(`/accounts/reset-password-confirm/${uid}/${token}/`, {
+                new_password,
             });
             navigate("/login/");
         } catch (err : any) {
-            setError("Invalid or expired reset link");
+            setError(
+            err.response?.data?.error ||
+            "Invalid or expired reset link"
+            );
         }finally{
             setLoading(false);
         }
@@ -51,8 +53,8 @@ export default function ResetPassword() {
                         <input
                             type={showPassword ? "text" : "password"}
                             placeholder="New Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={new_password}
+                            onChange={(e) => setNew_Password(e.target.value)}
                             required
                             className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white"
                         />

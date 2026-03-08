@@ -200,7 +200,7 @@ export default function Navbar() {
 
                             <div className="absolute right-0 mt-0 w-40 bg-white dark:bg-gray-800 shadow-md rounded hidden group-hover:block">
                                 <Link
-                                    to="/profile"
+                                    to="/profile/"
                                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                                 >
                                     My Profile
