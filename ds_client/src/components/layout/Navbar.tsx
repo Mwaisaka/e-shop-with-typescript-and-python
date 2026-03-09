@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Menu, ShoppingCart, Moon, Sun } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { fetchCategories } from "../../api/categories";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
@@ -170,28 +170,21 @@ export default function Navbar() {
                         />
                         {showCart && <CartPreview />}
                     </div>
+                    <div>
+                        {user?.is_staff && (
+                                    <a
+                                        href="/admin/"
+                                        target="_blank"
+                                        className="text-red-600 font-semibold w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    >
+                                        Admin
+                                    </a>
+                                )}
+                    </div>
                     {user ? (
-                        // <button onClick={logout} className="text-sm">
-                        //     Logout
-                        // </button>
-                        // <div className="flex items-center gap-3">
-                        //     <span className="text-sm font-medium">
-                        //         Hi, {user? user.username
-                        //             .split(" ")
-                        //             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                        //             .join(" ") : " "
-                        //         }
-                        //     </span>
-                        //     <button
-                        //         onClick={logout}
-                        //         className="text-sm text-red-600 hover:underline"
-                        //     >
-                        //         Logout
-                        //     </button>
-                        // </div>
                         <div className="relative group">
                             <button className="text-sm font-medium px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
-                                 Hi, {user? user.username
+                                Hi, {user ? user.username
                                     .split(" ")
                                     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                                     .join(" ") : " "
@@ -204,6 +197,12 @@ export default function Navbar() {
                                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                                 >
                                     My Profile
+                                </Link>
+                                <Link
+                                    to="/orders/"
+                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                >
+                                    My Orders
                                 </Link>
                                 <button
                                     onClick={logout}

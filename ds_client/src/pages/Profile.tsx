@@ -48,7 +48,12 @@ export default function Profile() {
                     My Profile
                 </h2>
                 {/* User info */}
-                <div className="space-y-3 mb-8" >
+                <div className="space-y-6 mb-8" >
+                    {/* <img
+                        src={user?.profile_photo || "/default-avatar.png"}
+                        alt="profile"
+                        className="w-8 h-8 rounded-full"
+                    /> */}
                     <p><strong>Username : </strong>{user?.username}</p>
                     <p><strong>Email : </strong>{user?.email}</p>
                     <p><strong>Name: </strong>{user?.first_name} {user?.last_name}</p>

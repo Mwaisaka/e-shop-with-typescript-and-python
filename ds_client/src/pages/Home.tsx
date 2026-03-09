@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import ProductCard from "../components/products/ProductCard";
 import { fetchProducts, searchProducts } from "../api/products";
 import { useSearchQuery } from "../hooks/useSearchQuery";
+import CategorySlider from "../components/home/CategorySlider";
 
 export default function Home() {
-    const { q, category, max_price, rating, page , setQuery} = useSearchQuery();
+    const { q, category, max_price, rating, page, setQuery } = useSearchQuery();
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(1);
@@ -13,7 +14,7 @@ export default function Home() {
         setLoading(true);
         try {
             // const res = await searchProducts({ q, category, max_price, rating });
-            
+
             const filters: any = { page };
 
             if (q) filters.q = q;
@@ -44,6 +45,9 @@ export default function Home() {
 
     return (
         <div>
+            {/* Category Slider */}
+            <CategorySlider />
+            
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold ">
                     {q ? `Search results for "${q}"` : "All Products"}
