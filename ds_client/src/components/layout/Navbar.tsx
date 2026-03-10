@@ -39,7 +39,7 @@ export default function Navbar() {
     }, []);
 
     return (
-        <nav className="bg-white dark:bg-gray-900 border-b relative z-50">
+        <nav className="sticky top-0 bg-gray-200 dark:bg-gray-900 relative z-50">
             <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Left */}
                 <div className="flex items-center gap-4">
@@ -116,7 +116,7 @@ export default function Navbar() {
                         onMouseLeave={() => setCategoriesOpen(false)}
                     >
                         <button
-                            className="font-medium px-4 py-2 bg-gray-100 rounded text-black "
+                            className="font-medium px-4 py-2 bg-gray-100 rounded-xl text-black "
                         // onClick={() => setCategoriesOpen(!categoriesOpen)}
                         >
                             {selectedCategory}
@@ -146,14 +146,14 @@ export default function Navbar() {
                 </div>
 
                 {/* Search Bar */}
-                <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-300 rounded px-3 py-1">
+                <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-300 rounded-xl px-3 py-1">
                     <Search size={18} className="text-gray-500" />
                     <input
                         type="text"
                         value={q}
                         placeholder="Search products, categories ..."
                         onChange={(e) => setQuery("q", e.target.value)}
-                        className="bg-transparent outline-none px-2 text-sm w-90 text-black py-2"
+                        className="bg-transparent outline-none px-2 text-md w-90 text-black py-2"
                     />
                 </div>
 
@@ -217,13 +217,13 @@ export default function Navbar() {
                         <>
                             <Link
                                 to="/login/"
-                                className="border border-indigo-600 text-indigo-600 px-4 py-1.5 rounded hover:bg-indigo-50"
+                                className="border border-indigo-600 text-indigo-600 px-4 py-1.5 rounded-xl hover:bg-indigo-50"
                             >
                                 Sign in
                             </Link>
                             <Link
                                 to="/register/"
-                                className="bg-indigo-600 text-white px-4 py-1.5 rounded hover:bg-indigo-700"
+                                className="bg-indigo-600 text-white px-4 py-1.5 rounded-xl hover:bg-indigo-700"
                             >
                                 Create account
                             </Link>

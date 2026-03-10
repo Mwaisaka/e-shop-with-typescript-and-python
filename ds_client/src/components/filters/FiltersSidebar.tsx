@@ -16,22 +16,22 @@ export default function FiltersSidebar() {
     return (
         <>
             {/* Moble Filter button*/}
-            <div className="md:hidden sticky top-0 z-30 bg-gray-50 p-3 shadow-none border rounded-lg mt-6 mb-6">
+            <div className="md:hidden sticky top-0 z-30 bg-gray-50 p-3 shadow mt-6 mb-6 bg-gray-200 dark:bg-gray-900 rounded-xl">
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="md:hidden mb-4 px-4 py-2 border rounded-lg bg-gray-100 text-black text-top mt-4"
+                    className="md:hidden mb-4 px-4 py-2 rounded-xl text-top mt-4"
                 > Filters</button>
             </div>
 
             <aside
                 className={`
-                            fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 p-4 border-r
+                            top-0  fixed inset-y-0 left-0 z-40 w-64 bg-gray-200 dark:bg-gray-900 p-4 rounded-xl
                             transform transition-transform duration-300 mt-6 mb-6
-                            ${isOpen ? "translate-x-0" : "-translate-x-full"}
-                            md:relative md:translate-x-0 md:block md:w-64 md:rounded-xl md:border
+                            ${isOpen ? "translate-x-0 mt-21 " : "-translate-x-full"}
+                            md:relative md:translate-x-0 md:block md:w-64 
                         `}
             >
-                <div className="flex justify-between items-center mb-4 md:hidden">
+                <div className=" flex justify-between items-center mb-4 md:hidden">
                     <h2 className="text-lg font-semibold">Filters</h2>
                     <button
                         onClick={() => setIsOpen(false)}
@@ -40,7 +40,7 @@ export default function FiltersSidebar() {
                 </div>
                 <h2 className="hidden md:block text-lg font-semibold mb-4">Filters</h2>
                 {/* Search */}
-                <div className="w-full mb-4 px-3 py-2 border rounded dark:bg-gray-300">
+                <div className="w-full mb-4 px-3 py-2 bg-gray-100 dark:bg-gray-300 rounded-xl">
                     <input
                         type="text"
                         value={q}
@@ -53,7 +53,7 @@ export default function FiltersSidebar() {
                 {/* Categories */}
                 <select
                     value={category}
-                    className="w-full mb-4 px-3 py-2 border rounded dark:bg-gray-800 "
+                    className="w-full mb-4 px-3 py-2 bg-gray-100 dark:bg-gray-300 rounded-xl text-black"
                     onChange={(e) => setQuery("category", e.target.value)}
                 >
                     <option value="">All Categories</option>
@@ -79,7 +79,7 @@ export default function FiltersSidebar() {
 
                 {/* Rating */}
                 <select
-                    className="w-full px-3 py-2 border rounded dark:bg-gray-800"
+                    className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-300 rounded-xl text-black"
                     value={rating}
                     onChange={(e) => setQuery("rating", Number(e.target.value))}
                 >

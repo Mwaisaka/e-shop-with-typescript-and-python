@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer(){
     return(
-        <footer className="bg-white dark:bg-gray-900 text-gray-500 mt-2 border-t">
+        <footer className="bg-gray-200 dark:bg-gray-900 text-gray-500 mt-2">
             <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 md:grid-cols-4 gap-8">
                 {/* Brand details */}
                 <div>
@@ -35,12 +35,12 @@ export default function Footer(){
                 {/* Contact */}
                 <div>
                     <h3 className="text-gray-500 font-bold mb-3">Contact</h3>
-                    <p className="text-sm">Email: support@shopit.co.ke</p>
+                    <p className="text-sm">Email: support@nzisafashions.co.ke</p>
                     <p className="text-sm mt-1">Phone: +254 xxx xxx xxx</p>
                 </div>
             </div>
-            <div className="border-t border-gray-700 py-4 text-center text-sm">
-                © {new Date().getFullYear()} ShopIt. All rights reserved.
+            <div className="bg-gray-300 dark:bg-gray-900 py-4 text-center text-sm mt-4">
+                © {new Date().getFullYear()} Nzisa Fashions. All rights reserved.
             </div>
         </footer>
     )

@@ -22,7 +22,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
     };
 
     return (
-        <div className="relative border rounded-xl p-4 bg-white transform transition duration-300 ease-in-out hover:scale-105">
+        <div className="relative rounded-xl p-4 bg-white transform transition duration-300 ease-in-out hover:scale-105">
 
             {/* Image of the product */}
             <Link to={`/products/${product.id}/`}>

@@ -45,7 +45,7 @@ export default function Home() {
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div>
+        <div >
 
             {/* Hero Banner */}
             <HeroBanner />
