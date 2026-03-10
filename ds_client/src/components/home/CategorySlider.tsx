@@ -52,6 +52,7 @@ export default function CategorySlider() {
                             <img
                                 src={cat.image}
                                 alt={cat.name}
+                                loading="lazy"
                                 className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white text-center p-4">

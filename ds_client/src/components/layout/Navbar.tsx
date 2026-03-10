@@ -151,7 +151,7 @@ export default function Navbar() {
                     <input
                         type="text"
                         value={q}
-                        placeholder="Search products ..."
+                        placeholder="Search products, categories ..."
                         onChange={(e) => setQuery("q", e.target.value)}
                         className="bg-transparent outline-none px-2 text-sm w-90 text-black py-2"
                     />
@@ -172,26 +172,26 @@ export default function Navbar() {
                     </div>
                     <div>
                         {user?.is_staff && (
-                                    <a
-                                        href="/admin/"
-                                        target="_blank"
-                                        className="text-red-600 font-semibold w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    >
-                                        Admin
-                                    </a>
-                                )}
+                            <a
+                                href="/admin/"
+                                target="_blank"
+                                className="text-red-600 font-semibold w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            >
+                                Admin
+                            </a>
+                        )}
                     </div>
                     {user ? (
                         <div className="relative group">
                             <button className="text-sm font-medium px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
-                                Hi, {user ? user.username
+                                Hi, {user ? user.first_name
                                     .split(" ")
                                     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                                     .join(" ") : " "
                                 }
                             </button>
 
-                            <div className="absolute right-0 mt-0 w-40 bg-white dark:bg-gray-800 shadow-md rounded hidden group-hover:block">
+                            <div className="absolute right-0 mt-0 w-40 bg-white dark:bg-gray-800 shadow-md rounded-lg hidden group-hover:block">
                                 <Link
                                     to="/profile/"
                                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -212,6 +212,7 @@ export default function Navbar() {
                                 </button>
                             </div>
                         </div>
+
                     ) : (
                         <>
                             <Link

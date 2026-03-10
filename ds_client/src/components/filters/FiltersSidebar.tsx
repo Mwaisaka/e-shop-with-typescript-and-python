@@ -44,7 +44,7 @@ export default function FiltersSidebar() {
                     <input
                         type="text"
                         value={q}
-                        placeholder="Search products ..."
+                        placeholder="Search products, categories ..."
                         onChange={(e) => setQuery("q", e.target.value)}
                         className=" bg-transparent outline-none w-full text-black"
                     />

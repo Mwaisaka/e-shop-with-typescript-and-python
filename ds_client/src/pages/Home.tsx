@@ -3,6 +3,7 @@ import ProductCard from "../components/products/ProductCard";
 import { fetchProducts, searchProducts } from "../api/products";
 import { useSearchQuery } from "../hooks/useSearchQuery";
 import CategorySlider from "../components/home/CategorySlider";
+import HeroBanner from "../components/home/HeroBanner";
 
 export default function Home() {
     const { q, category, max_price, rating, page, setQuery } = useSearchQuery();
@@ -45,9 +46,13 @@ export default function Home() {
 
     return (
         <div>
+
+            {/* Hero Banner */}
+            <HeroBanner />
+            
             {/* Category Slider */}
             <CategorySlider />
-            
+
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold ">
                     {q ? `Search results for "${q}"` : "All Products"}
