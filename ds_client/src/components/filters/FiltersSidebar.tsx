@@ -33,8 +33,10 @@ export default function FiltersSidebar() {
                             p-4 rounded-xl
                             transform transition-transform duration-300 mt-6 mb-6
                             ${isOpen ? "translate-x-0 mt-28 " : "-translate-x-full"}
-                            md:relative md:translate-x-0 md:block md:w-64 
+                            
+                            md:translate-x-0
                         `}
+                        // md:relative md:translate-x-0 md:block md:w-64 
             >
                 <div className=" flex justify-between items-center mb-4 md:hidden">
                     <h2 className="text-lg font-semibold">Filters</h2>
