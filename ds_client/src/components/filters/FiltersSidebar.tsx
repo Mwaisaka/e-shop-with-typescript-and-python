@@ -32,7 +32,7 @@ export default function FiltersSidebar() {
                             w-64 
                             bg-gray-200 dark:bg-gray-900 
                             p-4 rounded-xl
-                            transform transition-transform duration-300 
+                            transform transition-transform duration-300 mt-6 mb-6
                             ${isOpen ? "translate-x-0  " : "-translate-x-full"}
                             md:translate-x-0 
                             
