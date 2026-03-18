@@ -19,24 +19,24 @@ export default function FiltersSidebar() {
             <div className="md:hidden sticky top-0 z-30  p-3 shadow mt-6 mb-6 bg-gray-200 dark:bg-gray-900 rounded-xl">
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="md:hidden mb-4 px-4 py-2 rounded-xl text-top mt-4"
+                    className="md:hidden mb-0 px-4 py-2 rounded-xl text-top mt-4"
                 > Filters</button>
             </div>
 
             <aside
                 className={`
-                            top-0 md:top-auto
-                            fixed md:top-auto
-                            inset-y-0 left-0 
-                            z-40 w-64 
+                            fixed md: relative
+                            top-0 left-0
+                            h-screen md:h-auto
+                            z-40 
+                            w-64 
                             bg-gray-200 dark:bg-gray-900 
                             p-4 rounded-xl
-                            transform transition-transform duration-300 mt-6 mb-6
-                            ${isOpen ? "translate-x-0 mt-28 " : "-translate-x-full"}
+                            transform transition-transform duration-300 
+                            ${isOpen ? "translate-x-0  " : "-translate-x-full"}
+                            md:translate-x-0 
                             
-                            md:translate-x-0
                         `}
-                        // md:relative md:translate-x-0 md:block md:w-64 
             >
                 <div className=" flex justify-between items-center mb-4 md:hidden">
                     <h2 className="text-lg font-semibold">Filters</h2>
