@@ -25,15 +25,16 @@ export default function FiltersSidebar() {
 
             <aside
                 className={`
-                            fixed md: relative
-                            top-0 left-0
+                            fixed md:relative
+                            inset-y-0 left-0
+                            
                             h-screen md:h-auto
                             z-40 
                             w-64 
                             bg-gray-200 dark:bg-gray-900 
                             p-4 rounded-xl
-                            transform transition-transform duration-300 mt-6 mb-6
-                            ${isOpen ? "translate-x-0  " : "-translate-x-full"}
+                            transform transition-transform opacity-100 duration-300 mt-6 mb-6
+                            ${isOpen ? "translate-x-0 mt-28" : "-translate-x-full"}
                             md:translate-x-0 
                             
                         `}
