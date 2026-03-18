@@ -16,7 +16,7 @@ export default function FiltersSidebar() {
     return (
         <>
             {/* Moble Filter button*/}
-            <div className="md:hidden sticky top-0 z-30 bg-gray-50 p-3 shadow mt-6 mb-6 bg-gray-200 dark:bg-gray-900 rounded-xl">
+            <div className="md:hidden sticky top-0 z-30  p-3 shadow mt-6 mb-6 bg-gray-200 dark:bg-gray-900 rounded-xl">
                 <button
                     onClick={() => setIsOpen(true)}
                     className="md:hidden mb-4 px-4 py-2 rounded-xl text-top mt-4"
@@ -25,9 +25,14 @@ export default function FiltersSidebar() {
 
             <aside
                 className={`
-                            top-0  fixed inset-y-0 left-0 z-40 w-64 bg-gray-200 dark:bg-gray-900 p-4 rounded-xl
+                            top-0 md:top-auto
+                            fixed md:top-auto
+                            inset-y-0 left-0 
+                            z-40 w-64 
+                            bg-gray-200 dark:bg-gray-900 
+                            p-4 rounded-xl
                             transform transition-transform duration-300 mt-6 mb-6
-                            ${isOpen ? "translate-x-0 mt-21 " : "-translate-x-full"}
+                            ${isOpen ? "translate-x-0 mt-28 " : "-translate-x-full"}
                             md:relative md:translate-x-0 md:block md:w-64 
                         `}
             >
