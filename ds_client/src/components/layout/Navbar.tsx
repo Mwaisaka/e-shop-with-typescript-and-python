@@ -47,27 +47,27 @@ export default function Navbar() {
                     <Link to="/" className="text-2xl italic font-bold text-indigo-600">
                         Nzisa Fashions
                     </Link>
-                    <button className="md:hidden" onClick={() => setMobile(true)}>
+                    <button className="md:hidden mr-6" onClick={() => setMobile(true)}>
                         Menu
                     </button>
 
                     {mobile && (
-                        <div className="absolute top-full left-0 w-full bg-white dark:bg-gray-100 shadow-md md:hidden z-50">
+                        <div className="absolute top-full left-0 w-full bg-gray-300 dark:bg-gray-800 shadow-md md:hidden z-50 rounded-lg">
                             <div className="flex flex-col p-4 space-y-2">
                                 {/* Close button */}
                                 <button
-                                    className="self-end mb-2 font-bold"
+                                    className="self-end mb-2 font-bold "
                                     onClick={() => setMobile(false)}
                                 >
                                     ✕ Close
                                 </button>
-                                <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded px-3 py-1">
+                                <div className="flex items-center bg-gray-100 dark:bg-gray-300 rounded px-3 py-1">
                                     <Search size={18} className="text-gray-500" />
                                     <input
                                         value={q}
                                         onChange={(e) => setQuery("q", e.target.value)}
-                                        className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-800"
-                                        placeholder="Search products..."
+                                        className="w-full px-4 py-2 rounded bg-gray-100 dark:bg-gray-300 text-black"
+                                        placeholder="Search products, categories ..."
                                     />
                                 </div>
 
@@ -76,7 +76,7 @@ export default function Navbar() {
                                     <Link
                                         key={c.id}
                                         to={`/?q=${c.slug}`}
-                                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-200"
+                                        className="block px-4  hover:bg-gray-100 dark:hover:bg-gray-700 "
                                         onClick={() => setMobile(false)} // close menu on click
                                     >
                                         {c.name}
@@ -92,14 +92,14 @@ export default function Navbar() {
                                     <>
                                         <Link
                                             to="/login"
-                                            className="block px-4 py-2 hover:bg-gray-100"
+                                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                                             onClick={() => setMobile(false)}
                                         >
                                             Login
                                         </Link>
                                         <Link
                                             to="/register"
-                                            className="block px-4 py-2 hover:bg-indigo-50"
+                                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                                             onClick={() => setMobile(false)}
                                         >
                                             Register

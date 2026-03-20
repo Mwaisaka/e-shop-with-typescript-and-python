@@ -62,7 +62,7 @@ export default function Home() {
                     onClick={handleRefresh}
                     className="px-3 py-1 border rounded bg-gray-100 hover:bg-gray-200 text-sm"
                 >
-                    🔄 Refresh
+                    🔄 Refresh Products
                 </button>
             </div>
 
