@@ -47,7 +47,7 @@ export default function CategorySlider() {
                     {categories.map((cat, index) => (
                         <div
                             key={index}
-                            className="min-w-[250] relative h-[180px] rounded-xl overflow-hidden shadow hover:scale-105 transition"
+                            className="min-w-[150px] relative h-[180px] rounded-xl overflow-hidden shadow hover:scale-105 transition"
                         >
                             <img
                                 src={cat.image}
