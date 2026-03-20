@@ -48,7 +48,7 @@ export default function Home() {
         <div >
 
             {/* Hero Banner */}
-            {/* <HeroBanner /> */}
+            <HeroBanner />
             
             {/* Category Slider */}
             {/* <CategorySlider /> */}
