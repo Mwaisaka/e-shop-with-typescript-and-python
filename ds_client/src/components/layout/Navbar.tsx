@@ -20,6 +20,7 @@ export default function Navbar() {
     const [categoriesOpen, setCategoriesOpen] = useState(false);
 
     const selectedCategory = categories.find((cat) => cat.slug === category)?.name || "All Categories";
+    const toggleCart = () => setShowCart(!showCart);
 
     useEffect(() => {
         fetchCategories()
@@ -162,12 +163,18 @@ export default function Navbar() {
                     <button onClick={() => setDark(!dark)}>
                         {dark ? <Sun /> : <Moon />}
                     </button>
-                    <div className="relative">
-                        <ShoppingCart
-                            className="cursor-pointer"
-                            onMouseEnter={() => setShowCart(true)}
-                            onMouseLeave={() => setShowCart(false)}
-                        />
+                    <div
+                        className="relative"
+                        onMouseEnter={() => setShowCart(true)}
+                        onMouseLeave={() => setShowCart(false)}
+                    >
+                        <ShoppingCart className="cursor-pointer" onClick={toggleCart}/>
+
+                        {items.length > 0 && (
+                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                                {items.length}
+                            </span>
+                        )}
                         {showCart && <CartPreview />}
                     </div>
                     <div>

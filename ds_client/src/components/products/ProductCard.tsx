@@ -2,6 +2,7 @@ import { Heart, ShoppingCart, Star } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Product } from "../../types/product";
+import { useCart } from "../../context/CartContext";
 
 interface ProductCardProps {
     product: Product;
@@ -15,6 +16,8 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
     const isOutOfStock = product.stock <= 0;
     const rating = product.avg_rating ?? 0;
     const rounded = Math.round(rating);
+
+    const {addToCart} = useCart();
 
     const handleWishList = () => {
         setWishListed(!wishListed);
@@ -70,7 +73,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
 
             {/* Price of the product */}
             <p className="text-sm text-gray-600 mt-1">
-                Kes.{product.formatted_price}
+                Kes.{product.formatted_price || product.price}
             </p>
             
             {/* Status of the stock */}
@@ -81,7 +84,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
             {/* 🛒 Add to Cart */}
             <button
                 disabled={isOutOfStock}
-                onClick={() => onAddToCart?.(product)}
+                onClick={() => addToCart(product)}
                 className={`
                     mt-3 w-full flex items-center justify-center gap-2 py-2 rounded-lg transition
                      ${isOutOfStock
