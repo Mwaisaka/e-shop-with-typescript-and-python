@@ -39,6 +39,8 @@ export default function Navbar() {
         return () => document.removeEventListener("click", handleClickOutside);
     }, []);
 
+    const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+
     return (
         <nav className="sticky top-0 bg-gray-200 dark:bg-gray-900 relative z-50">
             <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
@@ -170,9 +172,9 @@ export default function Navbar() {
                     >
                         <ShoppingCart className="cursor-pointer" onClick={toggleCart}/>
 
-                        {items.length > 0 && (
+                        {itemCount > 0 && (
                             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                                {items.length}
+                                {itemCount}
                             </span>
                         )}
                         {showCart && <CartPreview />}
