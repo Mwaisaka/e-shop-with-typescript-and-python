@@ -40,7 +40,7 @@ export default function Navbar() {
     }, []);
 
     const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-
+    
     return (
         <nav className="sticky top-0 bg-gray-200 dark:bg-gray-900 relative z-50">
             <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">

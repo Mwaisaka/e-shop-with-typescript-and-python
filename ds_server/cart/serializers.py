@@ -5,9 +5,11 @@ from products.models import Product
 class CartItemSerializer(serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source ="product.name")
     product_price = serializers.ReadOnlyField(source = "product.price")
+    product_image = serializers.SerializerMethodField(source = "product.image")
     item_total = serializers.SerializerMethodField()
     
     class Meta:
+        model = CartItem
         fields = [
             "id",
             "product",
@@ -16,17 +18,28 @@ class CartItemSerializer(serializers.ModelSerializer):
             "quantity",
             "item_total",
             "added_at",
+            "product_image",
         ]
         read_only_fields = ["added_at"]
     
     def get_item_total(self, obj):
         return obj.get_total()
     
+    def get_product_image(self, obj):
+        request = self.context.get("request")
+
+        if obj.product.image:
+            if request:
+                return request.build_absolute_uri(obj.product.image.url)
+            return obj.product.image.url
+        
+        return None
+    
 class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True, read_only = True)
     total = serializers.SerializerMethodField()
     items_count = serializers.SerializerMethodField()
-    
+        
     class Meta:
         model = Cart
         fields = [

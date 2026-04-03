@@ -64,6 +64,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'ds_server.urls'
@@ -168,3 +170,6 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+SESSION_COOKIE_SAMESITE = "None"  # or "Lax" "None" if cross-domain
+SESSION_COOKIE_SECURE = False    # True in production (HTTPS)

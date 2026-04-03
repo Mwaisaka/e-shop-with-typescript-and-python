@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 
 export default function CartPreview() {
     const { items, removeFromCart, updateQuantity } = useCart();
+    
+    console.log("Items", items)
 
     const subtotal = items.reduce(
-        (total, item) => total + item.product.price * item.quantity,
+        (total, item) => total + item.product_price * item.quantity,
         0
     );
 
@@ -19,23 +21,23 @@ export default function CartPreview() {
                     <div key={item.id} className="flex items-center gap-3 border-b pb-2">
                         {/* Product image */}
                         <img
-                            src={item.product.image}
-                            alt={item.product.name}
+                            src={item.product_image || "/placeholder.png"}
+                            alt={item.product_name}
                             className="w-12 h-12 object-cover rounded"
                         />
                         {/* Product info */}
                         <div className="flex-1">
                             <p className="text-sm font-medium line-clamp-1">
-                                {item.product.name}
+                                {item.product_name}
                             </p>
                             <p className="text-xs text-gray-500">
-                               Kes.{item.product.formatted_price}
+                                Kes. {item.product_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </p>
                         </div>
                         {/* Quantity controls */}
                         <div className="flex items-center gap-2 mt-1">
                             <button
-                                onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                 className="px-2 bg-gray-200 rounded hover:bg-gray-300"
                             >
                                 -
@@ -44,7 +46,7 @@ export default function CartPreview() {
                                 {item.quantity}
                             </span>
                             <button
-                                onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                 className="px-2 bg-gray-200 rounded hover:bg-gray-300"
                             >
                                 +
@@ -65,7 +67,7 @@ export default function CartPreview() {
                     {/* Subtotal */}
                     <div className="flex justify-between mt-4 font-semibold">
                         <span>Subtotal</span>
-                        <span>Kes.{subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span>Kes. {subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
                     {/* View Cart Button */}
                     <Link

@@ -1,110 +1,120 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetchCart } from "../api/cart";
+import { fetchCart, addToCartAPI, removeCartItem, updateCartItem, clearCart } from "../api/cart";
 import toast from "react-hot-toast";
 
 interface CartItem {
     id: number;
     product: any;
     quantity: number;
-    price: number;
+    product_price: number;
+    product_name: string;
+    product_image: string | null;
 }
 
 interface CartContextType {
     items: CartItem[];
-    addToCart: (product: any) => void;
+    addToCart: (product: any, quantity: number) => void;
     removeFromCart: (id: number) => void;
     updateQuantity: (id: number, qty: number) => void;
-    clearCart: () => void;
+    clearCartHandler: () => void;
 }
 
 const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: any) => {
-    const [items, setItems] = useState<any[]>([]);
+    const [items, setItems] = useState<CartItem[]>([]);
 
-    // Load cart from local storage
-    useEffect(() => {
-        const saved = localStorage.getItem("cart");
-        if (saved) {
-            setItems(JSON.parse(saved));
+    // Load cart from backend
+    const loadCart = async () => {
+        try {
+            const res = await fetchCart();
+            setItems(res.data?.items || []);
+        } catch (error) {
+            console.error(error);
+            setItems([]);
         }
+    };
+
+    useEffect(() => {
+        const initCart = async () => {
+            await loadCart(); // ensures session is created
+        };
+        initCart();
     }, []);
 
-    // Save cart to local storage
-    useEffect(() => {
-        localStorage.setItem("cart", JSON.stringify(items));
-    }, [items]);
+    const addToCart = async (product: any, quantity: number) => {
+        try {
+            const res = await addToCartAPI(product.id, quantity);
+            setItems(res.data.items);
 
-    // Add to cart
-    const addToCart = (product: any) => {
-        setItems(prev => {
-            const existing = prev.find(i => i.product.id === product.id);
+            toast.success(`${product.name} added to cart 🛒`);
 
-            if (existing) {
-                return prev.map(i =>
-                    i.product.id === product.id
-                        ? { ...i, quantity: i.quantity + 1 }
-                        : i
-                );
-            }
-
-            return [
-                ...prev,
-                {
-                    id: product.id,
-                    product,
-                    quantity: 1,
-                }
-            ];
-        });
-        toast.success(
-            `${product.name} ${items.find(i => i.product.id === product.id) ? "quantity updated 🛒" : "added to cart 🛒"}`,
-            { id: `cart-${product.id}` } // prevents duplicates
-        );
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to add item to cart");
+        }
     };
 
-    // Remove item from cart
-    const removeFromCart = (id: number) => {
-        setItems(prev => {
-            const item = prev.find(i => i.product.id === id);
+    const removeFromCart = async (id: number) => {
+        try {
+            const existingItem = items.find(i => i.id === id);
 
-            if (item) {
-                toast(`${item.product.name} removed from cart`, {
-                    icon: "❌",
-                    id: `cart-remove-${id}`, // prevents duplicates
-                });
-            }
-            return prev.filter(item => item.product.id !== id);
-        });
-    };
+            const res = await removeCartItem(id);
+            setItems(res.data.items);
 
-    // Update Qauntity
-    const updateQuantity = (id: number, qty: number) => {
-        setItems(prev =>
-            prev
-                .map(item =>
-                    item.product.id === id
-                        ? { ...item, quantity: qty }
-                        : item
-                )
-                .filter(item => item.quantity > 0)//Remove if qty = 0
-        );
-
-        const item = items.find(i => i.product.id === id);
-        if (item) {
-            toast.success(`Updated ${item.product.name} quantity to ${qty}`, {
-                id: `cart-update-${id}`,
+            toast(`${existingItem?.product_name} removed from cart`, {
+                icon: "❌",
+                id: `cart-remove-${id}`,
             });
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const updateQuantity = async (id: number, qty: number) => {
+        try {
+            const existingItem = items.find(i => i.id === id);
+
+            if (qty < 1) {
+                // remove item instead
+                const res = await removeCartItem(id);
+                setItems(res.data.items);
+
+                toast(`${existingItem?.product_name} removed from cart`, {
+                    icon: "❌",
+                    id: `cart-remove-${id}`,
+                });
+
+                return;
+            }
+
+            const res = await updateCartItem(id, qty);
+            setItems(res.data.items);
+
+            toast.success(
+                `Updated ${existingItem?.product_name} quantity to ${qty}`,
+                { id: `cart-update-${id}` }
+            );
+
+        } catch (error) {
+            console.error(error);
         }
     };
 
     // Clear cart
-    const clearCart = () => {
-        setItems([]);
+    const clearCartHandler = async () => {
+        try {
+            await clearCart(); // API call
+            setItems([]);
+
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
-        <CartContext.Provider value={{ items, addToCart, removeFromCart, updateQuantity, clearCart }}>
+        <CartContext.Provider value={{ items, addToCart, removeFromCart, updateQuantity, clearCartHandler }}>
             {children}
         </CartContext.Provider>
     );
