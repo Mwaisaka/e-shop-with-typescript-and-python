@@ -39,7 +39,7 @@ export default function Navbar() {
         return () => document.removeEventListener("click", handleClickOutside);
     }, []);
 
-    const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+    const itemCount = items?.reduce((sum, item) => sum + item.quantity, 0);
     
     return (
         <nav className="sticky top-0 bg-gray-200 dark:bg-gray-900 relative z-50">

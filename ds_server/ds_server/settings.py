@@ -66,7 +66,17 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  
+   "https://nzisa-fashions.onrender.com/",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+     "http://localhost:5173",
+     "https://nzisa-fashions.onrender.com/",
+]
 
 ROOT_URLCONF = 'ds_server.urls'
 
@@ -172,4 +182,4 @@ MEDIA_ROOT = BASE_DIR / "media"
 # MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 SESSION_COOKIE_SAMESITE = "None"  # or "Lax" "None" if cross-domain
-SESSION_COOKIE_SECURE = False    # True in production (HTTPS)
+SESSION_COOKIE_SECURE = True    # True in production (HTTPS)

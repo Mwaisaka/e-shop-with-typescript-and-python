@@ -73,7 +73,10 @@ def update_cart_item(request, item_id):
     item.quantity = quantity
     item.save()
     
-    return Response({"message": "Cart item updated"}, status = 200)
+    # return Response({"message": "Cart item updated"}, status = 200)
+
+    serializer = CartSerializer(cart, context={"request": request})
+    return Response(serializer.data, status=200)
 
 #Remove item from the cart
 @api_view(["DELETE"])
@@ -87,7 +90,9 @@ def remove_cart_item(request, item_id):
     )
     item.delete()
     
-    return Response({"message": " Item removed from the cart"}, status=200)
+    # return Response({"message": " Item removed from the cart"}, status=200)
+    serializer = CartSerializer(cart, context={"request": request})
+    return Response(serializer.data, status=200)
 
 #Clear cart/delete all cart items
 @api_view(["DELETE"])
@@ -95,5 +100,7 @@ def clear_cart(request):
     cart = get_or_create_cart(request)        
     cart.items.all().delete()
     
-    return Response({"message": "All cart items deleted"}, status=200)
+    # return Response({"message": "All cart items deleted"}, status=200)
+    serializer = CartSerializer(cart, context={"request": request})
+    return Response(serializer.data, status=200)
     

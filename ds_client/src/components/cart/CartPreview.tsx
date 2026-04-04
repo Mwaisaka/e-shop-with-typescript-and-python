@@ -6,18 +6,18 @@ export default function CartPreview() {
     
     console.log("Items", items)
 
-    const subtotal = items.reduce(
+    const subtotal = items?.reduce(
         (total, item) => total + item.product_price * item.quantity,
         0
-    );
+    )||0;
 
     return (
         <div className="absolute right-0 top-full w-80 bg-white dark:bg-gray-800 shadow-xl rounded p-4 z-50 border border-gray-200 dark:border-gray-700">
             <h4 className="font-semibold text-md mb-3">🛒 Your Cart</h4>
-            {items.length === 0 && <p className="text-sm text-gray-500">Your cart is empty</p>}
+            {items?.length === 0 && (<p className="text-sm text-gray-500">Your cart is empty</p>)}
 
             <div className="space-y-3 max-h-64 overflow-y-auto">
-                {items.slice(0, 4).map(item => (
+                {items?.slice(0, 4).map(item => (
                     <div key={item.id} className="flex items-center gap-3 border-b pb-2">
                         {/* Product image */}
                         <img
@@ -62,7 +62,7 @@ export default function CartPreview() {
                     </div>
                 ))}
             </div>
-            {items.length > 0 && (
+            {items?.length > 0 && (
                 <>
                     {/* Subtotal */}
                     <div className="flex justify-between mt-4 font-semibold">
