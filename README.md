@@ -19,19 +19,19 @@ This project demonstrates **full stack architecture, REST API design, authentica
 Frontend:
 
 ```
-https://your-frontend-url.vercel.app
+https://nzisa-fashions.onrender.com
 ```
 
 Backend API:
 
 ```
-https://your-backend-url.onrender.com
+https://nzisa-fashions-backend.onrender.com/
 ```
 
 Admin Panel:
 
 ```
-/admin
+https://nzisa-fashions-backend.onrender.com/admin/
 ```
 
 ---
