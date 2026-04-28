@@ -7,6 +7,7 @@ import ResetPassword from "../pages/ResetPassword";
 import ForgotPassword from "../pages/ForgotPassword";
 import Profile from "../pages/Profile";
 import Cart from "../pages/Cart";
+import CheckOut from "../pages/CheckOut";
 
 export default function AppRoutes(){
     return(
@@ -19,6 +20,7 @@ export default function AppRoutes(){
             <Route path="/reset-password/:uid/:token/" element={<ResetPassword />}/>
             <Route path="/profile/" element ={<Profile />}/>
             <Route path="/cart/" element={<Cart />} />
+            <Route path="/checkout/" element = {<CheckOut/>}/>
         </Routes>
     )
 }

@@ -26,8 +26,9 @@ export default function Cart() {
     }
 
     const handleCheckout = () => {
-        alert("Proceeding to checkout...");
-        clearCartHandler();
+        // alert("Proceeding to checkout...");
+        // clearCartHandler();
+        navigate("/checkout/");
     };
 
     const handleContinueShopping = () => {
