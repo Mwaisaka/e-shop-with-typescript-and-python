@@ -5,7 +5,7 @@ export const fetchOrders = () =>
 export const fetchOrder = (order_id:number) => 
     api.get(`/orders/get-order/${order_id}/`)
 export const createOrder = (data : any) => 
-    api.get("/orders/create-order/",data);
+    api.post("/orders/create-order/",data);
 export const cancelOrder = (order_id:number) => 
     api.get(`/orders/${order_id}/cancel/`);
 export const fetchPayments = ()=> 

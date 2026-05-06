@@ -2,10 +2,11 @@ from rest_framework import serializers
 from .models import Order, OrderItem, OrderPayment
 from products.models import Product
 
+
 class OrderItemSerializer(serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source="product.name")
     total = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = OrderItem
         fields = [
@@ -16,20 +17,22 @@ class OrderItemSerializer(serializers.ModelSerializer):
             "price",
             "total",
         ]
-        
+
         read_only_fields = ["price"]
-        
-        def get_total(self,obj):
-            return obj.get_total()
-        
+
+    def get_total(self, obj):
+        return obj.get_total()
+
+
 class OrderSerializer(serializers.ModelSerializer):
-    item = OrderItemSerializer(many=True, read_only = True)
+    items = OrderItemSerializer(many=True, read_only=True)
     total = serializers.ReadOnlyField()
     order_number = serializers.ReadOnlyField()
     order_status = serializers.ReadOnlyField()
     delivery_status = serializers.ReadOnlyField()
-    
+
     class Meta:
+        model = Order
         fields = [
             "id",
             "order_number",
@@ -41,7 +44,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "delivery_status",
             "created_at",
         ]
-        
+
         read_only_fields = [
             "user",
             "order_number",
@@ -50,15 +53,17 @@ class OrderSerializer(serializers.ModelSerializer):
             "delivery_status",
             "created_at",
         ]
-        
-        def create(self, validated_data):
-            user = self.context["request"].user
-            return Order.objects.create(user=user, **validated_data)
-        
+
+    # def create(self, validated_data):
+    #     user = self.context["request"].user
+    #     return Order.objects.create(user=user, **validated_data)
+
+
 class OrderItemCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
         fields = ["product", "quantity"]
+
 
 class OrderCreateSerializer(serializers.ModelSerializer):
     items = OrderItemCreateSerializer(many=True)
@@ -72,19 +77,17 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         user = self.context["request"].user
 
         order = Order.objects.create(
-            user=user,
-            shipping_address=validated_data["shipping_address"]
+            user=user, shipping_address=validated_data["shipping_address"]
         )
 
         for item in items_data:
             OrderItem.objects.create(
-                order=order,
-                product=item["product"],
-                quantity=item["quantity"]
+                order=order, product=item["product"], quantity=item["quantity"]
             )
 
         order.calculate_total()
         return order
+
 
 class OrderPaymentSerializer(serializers.ModelSerializer):
     order_number = serializers.ReadOnlyField(source="order.order_number")

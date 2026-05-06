@@ -8,7 +8,7 @@ from .serializers import OrderSerializer, OrderItemSerializer, OrderPaymentSeria
 
 #Create Order Serializer (Checkout)
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def create_order(request):
     serializer = OrderCreateSerializer(data=request.data, context = {"request":request})
     

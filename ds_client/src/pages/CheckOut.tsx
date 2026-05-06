@@ -11,7 +11,7 @@ export default function CheckOut() {
         full_name: "",
         email: "",
         phone: "",
-        address: "",
+        shipping_address: "",
     });
 
     const total = items.reduce(
@@ -27,7 +27,7 @@ export default function CheckOut() {
     };
 
     const handlePlaceOrder = async () => {
-        if (!formData.full_name || !formData.email || !formData.phone || !formData.address) {
+        if (!formData.full_name || !formData.email || !formData.phone || !formData.shipping_address) {
             alert("Please fill in all customer details fields");
             return;
         }
@@ -35,13 +35,13 @@ export default function CheckOut() {
             const orderData = {
                 ...formData,
                 items: items.map((item) => ({
-                    product: item.product.id,
+                    product: item.product,
                     quantity: item.quantity,
                     price: item.product_price,
                 })),
-                total_amount: total,
+                total: total,
             };
-
+            console.log(orderData)
             await createOrder(orderData);
 
             alert("✅ Order placed successfully!");
@@ -50,8 +50,8 @@ export default function CheckOut() {
 
             navigate("/");
 
-        } catch (err) {
-            console.error(err);
+        } catch (err : any) {
+            console.error(err.response?.data);
             alert("❌ Failed to place order");
         }
     };
@@ -93,9 +93,9 @@ export default function CheckOut() {
                         className="w-full mb-3 p-2 border rounded"
                     />
                     <textarea
-                        name="address"
+                        name="shipping_address"
                         placeholder="Delivery Address"
-                        value={formData.address}
+                        value={formData.shipping_address}
                         onChange={handleChange}
                         className="w-full mb-3 p-2 border rounded"
                     />

@@ -28,7 +28,16 @@ export const CartProvider = ({ children }: any) => {
     const loadCart = async () => {
         try {
             const res = await fetchCart();
-            setItems(res.data?.items || []);
+
+
+            const normalizedItems = (res.data?.items || []).map((item: any) => ({
+                ...item,
+                product_id: item.product, // 👈 ensure product_id exists
+            }));
+
+            // setItems(res.data?.items || []);
+            setItems(normalizedItems);
+
         } catch (error) {
             console.error(error);
             setItems([]);
@@ -45,7 +54,7 @@ export const CartProvider = ({ children }: any) => {
     const addToCart = async (product: any, quantity: number) => {
         try {
             const res = await addToCartAPI(product.id, quantity);
-             setItems(res.data?.items || []);
+            setItems(res.data?.items || []);
 
             toast.success(`${product.name} added to cart 🛒`);
 
@@ -60,7 +69,7 @@ export const CartProvider = ({ children }: any) => {
             const existingItem = items.find(i => i.id === id);
 
             const res = await removeCartItem(id);
-             setItems(res.data?.items || []);
+            setItems(res.data?.items || []);
 
             toast(`${existingItem?.product_name} removed from cart`, {
                 icon: "❌",
@@ -79,7 +88,7 @@ export const CartProvider = ({ children }: any) => {
             if (qty < 1) {
                 // remove item instead
                 const res = await removeCartItem(id);
-                 setItems(res.data?.items || []);
+                setItems(res.data?.items || []);
 
                 toast(`${existingItem?.product_name} removed from cart`, {
                     icon: "❌",
@@ -90,7 +99,7 @@ export const CartProvider = ({ children }: any) => {
             }
 
             const res = await updateCartItem(id, qty);
-             setItems(res.data?.items || []);
+            setItems(res.data?.items || []);
 
             toast.success(
                 `Updated ${existingItem?.product_name} quantity to ${qty}`,

@@ -84,7 +84,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
             {/* 🛒 Add to Cart */}
             <button
                 disabled={isOutOfStock}
-                onClick={() => addToCart(product)}
+                onClick={() => addToCart(product,1)}
                 className={`
                     mt-3 w-full flex items-center justify-center gap-2 py-2 rounded-lg transition
                      ${isOutOfStock
