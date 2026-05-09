@@ -1,6 +1,7 @@
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Cart() {
     const { items, removeFromCart, updateQuantity, clearCartHandler } = useCart();
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function Cart() {
                 <p className="text-gray-500 mb-4">Start adding products to your cart.</p>
 
                 <button
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate("/#products-section")}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
                 >
                     Start Shopping
@@ -25,22 +26,18 @@ export default function Cart() {
         );
     }
 
-    // const handleCheckout = () => {
-    //     navigate("/sign-in-up/");
-    // };
-
     const handleCheckout = () => {
         const token = localStorage.getItem("token");
 
         if (token) {
             navigate("/checkout/");
         } else {
-            navigate("/sign-in-up/");
+            navigate("/sign-in/");
         }
     };
 
     const handleContinueShopping = () => {
-        navigate("/");
+        navigate("/#products-section");
     };
 
     return (

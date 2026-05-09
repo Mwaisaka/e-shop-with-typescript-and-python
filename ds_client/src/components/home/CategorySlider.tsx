@@ -37,7 +37,7 @@ export default function CategorySlider() {
     const sliderItems = [...categories, ...categories];
 
     return (
-        <div className="mb-10 overflow-hidden">
+        <div className="mb-0 overflow-hidden">
             <h2 className="text-2xl font-semibold mb-4">
                 🔥 Trending Categories
             </h2>

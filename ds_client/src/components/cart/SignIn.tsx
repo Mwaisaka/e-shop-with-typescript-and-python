@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
-export default function SignInUp() {
+export default function SignIn() {
     const navigate = useNavigate();
     const location = useLocation();
     const { login } = useAuth();
@@ -97,7 +97,7 @@ export default function SignInUp() {
                 {/* Register Link */}
                 <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
                     Don't have an account? {" "}
-                    <Link to="/register/" className="text-indigo-600 hover:underline">
+                    <Link to="/sign-up/" className="text-indigo-600 hover:underline">
                         Create account
                     </Link>
                 </p>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import ProductCard from "../components/products/ProductCard";
 import { fetchProducts, searchProducts } from "../api/products";
 import { useSearchQuery } from "../hooks/useSearchQuery";
@@ -10,6 +11,7 @@ export default function Home() {
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(1);
+    const location = useLocation();
 
     const fetchData = async () => {
         setLoading(true);
@@ -37,6 +39,21 @@ export default function Home() {
         fetchData();
     }, [q, category, max_price, rating, page]);
 
+    useEffect(() => {
+        if (!loading && location.hash) {
+            setTimeout(() => {
+                const element = document.querySelector(location.hash);
+
+                if (element) {
+                    element.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                    });
+                }
+            }, 100);
+        }
+    }, [location, loading]);
+
     const handleRefresh = async () => {
         setQuery("page", 1);
     };
@@ -49,61 +66,62 @@ export default function Home() {
 
             {/* Hero Banner */}
             <HeroBanner />
-            
+
             {/* Category Slider */}
             <CategorySlider />
 
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold ">
-                    {q ? `Search results for "${q}"` : "All Products"}
-                </h2>
-                {/* Refresh button */}
-                <button
-                    onClick={handleRefresh}
-                    className="px-3 py-1 border rounded bg-gray-100 hover:bg-gray-200 text-sm"
-                >
-                    🔄 Refresh Products
-                </button>
+            <div id="products-section" className="pt-4">
+                <div className="flex justify-between items-center mb-4 mt-16">
+                    <h2 className="text-xl font-semibold ">
+                        {q ? `Search results for "${q}"` : "All Products"}
+                    </h2>
+                    {/* Refresh button */}
+                    <button
+                        onClick={handleRefresh}
+                        className="px-3 py-1 border rounded bg-gray-100 hover:bg-gray-200 text-sm"
+                    >
+                        🔄 Refresh Products
+                    </button>
+                </div>
+                {products.length === 0 ? (
+                    <p>No products found</p>
+                ) : (
+                    <>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            {products.map((p: any) => (
+                                <ProductCard key={p.id} product={p} />
+                            ))}
+                        </div>
+                        {/* Pagination */}
+                        <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
+                            <button
+                                disabled={page === 1}
+                                onClick={() => setQuery("page", 1)}
+                                className="px-3 py-1 border rounded disabled:opacity-50"
+                            >First</button>
+                            <button
+                                disabled={page === 1}
+                                onClick={() => setQuery("page", page - 1)}
+                                className="px-3 py-1 border rounded disabled:opacity-50"
+                            >Prev</button>
+                            <span className="px-4 py-1">
+                                Page {page} of {totalPages}
+                            </span>
+                            <button
+                                disabled={page === totalPages}
+                                onClick={() => setQuery("page", page + 1)}
+                                className="px-3 py-1 border rounded disabled:opacity-50"
+                            >Next</button>
+                            <button
+                                disabled={page === totalPages}
+                                onClick={() => setQuery("page", totalPages)}
+                                className="px-3 py-1 border rounded disabled:opacity-50"
+                            >Last</button>
+                        </div>
+                    </>
+
+                )}
             </div>
-
-            {products.length === 0 ? (
-                <p>No products found</p>
-            ) : (
-                <>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {products.map((p: any) => (
-                            <ProductCard key={p.id} product={p} />
-                        ))}
-                    </div>
-                    {/* Pagination */}
-                    <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
-                        <button
-                            disabled={page === 1}
-                            onClick={() => setQuery("page", 1)}
-                            className="px-3 py-1 border rounded disabled:opacity-50"
-                        >First</button>
-                        <button
-                            disabled={page === 1}
-                            onClick={() => setQuery("page", page - 1)}
-                            className="px-3 py-1 border rounded disabled:opacity-50"
-                        >Prev</button>
-                        <span className="px-4 py-1">
-                            Page {page} of {totalPages}
-                        </span>
-                        <button
-                            disabled={page === totalPages}
-                            onClick={() => setQuery("page", page + 1)}
-                            className="px-3 py-1 border rounded disabled:opacity-50"
-                        >Next</button>
-                        <button
-                            disabled={page === totalPages}
-                            onClick={() => setQuery("page", totalPages)}
-                            className="px-3 py-1 border rounded disabled:opacity-50"
-                        >Last</button>
-                    </div>
-                </>
-
-            )}
         </div>
     );
 }

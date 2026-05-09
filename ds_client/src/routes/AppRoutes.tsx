@@ -8,7 +8,9 @@ import ForgotPassword from "../pages/ForgotPassword";
 import Profile from "../pages/Profile";
 import Cart from "../pages/Cart";
 import CheckOut from "../pages/CheckOut";
-import SignInUp from "../pages/SignInUp";
+import SignIn from "../components/cart/SignIn";
+import SignUp from "../components/cart/SignUp";
+
 
 export default function AppRoutes(){
     return(
@@ -22,7 +24,8 @@ export default function AppRoutes(){
             <Route path="/profile/" element ={<Profile />}/>
             <Route path="/cart/" element={<Cart />} />
             <Route path="/checkout/" element = {<CheckOut/>}/>
-            <Route path="/sign-in-up/" element = {<SignInUp />}/>
+            <Route path="/sign-in/" element = {<SignIn />}/>
+            <Route path="/sign-up/" element = {<SignUp />}/>
         </Routes>
     )
 }

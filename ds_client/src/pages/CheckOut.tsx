@@ -67,7 +67,7 @@ export default function CheckOut() {
             <div className="grid md:grid-cols-2 gap-6">
                 {/* LEFT : Customer static data */}
                 <div className="bg-white p-4 rounded shadow">
-                    <h3 className="font-bold mb-4">Customer Details</h3>
+                    <h3 className="font-bold mb-4">Delivery Details</h3>
                     <input
                         type="text"
                         name="full_name"

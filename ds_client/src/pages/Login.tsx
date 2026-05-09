@@ -39,7 +39,8 @@ export default function Login() {
     return (
         <div className="min-h-screen flex items-top justify-center bg-gray-50 dark:bg-gray-900 px-4">
             <div className="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
-                <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">Login to Your Account</h2>
+                <h2 className="text-xl font-bold text-center text-gray-800 dark:text-white mb-2">Welcome to Nzisa Fashions</h2>
+                <h3 className="text-md text-center text-gray-800 dark:text-white mb-6">Use your email to log in</h3>
                 {error && (
                     <div className="mb-4 p-3 text-sm bg-red-100 text-red-600 rounded">
                         {error}
