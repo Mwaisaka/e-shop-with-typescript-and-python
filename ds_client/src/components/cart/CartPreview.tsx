@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function CartPreview() {
     const { items, removeFromCart, updateQuantity } = useCart();
     
-    console.log("Items", items)
+    // console.log("Items", items)
 
     const subtotal = items?.reduce(
         (total, item) => total + item.product_price * item.quantity,

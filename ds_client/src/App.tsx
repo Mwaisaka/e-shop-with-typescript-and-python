@@ -6,6 +6,7 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import FiltersSidebar from "./components/filters/FiltersSidebar";
 import {Toaster} from "react-hot-toast";
+import Header from "./components/layout/Header";
 
 export default function App() {
 

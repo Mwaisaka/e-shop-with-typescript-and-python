@@ -25,10 +25,18 @@ export default function Cart() {
         );
     }
 
+    // const handleCheckout = () => {
+    //     navigate("/sign-in-up/");
+    // };
+
     const handleCheckout = () => {
-        // alert("Proceeding to checkout...");
-        // clearCartHandler();
-        navigate("/checkout/");
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            navigate("/checkout/");
+        } else {
+            navigate("/sign-in-up/");
+        }
     };
 
     const handleContinueShopping = () => {
