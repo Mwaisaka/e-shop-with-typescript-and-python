@@ -37,16 +37,22 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_formatted_price(self, obj):
         return f"{obj.price:,.2f}"
 
-    def get_average_rating(self, obj):
+    def get_avg_rating(self, obj):
         return round(obj.average_rating(), 1)
 
-    def get_reviews_count(self, obj):
+    def get_review_count(self, obj):
         return obj.reviews_count()
 
     def get_image(self, obj):
-        request = self.context.get("request")
+        # request = self.context.get("request")
+        # if obj.image:
+        #     if request:
+        #         return request.build_absolute_uri(obj.image.url)
+        #     return obj.image.url
+        # return None
         if obj.image:
-            if request:
-                return request.build_absolute_uri(obj.image.url)
-            return obj.image.url
+            return obj.image.build_url(
+                quality="auto",
+                fetch_format="auto"
+            )
         return None

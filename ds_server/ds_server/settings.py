@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,6 +51,8 @@ INSTALLED_APPS = [
     # 'e_shop',
     # # Third-party
     "rest_framework", "rest_framework.authtoken", "corsheaders",
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 MIDDLEWARE = [
@@ -183,3 +186,18 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 SESSION_COOKIE_SAMESITE = "None"  # or "Lax" "None" if cross-domain
 SESSION_COOKIE_SECURE = True    # True in production (HTTPS)
+
+cloudinary.config(
+    cloud_name="ddyaxunup",
+    api_key="238168481248491",
+    api_secret="htU1Ttk0iTsW-maxydGOHp-Gp9Y",
+    secure=True
+)
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": "ddyaxunup",
+    "API_KEY": "238168481248491",
+    "API_SECRET": "htU1Ttk0iTsW-maxydGOHp-Gp9Y",
+}
+
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"

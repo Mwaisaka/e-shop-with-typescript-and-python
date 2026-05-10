@@ -5,11 +5,14 @@ from rest_framework.response import Response
 from django.db.models import Q, Avg, Count
 from rest_framework.permissions import AllowAny
 from .pagination import ProductPagination
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.decorators import parser_classes
 
 
 # View product list or create a product
 @permission_classes([AllowAny])
 @api_view(["GET", "POST"])
+@parser_classes([MultiPartParser, FormParser])
 def product_list_create(request):
     if request.method == "GET":
         q = request.GET.get("q", "")
