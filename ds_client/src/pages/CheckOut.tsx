@@ -31,6 +31,14 @@ export default function CheckOut() {
             alert("Please fill in all customer details fields");
             return;
         }
+
+        const confirmOrder = window.confirm(
+            "Are you sure you want to place this order?"
+        );
+
+        if(!confirmOrder){
+            return;
+        };
         try {
             const orderData = {
                 ...formData,
@@ -48,7 +56,7 @@ export default function CheckOut() {
 
             clearCartHandler();
 
-            navigate("/");
+            navigate("/order-success/");
 
         } catch (err : any) {
             console.error(err.response?.data);

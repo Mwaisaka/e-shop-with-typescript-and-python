@@ -14,7 +14,7 @@ export default function Cart() {
         return (
             <div className="text-center py-20">
                 <h2 className="text-2xl font-semibold mb-2">🛒 Your Cart is Empty</h2>
-                <p className="text-gray-500 mb-4">Start adding products to your cart.</p>
+                <p className="text-gray-500 mb-4">Browse our products to discover best deals!</p>
 
                 <button
                     onClick={() => navigate("/#products-section")}

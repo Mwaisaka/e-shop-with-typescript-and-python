@@ -8,6 +8,8 @@ import { useTheme } from "../../context/ThemeContext"
 import CartPreview from "../cart/CartPreview";
 import { Search } from "lucide-react";
 import { useSearchQuery } from "../../hooks/useSearchQuery";
+import logo from "../../assets/Logo.png";
+import { FaBars } from "react-icons/fa";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -19,7 +21,15 @@ export default function Navbar() {
     const { q, category, setQuery } = useSearchQuery();
     const [categoriesOpen, setCategoriesOpen] = useState(false);
 
-    const selectedCategory = categories.find((cat) => cat.slug === category)?.name || "All Categories";
+    // const selectedCategory = categories.find((cat) => cat.slug === category)?.name || " All Categories";
+
+    const selectedCategory =
+        categories.find((cat) => cat.slug === category)?.name || (
+            <span className="flex items-center gap-2">
+                <FaBars className="text-sm" />
+                Categories
+            </span>
+        );
     const toggleCart = () => setShowCart(!showCart);
 
     useEffect(() => {
@@ -40,15 +50,22 @@ export default function Navbar() {
     }, []);
 
     const itemCount = items?.reduce((sum, item) => sum + item.quantity, 0);
-    
+
     return (
         <nav className="sticky top-0 bg-gray-300 dark:bg-gray-900 relative z-50">
             <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Left */}
                 <div className="flex items-center gap-4">
                     {/* Shop Logo */}
-                    <Link to="/" className="text-2xl italic font-bold text-indigo-600">
-                        Nzisa Fashions
+                    <Link to="/" className="flex items-center gap-3">
+                        {/* <img
+                            src={logo}
+                            alt="Nzisa Fashions"
+                            className="h-24 md:h-20 w-auto hover:scale-105 transition-transform duration-300"
+                        /> */}
+                        <span className="text-2xl italic font-bold text-indigo-600">
+                            Nzisa Fashions
+                        </span>
                     </Link>
                     <button className="md:hidden mr-6" onClick={() => setMobile(true)}>
                         Menu
@@ -170,7 +187,7 @@ export default function Navbar() {
                         onMouseEnter={() => setShowCart(true)}
                         onMouseLeave={() => setShowCart(false)}
                     >
-                        <ShoppingCart className="cursor-pointer" onClick={toggleCart}/>
+                        <ShoppingCart className="cursor-pointer" onClick={toggleCart} />
 
                         {itemCount > 0 && (
                             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">

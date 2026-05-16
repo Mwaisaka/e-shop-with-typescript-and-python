@@ -10,6 +10,7 @@ import Cart from "../pages/Cart";
 import CheckOut from "../pages/CheckOut";
 import SignIn from "../components/cart/SignIn";
 import SignUp from "../components/cart/SignUp";
+import OrderSuccess from "../pages/OrderSuccess";
 
 
 export default function AppRoutes(){
@@ -26,6 +27,7 @@ export default function AppRoutes(){
             <Route path="/checkout/" element = {<CheckOut/>}/>
             <Route path="/sign-in/" element = {<SignIn />}/>
             <Route path="/sign-up/" element = {<SignUp />}/>
+            <Route path="/order-success/" element = {<OrderSuccess />}/>
         </Routes>
     )
 }
