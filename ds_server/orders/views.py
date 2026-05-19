@@ -25,7 +25,8 @@ def create_order(request):
 @permission_classes([IsAuthenticated])
 def list_orders(request):
     orders = Order.objects.filter(user=request.user)
-    serializer = OrderSerializer(orders, many=True)
+
+    serializer = OrderSerializer(orders, many=True, context={"request": request} )
     return Response(serializer.data, status = 200)
 
 #Retrieve a single Order
@@ -39,7 +40,7 @@ def get_order(request, order_id):
             {"detail": "Order not found"},
             status = 404
         )
-    serialier = OrderSerializer(order)
+    serialier = OrderSerializer(order, context={"request": request})
     return Response(serialier.data, status = 200)    
 
 #Cancel Order

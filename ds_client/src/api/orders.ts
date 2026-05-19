@@ -1,7 +1,7 @@
 import api from "./axios";
 
 export const fetchOrders = () => 
-    api.get("/orders/list-orders/");
+    api.get("/orders/list-orders/", );
 export const fetchOrder = (order_id:number) => 
     api.get(`/orders/get-order/${order_id}/`)
 export const createOrder = (data : any) => 
