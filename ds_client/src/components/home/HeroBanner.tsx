@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function HeroBanner() {
+    const navigate = useNavigate();
     const slides = [
         {
             title: "Summer Fashion Sale",
@@ -44,6 +46,10 @@ export default function HeroBanner() {
         return () => clearInterval(interval);
     }, []);
 
+    const handleGoToShopping = () => {
+        navigate("/#products-section");
+    };
+
     const slide = slides[index];
 
     return (
@@ -64,7 +70,9 @@ export default function HeroBanner() {
                     {slide.subtitle}
                 </p>
 
-                <button className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition">
+                <button 
+                 onClick={handleGoToShopping}
+                className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition">
                     {slide.button}
                 </button>
 
