@@ -5,6 +5,7 @@ interface OrderItem {
   id: number;
   product_name: string;
   quantity: number;
+  product_description: string;
   price: string;
   product_image?: string | null;
 }
@@ -146,7 +147,9 @@ export default function MyOrders() {
                       <h3 className="font-semibold text-lg">
                         {item.product_name}
                       </h3>
-
+                      <p className="font-normal text-sm italic">
+                        {item.product_description}
+                      </p>
                       <p className="text-gray-500 text-sm mt-1">
                         Quantity: {item.quantity}
                       </p>

@@ -5,6 +5,7 @@ from products.models import Product
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source="product.name")
+    product_description = serializers.ReadOnlyField(source="product.description")
     total = serializers.SerializerMethodField()
     product_image = serializers.SerializerMethodField()
 
@@ -14,6 +15,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
             "id",
             "product",
             "product_name",
+            "product_description",
             "product_image",
             "quantity",
             "price",
