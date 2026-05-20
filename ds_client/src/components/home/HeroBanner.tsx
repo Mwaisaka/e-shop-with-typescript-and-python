@@ -47,7 +47,7 @@ export default function HeroBanner() {
     const slide = slides[index];
 
     return (
-        <div className="relative h-[400px] w-full overflow-hidden rounded-xl mb-10">
+        <div className="relative h-[400px] w-full overflow-hidden rounded-xl mb-5">
             <img
                 src={slide.image}
                 loading="lazy"

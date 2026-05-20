@@ -74,11 +74,13 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  
    "https://nzisa-fashions.onrender.com",
+   "https://nzisa-fashions.vercel.app/",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
      "http://localhost:5173",
      "https://nzisa-fashions.onrender.com",
+     "https://nzisa-fashions.vercel.app/",
 ]
 
 ROOT_URLCONF = 'ds_server.urls'
