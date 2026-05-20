@@ -24,25 +24,17 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     def get_total(self, obj):
         return obj.get_total()
-    
+        
     def get_product_image(self, obj):
         image = obj.product.image
 
         if not image:
             return None
 
-        request = self.context.get("request")
-
         try:
-            url = image.url  # CloudinaryField supports this
-
-            if request:
-                return request.build_absolute_uri(url)
-
-            return url
-
-        except:
-            return str(image)
+            return image.url   # Just return Cloudinary URL directly
+        except Exception:
+            return None
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
