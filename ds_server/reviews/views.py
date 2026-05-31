@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from .serializers import ReviewSerializer
 from .models import Review
 from products.models import Product
+from orders.models import OrderItem
 
 #List reviews for a product
 @api_view(["GET"])
@@ -22,19 +23,42 @@ def list_product_reviews(request, product_id):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def create_review(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    # product = get_object_or_404(Product, id=product_id)
     
-    if Review.objects.filter(product=product, user=request.user).exists():
-        return Response(
-            {"error": "You have already reviewed this product"},
-            status = 400
-        )
-    serializer = ReviewSerializer(data=request.data, context = {"request": request})
+    # if Review.objects.filter(product=product, user=request.user).exists():
+    #     return Response(
+    #         {"error": "You have already reviewed this product"},
+    #         status = 400
+    #     )
+    # serializer = ReviewSerializer(data=request.data, context = {"request": request})
     
+    # if serializer.is_valid():
+    #     return Response(serializer.data, status=201)
+    # return Response(serializer.errors, status=400)
+    
+    has_purchased = OrderItem.objects.filter(
+        order_user = request.user,
+        order_delivery_status = "delivered",
+        product_id=product_id
+    ).exists()
+    
+    if not has_purchased:
+        return Response({"detail": "You can only review purchased products"}, status = 403)
+    
+    existing_review = Review.objects.filter(
+        user = request.user,
+        product_id = product_id
+    ).first()
+    
+    if existing_review:
+        return Response({"detail": "You have already reviewed this product."}, status = 400)
+    
+    serializer = ReviewSerializer(data = request.data)
     if serializer.is_valid():
-        return Response(serializer.data, status=201)
-    return Response(serializer.errors, status=400)
-
+        serializer.save(user=request.user, product_id=product_id)
+        return Response(serializer.data, status = 201)
+    
+    return Response(serializer.errors, status = 400)
 
 #Update review (owner only)
 @api_view(["PUT"])
