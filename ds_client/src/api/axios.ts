@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:8000/api",
-    // baseURL: "https://nzisa-fashions-backend.onrender.com/api",
+    // baseURL: "http://localhost:8000/api",
+    baseURL: "https://nzisa-fashions-backend.onrender.com/api",
     withCredentials: true,
 });
 
