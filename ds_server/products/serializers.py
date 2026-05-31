@@ -38,10 +38,10 @@ class ProductSerializer(serializers.ModelSerializer):
         return f"{obj.price:,.2f}"
 
     def get_avg_rating(self, obj):
-        return round(obj.average_rating(), 1)
+        return round(obj.avg_rating(), 1)
 
     def get_review_count(self, obj):
-        return obj.reviews_count()
+        return obj.review_count()
 
     def get_image(self, obj):
         # request = self.context.get("request")
