@@ -64,19 +64,35 @@ def create_review(request, product_id):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def update_review(request, review_id):
-    review = get_object_or_404(Review, id=review_id, user = request.user)
+    # review = get_object_or_404(Review, id=review_id, user = request.user)
+    
+    # serializer = ReviewSerializer(
+    #     review,
+    #     data = request.data,
+    #     partial = True,
+    #     context = {"request": request}
+    # )
+    
+    # if serializer.is_valid():
+    #     return Response(serializer.data, status = 200)
+    # return Response(serializer.errors, status=400)
+    
+    try:
+        review = get_object_or_404(Review, id=review_id, user = request.user)
+    
+    except Review.DoesNotExist:
+        return Response({"detail" : "Review not found!"}, status = 404)
     
     serializer = ReviewSerializer(
         review,
         data = request.data,
         partial = True,
-        context = {"request": request}
     )
     
     if serializer.is_valid():
+        serializer.save()
         return Response(serializer.data, status = 200)
-    return Response(serializer.errors, status=400)
-
+    
 #Delete Review (Owner only)
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
