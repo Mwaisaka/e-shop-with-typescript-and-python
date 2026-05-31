@@ -8,6 +8,16 @@ from .serializers import ReviewSerializer
 from .models import Review
 from products.models import Product
 
+#List reviews for a product
+@api_view(["GET"])
+def list_product_reviews(request, product_id):
+    # product = get_object_or_404(Product, id=product_id)
+    # reviews = product.reviews.all()
+    reviews = Review.objects.filter(product_id=product_id)
+    serializer = ReviewSerializer(reviews, many=True)
+    
+    return Response(serializer.data, status = 200)
+
 #Create a review
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -25,14 +35,6 @@ def create_review(request, product_id):
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
 
-#List reviews for a product
-@api_view(["GET"])
-def list_product_reviews(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    reviews = product.reviews.all()
-    serializer = ReviewSerializer(reviews, many=True)
-    
-    return Response(serializer.data, status = 200)
 
 #Update review (owner only)
 @api_view(["PUT"])

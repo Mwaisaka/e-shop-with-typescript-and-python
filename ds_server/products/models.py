@@ -30,12 +30,14 @@ class Product(models.Model):
             raise ValueError("Stock cannot be negative")
         super().save(*args, **kwargs)
     
+    
     def average_rating(self):
         return self.reviews.aggregate(
             avg=Avg("rating")
         )["avg"] or 0
 
-    def reviews_count(self):
+
+    def review_count(self):
         return self.reviews.count()
     
     def __str__(self):

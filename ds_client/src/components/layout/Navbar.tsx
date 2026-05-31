@@ -8,7 +8,7 @@ import { useTheme } from "../../context/ThemeContext"
 import CartPreview from "../cart/CartPreview";
 import { Search } from "lucide-react";
 import { useSearchQuery } from "../../hooks/useSearchQuery";
-import logo from "../../assets/Logo.png";
+// import logo from "../../assets/Logo.png";
 import { FaBars } from "react-icons/fa";
 
 export default function Navbar() {
@@ -58,16 +58,12 @@ export default function Navbar() {
                 <div className="flex items-center gap-4">
                     {/* Shop Logo */}
                     <Link to="/" className="flex items-center gap-3">
-                        {/* <img
-                            src={logo}
-                            alt="Nzisa Fashions"
-                            className="h-24 md:h-20 w-auto hover:scale-105 transition-transform duration-300"
-                        /> */}
                         <span className="text-2xl italic font-bold text-indigo-600">
                             Nzisa Fashions
                         </span>
                     </Link>
-                    <button className="md:hidden mr-6" onClick={() => setMobile(true)}>
+                    <button className="md:hidden mr-8 bg-gray-200 rounded-md p-2" onClick={() => setMobile(true)}>
+                        <FaBars className="text-sm" />
                         Menu
                     </button>
 
