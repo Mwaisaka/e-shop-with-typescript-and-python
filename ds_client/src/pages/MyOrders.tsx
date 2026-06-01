@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchOrders } from "../api/orders";
+import ReviewForm from "../components/reviews/ReviewForm";
 
 interface OrderItem {
   id: number;
@@ -153,6 +154,12 @@ export default function MyOrders() {
                       <p className="text-gray-500 text-sm mt-1">
                         Quantity: {item.quantity}
                       </p>
+
+                      {/* <ReviewForm
+                                          productId={product.id}
+                                          // onSuccess={loadProduct}
+                                      /> */}
+                                      
 
                       <p className="text-gray-500 text-sm">
                         Price: Kes.{" "}

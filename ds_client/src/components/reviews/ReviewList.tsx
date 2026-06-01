@@ -6,21 +6,38 @@ export default function ReviewList({ productId }: { productId: number }) {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const loadReviews = async () => {
+        try {
+            setLoading(true);
+            const res = await fetchReviews(productId);
+            setReviews(res.data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    }
     useEffect(() => {
-        setLoading(true);
-        fetchReviews(productId)
-            .then(res => setReviews(res.data))
-            .catch(() => setReviews([]))
-            .finally(() => setLoading(false))
+        loadReviews();
     }, [productId]);
 
     return (
-        <div>
-            <h3 className="font-bold mb-2">Reviews</h3>
+        <div className="mt-8">
+            <h3 className="text-xl font-bold mb-2">Customer Reviews ({reviews.length})</h3>
+            {reviews.length === 0 && (
+                <p>No reviews yet.</p>
+            )}
             {reviews.map(rev => (
-                <div key={rev.id} className="border-b py-2">
-                    <p>{"⭐".repeat(rev.rating)}</p>
-                    <p>{rev.comment}</p>
+                <div key={rev.id} className="border-b py-4">
+                    <div className="flex items-center gap-2">
+                        <strong>
+                            {rev.user_name}
+                        </strong>
+                        <span>
+                            {"⭐".repeat(rev.rating)}
+                        </span>
+                    </div>
+                    <p className="mt-2">{rev.comment}</p>
                 </div>
             ))}
         </div>
