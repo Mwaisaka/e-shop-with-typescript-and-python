@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchProduct } from "../api/products";
-import ReviewList from "../components/products/ReviewList";
+import ReviewList from "../components/reviews/ReviewList";
 import { useCart } from "../context/CartContext";
 
 export default function ProductDetails() {
