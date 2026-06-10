@@ -21,7 +21,7 @@ export default function App() {
             <Toaster position="top-right" reverseOrder={false} />
             
             <div className="flex flex-col md:flex-row max-w-7xl mx-auto px-4">
-              <FiltersSidebar/>
+              {/* <FiltersSidebar/> */}
               <main className="flex-1 px-4 py-6">
                 <AppRoutes />
               </main>

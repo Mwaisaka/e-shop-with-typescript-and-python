@@ -17,7 +17,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
     const rating = product.avg_rating ?? 0;
     const rounded = Math.round(rating);
 
-    const {addToCart} = useCart();
+    const { addToCart } = useCart();
 
     const handleWishList = () => {
         setWishListed(!wishListed);
@@ -45,8 +45,8 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
                         <Star
                             key={star}
                             className={`w-4 h-4 ${star <= rounded
-                                    ? "fill-yellow-400 text-yellow-400"
-                                    : "text-gray-300"
+                                ? "fill-yellow-400 text-yellow-400"
+                                : "text-gray-300"
                                 }`}
                         />
                     ))}
@@ -75,7 +75,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
             <p className="text-sm text-gray-600 mt-1">
                 Kes.{product.formatted_price || product.price}
             </p>
-            
+
             {/* Status of the stock */}
             {isOutOfStock ? (<p className="text-sm text-red-500 mt-1">Out of Stock</p>) :
                 (<p className="text-sm text-green-600 mt-1">In Stock</p>)
@@ -84,7 +84,7 @@ export default function ProductCard({ product, onAddToCart, onToggleWishlist, }:
             {/* 🛒 Add to Cart */}
             <button
                 disabled={isOutOfStock}
-                onClick={() => addToCart(product,1)}
+                onClick={() => addToCart(product, 1)}
                 className={`
                     mt-3 w-full flex items-center justify-center gap-2 py-2 rounded-lg transition
                      ${isOutOfStock
