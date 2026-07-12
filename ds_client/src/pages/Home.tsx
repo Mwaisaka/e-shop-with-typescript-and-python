@@ -200,9 +200,9 @@ export default function Home() {
             <div id="products-section" >
                 {Object.entries(groupedProducts).map(
                     ([categoryName, products]) => (
-                        <div key={categoryName} className="mb-0 p-4 bg-gray-200 mt-6 rounded-xl shadow-xl">
-                            <h2 className="text-xl text-black font-semibold mb-4 p-2 bg-gray-100 rounded-xl shadow-xl">
-                                {categoryName}
+                        <div key={categoryName} className="mb-0 p-4 bg-slate-400 mt-6 rounded-xl shadow-xl">
+                            <h2 className="text-xl text-black font-semibold mb-4 p-2 bg-gray-200 rounded-xl shadow-xl">
+                               Best Buy | {categoryName}
                             </h2>
 
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
