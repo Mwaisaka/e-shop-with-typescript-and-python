@@ -201,7 +201,7 @@ export default function Home() {
                 {Object.entries(groupedProducts).map(
                     ([categoryName, products]) => (
                         <div key={categoryName} className="mb-0 p-4 bg-gray-200 mt-6 rounded-xl shadow-xl">
-                            <h2 className="text-xl font-semibold mb-4 p-2 bg-gray-100 rounded-xl shadow-xl">
+                            <h2 className="text-xl text-black font-semibold mb-4 p-2 bg-gray-100 rounded-xl shadow-xl">
                                 {categoryName}
                             </h2>
 
