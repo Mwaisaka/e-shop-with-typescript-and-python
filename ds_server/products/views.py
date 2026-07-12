@@ -1,4 +1,5 @@
 from .models import Product
+from categories.models import Category
 from .serializers import ProductSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -94,3 +95,38 @@ def product_detail(request, product_id):
     elif request.method == "DELETE":
         product.delete()
         return Response({"message": "Product deleted successfully."}, status=200)
+
+@api_view(["GET"])
+def related_products(request, product_id):
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        return Response({"detail": "Product not found."}, status = 404)
+    
+    related = (
+        Product.objects.filter(category = product.category)
+        .exclude(id = product.id)
+        .order_by("?")[:8]
+    )
+    
+    serializer = ProductSerializer(related, many=True)
+    return Response(serializer.data)
+
+@api_view(["GET"])
+def grouped_products(request):
+    data = {}
+    
+    catagories = Category.objects.all()
+    
+    for category in catagories:
+        products = Product.objects.filter(category = category)[:8]
+        
+        data[category.name] = ProductSerializer(
+            products,
+            many = True,
+            context = { "request" : request}
+        ).data
+        
+    return Response(data)
+   
+

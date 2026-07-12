@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { fetchProduct } from "../api/products";
 import ReviewList from "../components/reviews/ReviewList";
 import { useCart } from "../context/CartContext";
+import RelatedProducts from "../components/products/RelatedProducts";
 
 export default function ProductDetails() {
     const { id } = useParams();
@@ -32,11 +33,16 @@ export default function ProductDetails() {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <img
-                src={product.image}
-                alt={product.name}
-                className="rounded-lg"
-            />
+            <div>
+                <img
+                    src={product.image}
+                    alt={product.name}
+                    className="rounded-lg"
+                />
+                {/* Related Products */}
+                <RelatedProducts productId={product.id} />
+            </div>
+
             <div>
                 <h1 className="text-2xl font-bold">{product.name}</h1>
                 <p className="my-6 text-gray-500">{product.description}</p>
@@ -45,8 +51,10 @@ export default function ProductDetails() {
                     className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
                 >
                     Add to Cart
-                </button>                
+                </button>
                 <ReviewList productId={product.id} />
+
+
             </div>
         </div>
     );
