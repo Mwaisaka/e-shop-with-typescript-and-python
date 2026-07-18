@@ -114,19 +114,30 @@ def related_products(request, product_id):
 
 @api_view(["GET"])
 def grouped_products(request):
-    data = {}
+    data = []
     
     catagories = Category.objects.all()
     
     for category in catagories:
         products = Product.objects.filter(category = category)[:8]
         
-        data[category.name] = ProductSerializer(
+        # data[category.name] = ProductSerializer(
+        #     products,
+        #     many = True,
+        #     context = { "request" : request}
+        # ).data
+
+        serializer = ProductSerializer(
             products,
-            many = True,
-            context = { "request" : request}
-        ).data
-        
+            many=True,
+            context={"request": request}
+        )
+
+        data.append({
+            "name": category.name,
+            "slug": category.slug,
+            "products": serializer.data
+        })
     return Response(data)
    
 

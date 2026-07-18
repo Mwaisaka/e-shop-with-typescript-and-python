@@ -12,12 +12,14 @@ import SignIn from "../components/cart/SignIn";
 import SignUp from "../components/cart/SignUp";
 import OrderSuccess from "../pages/OrderSuccess";
 import MyOrders from "../pages/MyOrders";
+import Products from "../pages/Products";
 
 
 export default function AppRoutes(){
     return(
         <Routes>
             <Route path="/" element = {<Home />}/>
+            <Route path="/products/" element = {<Products />} />
             <Route path="/products/:id/" element={<ProductDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

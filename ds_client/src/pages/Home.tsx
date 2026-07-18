@@ -128,7 +128,7 @@
 
 
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import ProductCard from "../components/products/ProductCard";
 import { fetchGroupedProducts, searchProducts } from "../api/products";
 import { useSearchQuery } from "../hooks/useSearchQuery";
@@ -142,12 +142,12 @@ export default function Home() {
     const [totalPages, setTotalPages] = useState(1);
     const location = useLocation();
 
-    const [groupedProducts, setGroupedProducts] = useState<Record<string, any[]>>({});
+    const [groupedProducts, setGroupedProducts] = useState<any[]>([]);
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            // const res = await searchProducts({ q, category, max_price, rating });
+            // const response = await searchProducts({ q, category, max_price, rating });
 
             // const filters: any = { page };
 
@@ -156,7 +156,7 @@ export default function Home() {
             // if (max_price !== 500000) filters.max_price = max_price;
             // if (rating > 0) filters.rating = rating;
 
-            // const res = await searchProducts(filters);
+            // const response1 = await searchProducts(filters);
             const res = await fetchGroupedProducts();
             setGroupedProducts(res.data);
             // setTotalPages(Math.ceil(res.data.count / 8));
@@ -197,22 +197,35 @@ export default function Home() {
             {/* Category Slider */}
             <CategorySlider />
 
-            <div id="products-section" >
-                {Object.entries(groupedProducts).map(
-                    ([categoryName, products]) => (
-                        <div key={categoryName} className="mb-0 p-4 bg-slate-400 mt-6 rounded-xl shadow-xl">
-                            <h2 className="text-xl text-black font-semibold mb-4 p-2 bg-gray-200 rounded-xl shadow-xl">
-                               Best Buy | {categoryName}
+            <div id="products-section">
+                    {groupedProducts.map((category) => (
+                    <div
+                        key={category.slug}
+                        className="p-4 bg-slate-400 mt-6 rounded-xl shadow-xl"
+                    >
+                        <div className="flex items-center justify-between mb-4 p-2 bg-gray-200 rounded-xl shadow-xl">
+                            <h2 className="text-xl text-black font-semibold">
+                                Best Buy | {category.name}
                             </h2>
 
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {products.map((p: any) => (
-                                    <ProductCard key={p.id} product={p} />
-                                ))}
-                            </div>
+                            <Link
+                                to={`/products?category=${category.slug}`}
+                                className="px-4 py-2 rounded-full bg-white border border-gray-300 text-sm font-medium hover:bg-gray-100 transition"
+                            >
+                                View All →
+                            </Link>
                         </div>
-                    )
-                )}
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            {category.products.map((product: any) => (
+                                <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );
