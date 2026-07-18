@@ -209,7 +209,7 @@ export default function Home() {
                             </h2>
 
                             <Link
-                                to={`/products?category=${category.slug}`}
+                                to={`/products?category=${encodeURIComponent(category.name)}`}
                                 className="px-4 py-2 rounded-full bg-white border border-gray-300 text-sm font-medium hover:bg-gray-100 transition"
                             >
                                 View All →

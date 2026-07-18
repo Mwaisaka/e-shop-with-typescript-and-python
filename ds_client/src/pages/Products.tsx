@@ -64,8 +64,8 @@ export default function Products() {
 
     return (
         <div >
-            <div id="products-section" className="p-4 bg-gray-200 mt-6 rounded-xl shadow-xl">
-                <div className="flex justify-between items-center mb-4 mt-0 bg-gray-50 p-2 rounded-xl">
+            <div id="products-section" className="p-4 bg-gray-400 mt-6 rounded-xl shadow-xl">
+                <div className="flex justify-between items-center mb-4 mt-0 bg-gray-200 p-2 rounded-xl">
                     <h2 className="text-xl font-semibold">
                         {q ? `Search results for "${q}"` : `${category}`}
                     </h2>

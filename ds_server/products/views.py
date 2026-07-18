@@ -37,7 +37,7 @@ def product_list_create(request):
 
         # Filter category slug
         if category:
-            products = products.filter(category__slug=category)
+            products = products.filter(category__name__iexact=category)
 
         # Filter by price
         if min_price:
