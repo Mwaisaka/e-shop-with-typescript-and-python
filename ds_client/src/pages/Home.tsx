@@ -147,19 +147,9 @@ export default function Home() {
     const fetchData = async () => {
         setLoading(true);
         try {
-            // const response = await searchProducts({ q, category, max_price, rating });
-
-            // const filters: any = { page };
-
-            // if (q) filters.q = q;
-            // if (category) filters.category = category;
-            // if (max_price !== 500000) filters.max_price = max_price;
-            // if (rating > 0) filters.rating = rating;
-
-            // const response1 = await searchProducts(filters);
             const res = await fetchGroupedProducts();
             setGroupedProducts(res.data);
-            // setTotalPages(Math.ceil(res.data.count / 8));
+            
         } catch (err) {
             console.error(err);
             alert("Failed to load products");
@@ -189,7 +179,7 @@ export default function Home() {
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div >
+        <div id="home-section" className="scroll-mt-24">
 
             {/* Hero Banner */}
             <HeroBanner />
@@ -197,7 +187,7 @@ export default function Home() {
             {/* Category Slider */}
             <CategorySlider />
 
-            <div id="products-section">
+            <div id="products-section" className="scroll-mt-24">
                     {groupedProducts.map((category) => (
                     <div
                         key={category.slug}

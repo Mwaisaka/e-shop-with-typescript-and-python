@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, Link} from "react-router-dom";
 import ProductCard from "../components/products/ProductCard";
 import {  searchProducts } from "../api/products";
 import { useSearchQuery } from "../hooks/useSearchQuery";
@@ -10,6 +10,7 @@ export default function Products() {
     const [loading, setLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(1);
     const location = useLocation();
+    const navigate = useNavigate();
 
     const fetchData = async () => {
         setLoading(true);
@@ -59,6 +60,10 @@ export default function Products() {
         setQuery("page", 1);
     };
 
+    const handleBackHome = async () => {
+        navigate("/");
+    }
+
 
     if (loading) return <p>Loading...</p>;
 
@@ -71,10 +76,13 @@ export default function Products() {
                     </h2>
                     {/* Refresh button */}
                     <button
-                        onClick={handleRefresh}
-                        className="px-3 py-1 border rounded bg-gray-100 hover:bg-gray-200 text-sm"
+                        // onClick={handleBackHome}
+                        className="px-3 py-1 border rounded-full bg-gray-100 hover:bg-gray-200 text-md"
                     >
-                        🔄 Refresh Products
+                        {/* 🔄 Refresh Products */}
+                        <Link to="/#products-section">
+                             Back ←
+                        </Link>
                     </button>
                 </div>
                 {products.length === 0 ? (

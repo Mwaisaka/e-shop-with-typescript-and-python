@@ -52,8 +52,8 @@ export default function Footer() {
                 <div>
                     <h3 className="text-gray-500 font-bold mb-3">Shop</h3>
                     <ul className="space-y-2 text-sm">
-                        <li><Link to="/" className="hover:text-white">All Products</Link></li>
-                        <li><Link to="/categories" className="hover:text-white">Categories</Link></li>
+                        <li><Link to="/#products-section" className="hover:text-white">All Products</Link></li>
+                        {/* <li><Link to="/categories" className="hover:text-white">Categories</Link></li> */}
                         {/* <li><Link to="/my-orders/" className="hover:text-white">My Orders</Link></li> */}
                     </ul>
                 </div>

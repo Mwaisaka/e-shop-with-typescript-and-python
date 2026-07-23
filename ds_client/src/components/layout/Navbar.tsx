@@ -57,7 +57,7 @@ export default function Navbar() {
                 {/* Left */}
                 <div className="flex items-center gap-4">
                     {/* Shop Logo */}
-                    <Link to="/" className="flex items-center gap-3">
+                    <Link to="/#home-section" className="flex items-center gap-3">
                         <span className="text-2xl italic font-bold text-indigo-600">
                             Nzisa Fashions
                         </span>
