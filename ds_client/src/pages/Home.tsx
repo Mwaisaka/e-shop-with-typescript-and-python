@@ -179,7 +179,7 @@ export default function Home() {
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div id="home-section" className="scroll-mt-24">
+        <div className="scroll-mt-24">
 
             {/* Hero Banner */}
             <HeroBanner />
