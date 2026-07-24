@@ -37,71 +37,74 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-top justify-center bg-gray-50 dark:bg-gray-900 px-4">
-            <div className="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
-                <h2 className="text-xl font-bold text-center text-gray-800 dark:text-white mb-2">Welcome to Nzisa Fashions</h2>
-                <h3 className="text-md text-center text-gray-800 dark:text-white mb-6">Use your email to log in</h3>
-                {error && (
-                    <div className="mb-4 p-3 text-sm bg-red-100 text-red-600 rounded">
-                        {error}
-                    </div>
-                )}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div >
-                        <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">
-                            Username
-                        </label>
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Enter your username"
-                            className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        />
-                    </div>
-                    <div className="relative">
-                        <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">Password</label>
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password"
-                            className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        />
+        <div>
+            <div className="min-h-screen flex items-top justify-center bg-gray-50 dark:bg-gray-900 px-4">
+                <div className="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
+                    <h2 className="text-xl font-bold text-center text-gray-800 dark:text-white mb-2">Welcome to Nzisa Fashions</h2>
+                    <h3 className="text-md text-center text-gray-800 dark:text-white mb-6">Use your email to log in</h3>
+                    {error && (
+                        <div className="mb-4 p-3 text-sm bg-red-100 text-red-600 rounded">
+                            {error}
+                        </div>
+                    )}
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div >
+                            <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">
+                                Username
+                            </label>
+                            <input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="Enter your username"
+                                className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            />
+                        </div>
+                        <div className="relative">
+                            <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">Password</label>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter your password"
+                                className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-9 text-gray-500"
+                            >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
+                        <div className="text-right">
+                            <Link
+                                to="/forgot-password/"
+                                className="text-sm text-indigo-600 hover:underline"
+                            >
+                                Forgot Password?
+                            </Link>
+                        </div>
+                        {/* Submit */}
                         <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-9 text-gray-500"
+                            type="submit"
+                            disabled={loading}
+                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded transition disabled:opacity-60"
                         >
-                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            {loading ? "Logging in..." : "Login"}
                         </button>
-                    </div>
-                    <div className="text-right">
-                    <Link
-                        to="/forgot-password/"
-                        className="text-sm text-indigo-600 hover:underline"
-                    >
-                        Forgot Password?
-                    </Link>
+                    </form>
+
+                    {/* Register Link */}
+                    <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
+                        Don't have an account? {" "}
+                        <Link to="/register/" className="text-indigo-600 hover:underline">
+                            Create account
+                        </Link>
+                    </p>
                 </div>
-                    {/* Submit */}
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded transition disabled:opacity-60"
-                    >
-                        {loading ? "Logging in..." : "Login"}
-                    </button>
-                </form>
-                
-                {/* Register Link */}
-                <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
-                    Don't have an account? {" "}
-                    <Link to="/register/" className="text-indigo-600 hover:underline">
-                        Create account
-                    </Link>
-                </p>
             </div>
         </div>
+
     );
 }
