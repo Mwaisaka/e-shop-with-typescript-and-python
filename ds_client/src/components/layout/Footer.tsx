@@ -62,9 +62,9 @@ export default function Footer() {
                 <div>
                     <h3 className="text-gray-500 font-bold mb-3">My Account</h3>
                     <ul className="space-y-2 text-sm">
-                        <li><Link to="/login" className="hover:text-white">Login</Link></li>
-                        <li><Link to="/register" className="hover:text-white">Register</Link></li>
-                        <li><Link to="/cart" className="hover:text-white">Cart</Link></li>
+                        <li><Link to="/login/" className="hover:text-white">Login</Link></li>
+                        <li><Link to="/register/" className="hover:text-white">Register</Link></li>
+                        <li><Link to="/cart/" className="hover:text-white">Cart</Link></li>
                     </ul>
                 </div>
 

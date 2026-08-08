@@ -7,6 +7,7 @@ import Footer from "./components/layout/Footer";
 import FiltersSidebar from "./components/filters/FiltersSidebar";
 import {Toaster} from "react-hot-toast";
 import Header from "./components/layout/Header";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 export default function App() {
 
@@ -23,6 +24,7 @@ export default function App() {
             <div className="flex flex-col md:flex-row max-w-7xl mx-auto px-4">
               {/* <FiltersSidebar/> */}
               <main className="flex-1 px-4 py-6">
+                <ScrollToTop />
                 <AppRoutes />
               </main>
             </div>

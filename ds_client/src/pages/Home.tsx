@@ -193,16 +193,16 @@ export default function Home() {
                         key={category.slug}
                         className="p-4 bg-slate-400 mt-6 rounded-xl shadow-xl"
                     >
-                        <div className="flex items-center justify-between mb-4 p-2 bg-gray-200 rounded-xl shadow-xl">
+                        <div className="flex items-center justify-between mb-4 p-2 px-4 bg-blue-100 rounded-xl shadow-xl">
                             <h2 className="text-xl text-black font-semibold">
                                 Best Buy | {category.name}
                             </h2>
 
                             <Link
                                 to={`/products?category=${encodeURIComponent(category.name)}`}
-                                className="px-4 py-2 rounded-full bg-white border border-gray-300 text-sm font-medium hover:bg-gray-100 transition"
+                                className="text-md text-black font-semibold px-4 py-2 rounded-full bg-white border border-gray-300 text-sm hover:bg-gray-400 transition"
                             >
-                                View All →
+                                View More →
                             </Link>
                         </div>
 
