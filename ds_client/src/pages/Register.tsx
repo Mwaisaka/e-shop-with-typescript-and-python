@@ -53,8 +53,8 @@ export default function Register() {
         }
     }
     return (
-        <div className="min-h-screen flex  justify-center bg-gray-50 dark:bg-gray-900 px-4">
-            <div className="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
+        <div className=" flex justify-center p-10">
+            <div className="w-full max-w-lg bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
                 <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
                     Create an Account
                 </h2>
