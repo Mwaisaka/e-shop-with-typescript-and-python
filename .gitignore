@@ -19,7 +19,7 @@ env/
 .env.*
 
 # Local Django database
-# db.sqlite3
+db.sqlite3
 
 # Django static and media
 media/
