@@ -62,22 +62,22 @@ export default function Navbar() {
                             Nzisa Fashions
                         </span>
                     </Link>
-                    <button className="md:hidden mr-8 bg-gray-200 rounded-md p-2" onClick={() => setMobile(true)}>
+                    <button className="flex items-center gap-3 md:hidden mr-8 bg-gray-200  dark:bg-gray-800 rounded-md p-2" onClick={() => setMobile(true)}>
                         <FaBars className="text-sm" />
-                        Menu
+                        Menu                        
                     </button>
 
                     {mobile && (
                         <div className="absolute top-full left-0 w-full bg-gray-300 dark:bg-gray-800 shadow-md md:hidden z-50 rounded-lg">
-                            <div className="flex flex-col p-4 space-y-2">
+                            <div className="flex flex-col p-4 space-y-1">
                                 {/* Close button */}
                                 <button
                                     className="self-end mb-2 font-bold "
                                     onClick={() => setMobile(false)}
                                 >
-                                    ✕ Close
+                                    ✕ Close Menu
                                 </button>
-                                <div className="flex items-center bg-gray-100 dark:bg-gray-300 rounded px-3 py-1">
+                                <div className="flex items-center bg-gray-100 dark:bg-gray-300 rounded px-3 py-0">
                                     <Search size={18} className="text-gray-500" />
                                     <input
                                         value={q}
@@ -101,21 +101,21 @@ export default function Navbar() {
 
                                 {/* Auth Links */}
                                 {user ? (
-                                    <button onClick={logout} className="text-left px-4 py-2">
+                                    <button onClick={logout} className="text-left px-4">
                                         Logout
                                     </button>
                                 ) : (
                                     <>
                                         <Link
                                             to="/login"
-                                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            className="block px-4 hover:bg-gray-100 dark:hover:bg-gray-700"
                                             onClick={() => setMobile(false)}
                                         >
                                             Login
                                         </Link>
                                         <Link
                                             to="/register"
-                                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            className="block px-4  hover:bg-gray-100 dark:hover:bg-gray-700"
                                             onClick={() => setMobile(false)}
                                         >
                                             Register
@@ -239,13 +239,13 @@ export default function Navbar() {
                         <>
                             <Link
                                 to="/login/"
-                                className="border border-indigo-600 text-indigo-600 px-4 py-1.5 rounded-xl hover:bg-indigo-50"
+                                className="hidden md:flex border border-indigo-600 text-indigo-600 px-4 py-1.5 rounded-xl hover:bg-indigo-50"
                             >
                                 Sign in
                             </Link>
                             <Link
                                 to="/register/"
-                                className="bg-indigo-600 text-white px-4 py-1.5 rounded-xl hover:bg-indigo-700"
+                                className="hidden md:flex bg-indigo-600 text-white px-4 py-1.5 rounded-xl hover:bg-indigo-700"
                             >
                                 Create account
                             </Link>
