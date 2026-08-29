@@ -38,8 +38,8 @@ export default function Login() {
 
     return (
 
-        <div className="flex items-top justify-center p-10">
-            <div className="w-full max-w-lg bg-white dark:bg-gray-800 shadow-lg rounded-xl p-18">
+        <div className="flex justify-center p-10">
+            <div className="w-full max-w-lg bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
                 <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">Welcome to Nzisa Fashions</h2>
                 {error && (
                     <div className="mb-4 p-3 text-sm bg-red-100 text-red-600 rounded">
