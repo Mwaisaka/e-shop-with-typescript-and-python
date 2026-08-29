@@ -83,6 +83,7 @@ CSRF_TRUSTED_ORIGINS = [
      "http://127.0.0.1:5173",
      "https://nzisa-fashions.onrender.com",
      "https://nzisa-fashions.vercel.app",
+     "https://nzisa-fashions-backend.onrender.com/"
 ]
 
 ROOT_URLCONF = 'ds_server.urls'
