@@ -13,7 +13,7 @@ interface User {
 
 interface AuthContextType {
     user: User | null;
-    login: (username: string, password: string) => Promise<void>;
+    login: (identifier: string, password: string) => Promise<void>;
     logout: () => void;
     register: (data: {
         username: string;
@@ -41,10 +41,10 @@ export const AuthProvider = ({ children }: any) => {
         }
     }, []);
 
-    const login = async (username: string, password: string) => {
+    const login = async (identifier: string, password: string) => {
         const response = await api.post("/accounts/login/", {
-            username,
-            password
+            identifier: identifier,
+            password: password
         });
        
         const { token, user } = response.data;

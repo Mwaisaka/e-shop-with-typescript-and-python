@@ -8,7 +8,7 @@ export default function Login() {
     const location = useLocation();
     const { login } = useAuth();
 
-    const [username, setUsername] = useState("");
+    const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -20,14 +20,14 @@ export default function Login() {
         e.preventDefault();
         setError("");
 
-        if (!username || !password) {
+        if (!identifier || !password) {
             setError("Please fill in all fields.");
             return;
         }
 
         try {
             setLoading(true);
-            await login(username, password);
+            await login(identifier, password);
             navigate(from, { replace: true });
         } catch (err: any) {
             setError(err.response?.data?.detail || "Invalid credentials.");
@@ -49,17 +49,18 @@ export default function Login() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div >
                         <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">
-                            Username
+                            Username or Email
                         </label>
                         <input
                             type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Enter your username"
+                            value={identifier} 
+                            onChange={(e) => setIdentifier(e.target.value)}
+                            placeholder="Enter your username or email address"
                             className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
                         />
                     </div>
+                    
                     <div className="relative">
                         <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">Password</label>
                         <input

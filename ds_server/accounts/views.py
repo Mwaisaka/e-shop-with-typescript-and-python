@@ -22,41 +22,67 @@ from django.contrib.auth.hashers import check_password
 
 @csrf_exempt
 def login_view(request):
-    if request.method == "POST":
+    if request.method != "POST":
+        return JsonResponse({"error" : "Only POST requests are allowed"}, status=405)
 
+    try:
         data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"error" : "Invalid JSON"}, status=400)
 
-        user = authenticate(
-            username=data.get("username"),
-            password=data.get("password"),
-        )
+    identifier=data.get("identifier")
+    password=data.get("password")
 
-        if user:
+    if not identifier or not password:
+        return JsonResponse({"error" : "Username/email and password are required"}, status=400)
 
-            login(request, user)
+    #First try username
+    user = authenticate(
+        request=request,
+        username=identifier,
+        password=password,
+    )
 
-            token, created = Token.objects.get_or_create(user=user)
+    #If username failed, try email
+    if user is None:
+        try: 
+            user_obj = User.objects.get(email__iexact=identifier)
 
-            return JsonResponse(
-                {
-                    "token": token.key,
-                    "user": {
-                        "username": user.username,
-                        "email": user.email,
-                        "first_name": user.first_name,
-                        "last_name": user.last_name,
-                        "is_staff": user.is_staff,
-                        "profile_photo": (
-                            user.profile_photo.url
-                            if hasattr(user, "profile_photo") and user.profile_photo
-                            else None
-                        ),
-                    },
-                }
+            user = authenticate(
+                request=request,
+                username=user_obj.username,
+                password=password,
             )
+        except User.DoesNotExist:
+            user = None
 
-            # return JsonResponse({"message": "Login successful"})
-        return JsonResponse({"error": "Invalid credentials"}, status=400)
+    if user is None:
+        return JsonResponse({"error": "Invalid username/email or password"},status=400)
+      
+    login(request, user)
+
+    token, created = Token.objects.get_or_create(user=user)
+
+    return JsonResponse(
+        {
+            "token": token.key,
+            "user": {
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "is_staff": user.is_staff,
+                "profile_photo": (
+                    user.profile_photo.url
+                    if hasattr(user, "profile_photo") and user.profile_photo
+                    else None
+                ),
+            },
+        }
+    )
+
+        # return JsonResponse({"message": "Login successful"})
+    # return JsonResponse({"error": "Invalid credentials"}, status=400)
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def change_password(request):
