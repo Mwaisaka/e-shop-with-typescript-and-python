@@ -191,6 +191,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 SESSION_COOKIE_SAMESITE = "None"  # or "Lax" "None" if cross-domain
 SESSION_COOKIE_SECURE = True    # True in production (HTTPS)
+CSRF_COOKIE_SECURE = True
 
 cloudinary.config(
     cloud_name="ddyaxunup",
