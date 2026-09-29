@@ -48,33 +48,33 @@ export default function Login() {
                 )}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div >
-                        <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">
+                        {/* <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">
                             Username or Email
-                        </label>
+                        </label> */}
                         <input
                             type="text"
                             value={identifier} 
                             onChange={(e) => setIdentifier(e.target.value)}
-                            placeholder="Enter your username or email address"
+                            placeholder="Enter your username/email address"
                             className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
                         />
                     </div>
                     
                     <div className="relative">
-                        <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">Password</label>
+                        {/* <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">Password</label> */}
                         <input
                             type={showPassword ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter your password"
-                            className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-4 py-2 mt-4 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
                         />
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-9 text-gray-500"
+                            className="absolute right-3 top-7 text-gray-500"
                         >
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
@@ -101,7 +101,7 @@ export default function Login() {
                 <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
                     Don't have an account? {" "}
                     <Link to="/register/" className="text-indigo-600 hover:underline">
-                        Create account
+                        Sign up
                     </Link>
                 </p>
             </div>
