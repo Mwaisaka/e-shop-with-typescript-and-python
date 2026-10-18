@@ -192,6 +192,7 @@ export default function Navbar() {
                         )}
                         {showCart && <CartPreview />}
                     </div>
+                
                     <div>
                         {user?.is_staff && (
                             <a
