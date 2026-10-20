@@ -11,4 +11,4 @@ interface User {
 
 //For fetching all categories
 export const fetchUsers = () =>
-  api.get("/accounts/list-all-users/");
+  api.get("/accounts/admin/users/");

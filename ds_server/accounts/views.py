@@ -15,7 +15,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from .serializers import UserSerializer
+from .serializers import UserSerializer, AdminUserSerializer
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import check_password
 
@@ -104,12 +104,12 @@ def change_password(request):
     
     return Response({"message" : "Password updated successfully."})
 
-@api_view(["GET"])
-@permission_classes([IsAdminUser])
-def get_all_users(request):
-    users = User.objects.all()
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data, status=200)
+# @api_view(["GET"])
+# @permission_classes([IsAdminUser])
+# def get_all_users(request):
+#     users = User.objects.all()
+#     serializer = UserSerializer(users, many=True)
+#     return Response(serializer.data, status=200)
 
 
 @api_view(["POST"])
@@ -124,14 +124,14 @@ def register(request):
     return Response({"message": "User created"})
 
 
-@api_view(["DELETE"])
-@permission_classes([IsAdminUser])
-def admin_delete_user(request, user_id):
-    try:
-        User.objects.get(id=user_id).delete()
-        return Response({"message": "User deleted successfully"}, status=200)
-    except User.DoesNotExist:
-        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+# @api_view(["DELETE"])
+# @permission_classes([IsAdminUser])
+# def admin_delete_user(request, user_id):
+#     try:
+#         User.objects.get(id=user_id).delete()
+#         return Response({"message": "User deleted successfully"}, status=200)
+#     except User.DoesNotExist:
+#         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["DELETE"])
@@ -267,3 +267,53 @@ def reset_password_confirm(request, uidb64, token):
     user.save()
 
     return Response({"message": "Password reset successful"}, status=200)
+
+@api_view(["GET", "POST"])
+@permission_classes([IsAdminUser])
+def admin_users_list_create(request):
+    #View all users
+    if request.method == "GET":
+        users = User.objects.all().order_by("-date_joined")
+        serializer = AdminUserSerializer(users, many=True)
+        return Response(serializer.data, status=200)
+    
+    #Create a new user
+    serializer = AdminUserSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    
+    return Response(serializer.data, status = 201)
+
+@api_view(["GET", "PUT", "PATCH", "DELETE"])
+@permission_classes([IsAdminUser])
+def admin_user_detail(request, user_id):
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return Response({"detail": "User not found"}, status = 404)
+    
+    #View one user
+    if request.method == "GET":
+        serializer = AdminUserSerializer(user)
+        return Response(serializer.data, status=200)
+    
+    #Update user
+    if request.method in ["PUT", "PATCH"]:
+        serializer =AdminUserSerializer(
+            user, 
+            data =request.data,
+            partial = request.method == "PATCH",
+        )
+        serializer.is_valid(raise_excepton=True)
+        serializer.save()
+        return Response(serializer.data, status=201)
+    
+    #Delete User
+    if user.pk == request.user.pk:
+        return Response({"detail": "You cannot delete your own account here."}, status=400)
+    
+    if user.is_superuser:
+        return Response({"detail": "Superuser accounts cannot be deleted here."}, status=400)
+    
+    user.delete()    
+    return Response({"message":"User deleted successfully."}, status=200)

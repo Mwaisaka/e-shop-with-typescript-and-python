@@ -19,11 +19,6 @@ interface User {
     profile_photo?: string;
 }
 
-// interface User {
-//     username: string;
-//     is_staff?: boolean;
-//     is_superuser?: boolean;
-// }
 export default function UserManagement() {
     const [category, setCategory] = useState<Category[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -51,27 +46,8 @@ export default function UserManagement() {
     }, []);
 
     //Check if user is admin
-    const isAdmin = user?.is_staff === true || user?.is_superuser === true;
+    const isAdmin = user?.is_staff === true || user?.is_superuser === true 
 
-    //Fetch Categories
-    // const categoriesFetch = async () => {
-    //     try {
-    //         setLoading(true);
-    //         setError("");
-
-    //         const response = await fetchCategories();
-    //         setCategories(response.data);
-    //     } catch (error: any) {
-    //         console.error("Error fetching categories:", error);
-    //         setError(error.response?.data?.detail || "Failed to load categories.");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     categoriesFetch();
-    // }, []);
 
     //Fetch Users
     const usersFetch = async () => {
@@ -81,7 +57,6 @@ export default function UserManagement() {
 
             const response = await fetchUsers();
             setUsers(response.data);
-            console.log("Users :", response.data)
         } catch (error: any) {
             console.error("Error fetching users:", error);
             setError(error.response?.data?.detail || "Failed to load users.");

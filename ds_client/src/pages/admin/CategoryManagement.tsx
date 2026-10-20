@@ -48,7 +48,6 @@ export default function CategoryManagement() {
 
             const response = await fetchCategories();
             setCategories(response.data);
-            console.log("Categories = >", response.data)
         } catch (error: any) {
             console.error("Error fetching categories:", error);
             setError(error.response?.data?.detail || "Failed to load categories.");
