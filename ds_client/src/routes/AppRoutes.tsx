@@ -15,6 +15,7 @@ import MyOrders from "../pages/MyOrders";
 import Products from "../pages/Products";
 import CategoryManagement from "../pages/admin/CategoryManagement";
 import AdminSideBar from "../pages/admin/AdminSideBar";
+import DashboardHome from "../pages/admin/DashboardHome";
 
 
 export default function AppRoutes(){
@@ -34,8 +35,7 @@ export default function AppRoutes(){
             <Route path="/sign-up/" element = {<SignUp />}/>
             <Route path="/order-success/" element = {<OrderSuccess />}/>
             <Route path="/my-orders/" element = {<MyOrders />}/>
-            <Route path="/admin/" element={<AdminSideBar />} />
-            <Route path="/admin/categories/" element = {<CategoryManagement />}/>
+            <Route path="/admin/dashboardhome/" element = {<DashboardHome />} />
         </Routes>
     )
 }

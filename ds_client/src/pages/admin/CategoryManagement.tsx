@@ -184,11 +184,11 @@ export default function CategoryManagement() {
         <div className="min-h-screen bg-gray-100 px-4 py-8 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-5xl">
                 {/* Page Header */}
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800">
+                <div className="mb-8 bg-white rounded-xl p-2">
+                    {/* <h1 className="text-3xl font-bold text-gray-800 text-center">
                         Category Management
-                    </h1>
-                    <p className="mt-2 text-gray-600">
+                    </h1> */}
+                    <p className="mt-1 text-gray-600 text-center text-md">
                         Add, edit and remove product categories.
                     </p>
                 </div>

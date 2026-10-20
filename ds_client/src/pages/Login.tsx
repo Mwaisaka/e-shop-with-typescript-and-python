@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+
+interface User {
+    username: string;
+    is_staff?: boolean;
+    is_superuser?: boolean;
+}
 
 export default function Login() {
     const navigate = useNavigate();
@@ -13,6 +19,23 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [user, setUser] = useState<User | null>(null);
+
+    //Get Current User
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+
+        if (storedUser) {
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                setUser(parsedUser);
+            } catch (error) {
+                console.error("Unable to parse stored user:", error)
+            }
+        }
+    }, []);
+    //Check if user is admin
+    const isAdmin = user?.is_staff === true || user?.is_superuser === true;
 
     const from = location.state?.from?.pathname || "/";
 
@@ -28,7 +51,8 @@ export default function Login() {
         try {
             setLoading(true);
             await login(identifier, password);
-            navigate(from, { replace: true });
+            // navigate(from, { replace: true });
+            navigate(isAdmin? "/": "/admin/dashboardhome/")
         } catch (err: any) {
             setError(err.response?.data?.detail || "Invalid credentials.");
         } finally {
@@ -53,14 +77,14 @@ export default function Login() {
                         </label> */}
                         <input
                             type="text"
-                            value={identifier} 
+                            value={identifier}
                             onChange={(e) => setIdentifier(e.target.value)}
                             placeholder="Enter your username/email address"
                             className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
                         />
                     </div>
-                    
+
                     <div className="relative">
                         {/* <label className="block text-sm mb-1 text-gray-600 dark:text-gray-300">Password</label> */}
                         <input
