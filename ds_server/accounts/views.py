@@ -304,9 +304,9 @@ def admin_user_detail(request, user_id):
             data =request.data,
             partial = request.method == "PATCH",
         )
-        serializer.is_valid(raise_excepton=True)
+        serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data, status=201)
+        return Response(serializer.data, status=200)
     
     #Delete User
     if user.pk == request.user.pk:

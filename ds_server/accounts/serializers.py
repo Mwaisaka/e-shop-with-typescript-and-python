@@ -23,28 +23,28 @@ class AdminUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "username","first_name","last_name", "email", "is_staff","is_superuser", "date_joined","password",]
-        read_only_fields = ["id", "is_superuser", "date_joined",]
+        read_only_fields = ["id","is_superuser","date_joined",]
         
-        def create(self, validated_data):
-            password = validated_data.pop("password", None)
-            
-            if not password:
-                raise serializers.ValidationError({"password": "Password is required."})
-            
-            user = User(**validated_data)
-            user.set_password(password)
-            user.save()
-            
-            return user
+    def create(self, validated_data):
+        password = validated_data.pop("password", None)
         
-        def update(self, instance, validated_data):
-            password = validated_data.pop("password", None)
-            
-            for field, value in validated_data.items():
-                setattr(instance, field, value)
-            
-            if password:
-                instance.set_password(password)
-            
-            instance.save()
-            return instance
+        if not password:
+            raise serializers.ValidationError({"password": "Password is required."})
+        
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        
+        return user
+    
+    def update(self, instance, validated_data):
+        password = validated_data.pop("password", None)
+        
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+        
+        if password:
+            instance.set_password(password)
+        
+        instance.save()
+        return instance

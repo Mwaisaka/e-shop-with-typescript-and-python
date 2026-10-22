@@ -187,8 +187,11 @@ export default function CategoryManagement() {
                     {/* <h1 className="text-3xl font-bold text-gray-800 text-center">
                         Category Management
                     </h1> */}
-                    <p className="mt-1 text-gray-600 text-center text-md">
+                    <p className="mt-1 text-gray-600 text-md">
                         Add, edit and remove product categories.
+                    </p>
+                    <p className="mt-3 text-sm font-medium text-gray-500">
+                        Total categories : {categories.length}
                     </p>
                 </div>
                 {/* Success Message */}

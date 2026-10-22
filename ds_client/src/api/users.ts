@@ -1,14 +1,38 @@
 import api from "./axios";
 
-interface User {
-    username: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    is_staff: boolean;
-    profile_photo?: string;
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  is_staff: boolean;
+  is_superuser: boolean;
+  date_joined?: string;
 }
 
-//For fetching all categories
-export const fetchUsers = () =>
-  api.get("/accounts/admin/users/");
+export interface UserPayload {
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  password?: string;
+  is_staff: boolean;
+}
+
+//For fetching all users
+export const fetchUsers = () => 
+    api.get<User[]>("/accounts/admin/users/");
+
+//Create a user
+export const createUser = (data:UserPayload) =>
+    api.post("/accounts/admin/users/", data);
+
+//Update a user
+export const updateUser = (userId : number, data : Partial<UserPayload>) =>
+    api.patch(`/accounts/admin/users/${userId}/`, data);
+
+//Delete a user
+export const deleteUser = (userId : number) =>
+    api.delete(`/accounts/admin/users/${userId}/`);
+
