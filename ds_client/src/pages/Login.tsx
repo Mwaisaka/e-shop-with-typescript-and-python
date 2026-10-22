@@ -20,6 +20,8 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [user, setUser] = useState<User | null>(null);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [authChecked, setAuthChecked] = useState(false);
 
     //Get Current User
     useEffect(() => {
@@ -34,8 +36,22 @@ export default function Login() {
             }
         }
     }, []);
-    //Check if user is admin
-    const isAdmin = user?.is_staff === true || user?.is_superuser === true;
+
+    //Check logged in user's admin status
+    useEffect(() => {
+        try {
+            const storedUser = localStorage.getItem("user");
+            if (storedUser) {
+                const currentUser = JSON.parse(storedUser);
+                setIsAdmin(currentUser.is_staff === true || currentUser.is_superuser === true);
+            }
+
+        } catch (err) {
+            console.error("Unable to read stored user:", err)
+        } finally {
+            setAuthChecked(true);
+        }
+    }, []);
 
     const from = location.state?.from?.pathname || "/";
 
@@ -50,9 +66,26 @@ export default function Login() {
 
         try {
             setLoading(true);
+            
             await login(identifier, password);
-            // navigate(from, { replace: true });
-            navigate(isAdmin? "/": "/admin/dashboardhome/")
+
+            const storedUser = localStorage.getItem("user");
+
+            if (!storedUser) {
+                throw new Error("User information was not found.");
+            }
+
+            const loggedInUser: User = JSON.parse(storedUser);
+
+            const isAdmin =
+                loggedInUser.is_staff === true ||
+                loggedInUser.is_superuser === true;
+
+            if (isAdmin) {
+                navigate("/admin/dashboardhome/", { replace: true });
+            } else {
+                navigate(from || "/", { replace: true });
+            }
         } catch (err: any) {
             setError(err.response?.data?.detail || "Invalid credentials.");
         } finally {
