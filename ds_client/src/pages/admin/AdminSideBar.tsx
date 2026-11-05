@@ -19,11 +19,11 @@ export default function AdminSideBar(
     }: SidebarProps
 ) {
     return (
-        <aside className="w-25 bg-gray-200 text-white transition-all duration-300 flex flex-col rounded-lg">
-            <nav className="flex-1 px-2 space-y-2 text-black">
+        <aside className="w-25 bg-gray-200 text-white transition-all duration-300 flex flex-col rounded-lg m-2 dark:bg-gray-800">
+            <nav className="flex-1 px-2 space-y-2 text-black  dark:text-white">
                 <button
-                    onClick={() => setActiveMenu("Overview")}
-                    className={`flex items-center gap-2 p-1 rounded w-full mt-3 text-left ${activeMenu === "Overview" ? "bg-blue-400" : "hover:bg-blue-700"
+                    onClick={() => setActiveMenu("Business Analytics")}
+                    className={`flex items-center gap-2 p-1 rounded w-full mt-3 text-left ${activeMenu === "Business Analytics" ? "bg-blue-400" : "hover:bg-blue-700"
                         }`}
                 >
                     {sidebarOpen && <span>Overview</span>}

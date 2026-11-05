@@ -6,7 +6,8 @@ from .views import (
     cancel_order, 
     list_payments, 
     initiate_payment, 
-    mpesa_callback
+    mpesa_callback,
+    advanced_analytics
 )
 
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
     path("payments/list-payments/", list_payments),
     path("payments/create/", initiate_payment),
     path("payments/mpesa/callback/", mpesa_callback),
+    path("orders/admin/analytics/advanced/", advanced_analytics),
 ]

@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function DashboardHome() {
     const { user, logout } = useAuth();
-    const [activeMenu, setActiveMenu] = useState("Overview");
+    const [activeMenu, setActiveMenu] = useState("Business Analytics");
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
     return (
@@ -19,7 +19,7 @@ export default function DashboardHome() {
             />
 
             <div className="flex-1 flex flex-col">
-                <header className="bg-white shadow p-4 ml-2 flex justify-center items-center rounded-lg">
+                <header className="bg-white shadow p-4 m-2 flex justify-center items-center rounded-lg  dark:bg-gray-800 dark:text-white">
                     <h1 className="text-xl font-bold capitalize">{activeMenu}</h1>
                     {/* <p className="text-gray-600">
                         Welcome,{" "}
