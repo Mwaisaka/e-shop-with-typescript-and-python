@@ -196,7 +196,7 @@ export default function Navbar() {
                     <div>
                         {user?.is_staff && (
                             <Link to="/admin/dashboardhome/"
-                             className="text-red-600 font-semibold w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                             className="text-red-600 font-semibold w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
                             >
                                 Admin Dashboard
                             </Link>
@@ -204,7 +204,7 @@ export default function Navbar() {
                     </div>
                     {user ? (
                         <div className="relative group">
-                            <button className="text-sm font-medium px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <button className="text-sm font-medium px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
                                 Hi, {user ? user.first_name
                                     .split(" ")
                                     .map(word => word.charAt(0).toUpperCase() + word.slice(1))

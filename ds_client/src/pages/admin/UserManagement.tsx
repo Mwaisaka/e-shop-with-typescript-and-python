@@ -80,7 +80,7 @@ export default function UserManagement() {
     }, [authChecked, isAdmin, loadUsers]);
 
     //Update an individual form field
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) : void=> {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { name, value, type, checked } = e.target;
 
         setForm((previous) => ({
@@ -98,7 +98,7 @@ export default function UserManagement() {
     };
 
     //Add a new user or update an existing user
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) : Promise<void>=> {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setError("");
         setSuccess("");
@@ -256,17 +256,17 @@ export default function UserManagement() {
         <div className="min-h-screen bg-gray-100 px-4 py-8 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-6xl">
                 {/* Page Header */}
-                <div className="mb-8 bg-white rounded-xl p-6 shadow-sm">
-                    {/* <h1 className="text-3xl font-bold text-gray-800 text-center">
-                        Category Management
-                    </h1> */}
-                    <p className="mt-2 text-gray-600 text-md">
-                        View, add, edit and remove registered users.
-                    </p>
-
-                    <p className="mt-3 text-sm font-medium text-gray-500">
-                        Total users : {users.length}
-                    </p>
+                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <p className="rounded-xl text-md py-3 px-6  text-gray-600 dark:text-white text-md bg-white dark:bg-gray-800 shadow-md">
+                            Add, view, update and manage users.
+                        </p>
+                    </div>
+                    <div>
+                        <p className="py-3 px-5 rounded-xl text-sm font-medium  text-gray-600 dark:text-white text-md bg-white dark:bg-gray-800 shadow-md">
+                            Total Users : {users.length}
+                        </p>
+                    </div>
                 </div>
                 {/* Success Message */}
                 {success && (
@@ -289,8 +289,8 @@ export default function UserManagement() {
                 )}
 
                 {/* ADD/EDIT USER FORM */}
-                <div className="mb-8 rounded-2xl bg-white p-6 shadow-md">
-                    <h2 className="mb-6 text-xl font-semibold text-gray-800">
+                <div className="mb-8 rounded-2xl p-6 text-gray-600 dark:text-white text-md bg-white dark:bg-gray-800 shadow-md">
+                    <h2 className="mb-6 text-xl font-semibold">
                         {editingUserId != null ? "Edit User" : "Add New User"}
                     </h2>
                     <form onSubmit={handleSubmit}>
@@ -298,7 +298,7 @@ export default function UserManagement() {
                             <div>
                                 <label
                                     htmlFor="username"
-                                    className="mb-2 block text-sm font-medium text-gray-700"
+                                    className="mb-2 block text-sm font-medium"
                                 >
                                     Username *
                                 </label>
@@ -310,13 +310,13 @@ export default function UserManagement() {
                                     required
                                     autoComplete="username"
                                     placeholder="Enter username"
-                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:bg-gray-700"
                                 />
                             </div>
                             <div>
                                 <label
                                     htmlFor="email"
-                                    className="mb-2 block text-sm font-medium text-gray-700"
+                                    className="mb-2 block text-sm font-medium"
                                 >
                                     Email address *
                                 </label>
@@ -328,14 +328,14 @@ export default function UserManagement() {
                                     required
                                     autoComplete="email"
                                     placeholder="Enter email address"
-                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:bg-gray-700"
                                 />
                             </div>
 
                             <div>
                                 <label
                                     htmlFor="first_name"
-                                    className="mb-2 block text-sm font-medium text-gray-700"
+                                    className="mb-2 block text-sm font-medium"
                                 >
                                     First name *
                                 </label>
@@ -347,14 +347,14 @@ export default function UserManagement() {
                                     required
                                     autoComplete="given-name"
                                     placeholder="Enter first name"
-                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:bg-gray-700"
                                 />
                             </div>
 
                             <div>
                                 <label
                                     htmlFor="last_name"
-                                    className="mb-2 block text-sm font-medium text-gray-700"
+                                    className="mb-2 block text-sm font-medium"
                                 >
                                     Last name *
                                 </label>
@@ -366,14 +366,14 @@ export default function UserManagement() {
                                     required
                                     autoComplete="family-name"
                                     placeholder="Enter last name"
-                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:bg-gray-700"
                                 />
                             </div>
 
                             <div className="sm:col-span-2">
                                 <label
                                     htmlFor="password"
-                                    className="mb-2 block text-sm font-medium text-gray-700"
+                                    className="mb-2 block text-sm font-medium"
                                 >
                                     Password{" "}
                                     {editingUserId === null ? "*" : "(optional)"}
@@ -387,13 +387,13 @@ export default function UserManagement() {
                                     required={editingUserId === null}
                                     minLength={8}
                                     autoComplete="new-password"
-                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:bg-gray-700"
                                     placeholder={editingUserId === null ? "Create a password (minimum 8 characters)" : "Leave blank to keep the current password"}
                                 />
                             </div>
 
                             <div className="sm:col-span-2">
-                                <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-gray-200 p-4">
+                                <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-gray-200 p-4 dark:bg-gray-700">
                                     <input
                                         type="checkbox"
                                         name="is_staff"
@@ -402,11 +402,11 @@ export default function UserManagement() {
                                         className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                                     />
                                     <span>
-                                        <span className="block font-medium text-gray-800">
+                                        <span className="block font-medium ">
                                             Administrator access
                                         </span>
 
-                                        <span className="block text-sm text-gray-500">
+                                        <span className="block text-sm ">
                                             Allows this user to access admin-protected endpoints.
                                         </span>
                                     </span>
@@ -417,7 +417,7 @@ export default function UserManagement() {
                                 <button
                                     type="submit"
                                     disabled={saving}
-                                    className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                                    className="rounded-lg bg-blue-600 px-6 py-3 font-semibold transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                                 >
                                     {saving ? "Saving..." : editingUserId !== null ? "Update User" : "Add User"}
                                 </button>
@@ -426,7 +426,7 @@ export default function UserManagement() {
                                         type="button"
                                         onClick={resetFrom}
                                         disabled={saving}
-                                        className="rounded-lg bg-gray-200 px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-300"
+                                        className="rounded-lg bg-gray-200 px-6 py-3 font-semibold  transition hover:bg-gray-300"
                                     >
                                         Cancel
                                     </button>
@@ -438,16 +438,16 @@ export default function UserManagement() {
                 </div>
 
                 {/* USER LIST */}
-                <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+                <div className="overflow-hidden rounded-2xl text-gray-600 dark:text-white text-md bg-white dark:bg-gray-800 shadow-md">
                     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 px-6 py-5">
-                        <h2 className="text-xl font-semibold text-gray-800">
+                        <h2 className="text-xl font-semibold ">
                             Registered Users
                         </h2>
                         <button
                             type="button"
                             onClick={() => void loadUsers()}
                             disabled={loading}
-                            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium  hover:bg-gray-50  disabled:opacity-50"
                         >
                             {loading ? "Refreshing..." : "Refresh"}
                         </button>
@@ -464,20 +464,20 @@ export default function UserManagement() {
                         <div className="divide-y divide-gray-200">
                             {users.map((user, index) => (
                                 <div key={user.id}
-                                    className="flex flex-col gap-4 px-6 py-5 transition hover:bg-gray-50 sm:flex-row sm:items-center sm:justify-between"
+                                    className="flex flex-col gap-4 px-6 py-5 transition hover:bg-gray-50 dark:hover:bg-gray-700 sm:flex-row sm:items-center sm:justify-between"
                                 >
                                     <div className="flex min-w-0 items-start gap-4">
                                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-700">
                                             {index + 1}
                                         </div>
                                         <div className="min-w-0">
-                                            <h3 className="break-words font-semibold text-gray-800">
+                                            <h3 className="break-words font-semibold">
                                                 {user.first_name} {user.last_name}
                                             </h3>
-                                            <p className="break-all text-sm text-gray-600">
+                                            <p className="break-all text-sm ">
                                                 @{user.username}
                                             </p>
-                                            <p className="break-all text-sm text-gray-500">
+                                            <p className="break-all text-sm ">
                                                 {user.email || "No email provided"}
                                             </p>
                                             <div className="mt-2 flex flex-wrap gap-2">
@@ -501,7 +501,7 @@ export default function UserManagement() {
                                         <button
                                             type="button"
                                             onClick={() => handleEdit(user)}
-                                            className="rounded-lg bg-blue-100 px-4 py-2 font-medium text-blue-700 transition hover:bg-blue-200"
+                                            className="rounded-lg bg-blue-100 px-4 py-2 font-medium text-blue-700 transition hover:bg-blue-300"
                                         >
                                             Edit
                                         </button>
@@ -517,7 +517,7 @@ export default function UserManagement() {
                                                     ? "Superuser accounts cannot be deleted here"
                                                     : "Delete user"
                                             }
-                                            className="rounded-lg bg-red-100 px-4 py-2 font-medium text-red-700 transition hover:bg-red-200 disabled:cursor-not-allowed disabled:opacity-50"
+                                            className="rounded-lg bg-red-100 px-4 py-2 font-medium text-red-700 transition hover:bg-red-300 disabled:cursor-not-allowed disabled:opacity-50"
                                         >
                                             {deletingUserId === user.id
                                                 ? "Deleting..."

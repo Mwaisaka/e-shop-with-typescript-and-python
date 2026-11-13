@@ -183,16 +183,17 @@ export default function CategoryManagement() {
         <div className="min-h-screen bg-gray-100 px-4 py-8 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-5xl">
                 {/* Page Header */}
-                <div className="mb-8 bg-white rounded-xl p-2">
-                    {/* <h1 className="text-3xl font-bold text-gray-800 text-center">
-                        Category Management
-                    </h1> */}
-                    <p className="mt-1 text-gray-600 text-md">
-                        Add, edit and remove product categories.
-                    </p>
-                    <p className="mt-3 text-sm font-medium text-gray-500">
-                        Total categories : {categories.length}
-                    </p>
+                <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <p className="rounded-xl text-md py-3 px-6  text-gray-600 dark:text-white text-md bg-white dark:bg-gray-800 shadow-md">
+                            Add, view, update and manage product categories.
+                        </p>
+                    </div>
+                    <div>
+                        <p className="p-3 rounded-xl text-sm font-medium  text-gray-600 dark:text-white text-md bg-white dark:bg-gray-800 shadow-md">
+                            Total Categories : {categories.length}
+                        </p>
+                    </div>
                 </div>
                 {/* Success Message */}
                 {success && (
@@ -209,8 +210,8 @@ export default function CategoryManagement() {
                 )}
 
                 {/* ADD/EDIT FORM */}
-                <div className="mb-8 rounded-2xl bg-white p-6 shadow-md">
-                    <h2 className="mb-5 text-xl font-semibold text-gray-800">
+                <div className="mb-8 rounded-2xl p-6 text-gray-600 dark:text-white text-md bg-white dark:bg-gray-800 shadow-md">
+                    <h2 className="mb-5 text-xl font-semibold">
                         {editingCategoryId ? "Edit Category" : "Add New Category"}
                     </h2>
                     <div className="flex flex-col gap-4 sm:flex-row">
@@ -219,7 +220,15 @@ export default function CategoryManagement() {
                             value={categoryName}
                             onChange={(e) => setCategoryName(e.target.value)}
                             placeholder="Enter category name"
-                            className="flex-1 rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                            className="flex-1 rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200
+                            
+                            dark:border-gray-600
+                            dark:bg-gray-700
+                            dark:text-white
+                            dark:placeholder-gray-400
+                            dark:focus:border-blue-400
+                            dark:focus:ring-blue-500/20
+                            "
                         />
                         {editingCategoryId ? (
                             <>
@@ -227,7 +236,7 @@ export default function CategoryManagement() {
                                     type="button"
                                     onClick={handleUpdateCategory}
                                     disabled={saving}
-                                    className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                                    className="rounded-lg bg-blue-600 px-6 py-3 font-semibold transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                                 >
                                     {saving ? "Updating..." : "Update Category"}
                                 </button>
@@ -235,7 +244,7 @@ export default function CategoryManagement() {
                                 <button
                                     type="button"
                                     onClick={handleCancelEdit}
-                                    className="rounded-lg bg-gray-500 px-6 py-3 font-semibold text-white transition hover:bg-gray-600"
+                                    className="rounded-lg bg-gray-500 px-6 py-3 font-semibold  transition hover:bg-gray-600"
                                 >
                                     Cancel
                                 </button>
@@ -253,18 +262,18 @@ export default function CategoryManagement() {
                     </div>
                 </div>
                 {/* CATEGORY LIST */}
-                <div className="overflow-hidden rounded-2xl bg-white shadow-md">
+                <div className="overflow-hidden rounded-2xl  text-gray-600 dark:text-white text-md bg-white dark:bg-gray-800 shadow-md">
                     <div className="border-b border-gray-200 px-6 py-5">
-                        <h2 className="text-xl font-semibold text-gray-800">
+                        <h2 className="text-xl font-semibold">
                             Categories
                         </h2>
                     </div>
                     {loading ? (
-                        <div className="px-6 py-10 text-center text-gray-500">
+                        <div className="px-6 py-10 text-center">
                             Loading categories...
                         </div>
                     ) : categories.length === 0 ? (
-                        <div className="px-6 py-10 text-center text-gray-500">
+                        <div className="px-6 py-10 text-center ">
                             No categories found
                         </div>
                     ) : (
@@ -272,7 +281,7 @@ export default function CategoryManagement() {
                             {categories.map((category, index) => (
                                 <div
                                     key={category.id}
-                                    className="flex flex-col gap-4 px-6 py-5 transition hover:bg-gray-50 sm:flex-row sm:items-center sm:justify-between"
+                                    className="flex flex-col gap-4 px-6 py-5 transition hover:bg-gray-50 dark:hover:bg-gray-500 sm:flex-row sm:items-center sm:justify-between"
                                 >
                                     <div className="flex items-center gap-4">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-700">
@@ -280,12 +289,12 @@ export default function CategoryManagement() {
                                         </div>
 
                                         <div>
-                                            <h3 className="font-semibold text-gray-800">
+                                            <h3 className="font-semibold">
                                                 {category.name}
                                             </h3>
 
                                             {category.slug && (
-                                                <p className="text-sm text-gray-500">
+                                                <p className="text-sm">
                                                     /{category.slug}
                                                 </p>
                                             )}

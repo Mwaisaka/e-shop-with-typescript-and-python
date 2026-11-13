@@ -81,8 +81,6 @@ def login_view(request):
         }
     )
 
-        # return JsonResponse({"message": "Login successful"})
-    # return JsonResponse({"error": "Invalid credentials"}, status=400)
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def change_password(request):
@@ -104,13 +102,6 @@ def change_password(request):
     
     return Response({"message" : "Password updated successfully."})
 
-# @api_view(["GET"])
-# @permission_classes([IsAdminUser])
-# def get_all_users(request):
-#     users = User.objects.all()
-#     serializer = UserSerializer(users, many=True)
-#     return Response(serializer.data, status=200)
-
 
 @api_view(["POST"])
 def register(request):
@@ -122,17 +113,6 @@ def register(request):
         password=request.data["password"],
     )
     return Response({"message": "User created"})
-
-
-# @api_view(["DELETE"])
-# @permission_classes([IsAdminUser])
-# def admin_delete_user(request, user_id):
-#     try:
-#         User.objects.get(id=user_id).delete()
-#         return Response({"message": "User deleted successfully"}, status=200)
-#     except User.DoesNotExist:
-#         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])

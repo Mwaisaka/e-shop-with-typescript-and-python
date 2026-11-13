@@ -24,10 +24,11 @@ def product_list_create(request):
 
         # products = Product.objects.select_related("category").all()
 
-        products = Product.objects.select_related("category").annotate(
-            avg_rating=Avg("reviews__rating"),
-            review_count=Count("reviews")
-        ).order_by("-id")
+        products = (
+            Product.objects.select_related("category")
+            .annotate(avg_rating=Avg("reviews__rating"), review_count=Count("reviews"))
+            .order_by("-id")
+        )
 
         # Search product by name or category
         if q:
@@ -49,7 +50,7 @@ def product_list_create(request):
         # Filter by rating
         if rating:
             products = products.filter(avg_rating__gte=rating)
-        
+
         paginator = ProductPagination()
         paginated_products = paginator.paginate_queryset(products, request)
 
@@ -57,87 +58,98 @@ def product_list_create(request):
             paginated_products, many=True, context={"request": request}
         )
         return paginator.get_paginated_response(serializer.data)
-    
-    elif request.method == "POST":
-        serializer = ProductSerializer(data=request.data, context={"request": request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+
+    # Only staff members can create products.
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return Response(
+            {"detail": "You do not have permission to add products."}, status=403
+        )
+
+    serializer = ProductSerializer(data=request.data, context={"request": request})
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+
+    return Response(serializer.errors, status=400)
 
 
 # Retrieve, Update & Delete a Single Product
 @api_view(["GET", "PUT", "PATCH", "DELETE"])
+@permission_classes([AllowAny])
+@parser_classes([MultiPartParser, FormParser])
 def product_detail(request, product_id):
     try:
-        product = Product.objects.get(id=product_id)
+        # product = Product.objects.get(id=product_id)
+        product = (
+            Product.objects.select_related("category")
+            .annotate(avg_rating=Avg("reviews__rating"), review_count=Count("reviews"))
+            .get(id=product_id)
+        )
     except Product.DoesNotExist:
         return Response({"error": "Product not found"}, status=404)
     if request.method == "GET":
         serializer = ProductSerializer(product, context={"request": request})
         return Response(serializer.data)
-    elif request.method == "PUT":
-        serializer = ProductSerializer(
-            product, data=request.data, context={"request": request}
+
+    # Only staff members can update or delete products.
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return Response(
+            {"detail": "You do not have permission to manage products."},
+            status=403,
         )
+
+    if request.method in ["PUT", "PATCH"]:
+
+        serializer = ProductSerializer(
+            product,
+            data=request.data,
+            partial=request.method == "PATCH",
+            context={"request": request},
+        )
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
-    elif request.method == "PATCH":
-        serializer = ProductSerializer(
-            product, data=request.data, partial=True, context={"request": request}
-        )
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)
-    elif request.method == "DELETE":
+
+    if request.method == "DELETE":
+
         product.delete()
         return Response({"message": "Product deleted successfully."}, status=200)
+
 
 @api_view(["GET"])
 def related_products(request, product_id):
     try:
         product = Product.objects.get(id=product_id)
     except Product.DoesNotExist:
-        return Response({"detail": "Product not found."}, status = 404)
-    
+        return Response({"detail": "Product not found."}, status=404)
+
     related = (
-        Product.objects.filter(category = product.category)
-        .exclude(id = product.id)
+        Product.objects.filter(category=product.category)
+        .exclude(id=product.id)
         .order_by("?")[:8]
     )
-    
+
     serializer = ProductSerializer(related, many=True)
     return Response(serializer.data)
+
 
 @api_view(["GET"])
 def grouped_products(request):
     data = []
-    
+
     catagories = Category.objects.all()
-    
+
     for category in catagories:
-        products = Product.objects.filter(category = category)[:8]
-        
-        # data[category.name] = ProductSerializer(
-        #     products,
-        #     many = True,
-        #     context = { "request" : request}
-        # ).data
+        products = Product.objects.filter(category=category)[:8]
 
         serializer = ProductSerializer(
-            products,
-            many=True,
-            context={"request": request}
+            products, many=True, context={"request": request}
         )
 
-        data.append({
-            "name": category.name,
-            "slug": category.slug,
-            "products": serializer.data
-        })
+        data.append(
+            {"name": category.name, "slug": category.slug, "products": serializer.data}
+        )
     return Response(data)
-   
-
