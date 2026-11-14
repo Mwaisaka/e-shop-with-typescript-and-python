@@ -4,8 +4,14 @@ from django.utils.timezone import now
 from .models import OrderPayment, Order, OrderItem
 from rest_framework.permissions import IsAuthenticated
 from .utils import generate_invoice_pdf
-from .serializers import OrderSerializer, OrderItemSerializer, OrderPaymentSerializer, OrderCreateSerializer
-
+from .serializers import (
+    OrderSerializer,
+    OrderItemSerializer,
+    OrderPaymentSerializer,
+    OrderCreateSerializer,
+    AdminOrderSerializer,
+    AdminOrderUpdateSerializer,
+)
 from datetime import timedelta
 from decimal import Decimal
 from django.contrib.auth import get_user_model
@@ -28,91 +34,90 @@ from django.db.models.functions import (
 from django.utils import timezone
 from rest_framework.permissions import IsAdminUser
 from products.models import Product
+from rest_framework.pagination import PageNumberPagination
+from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
-#Create Order Serializer (Checkout)
+
+# Create Order Serializer (Checkout)
 @api_view(["POST"])
 # @permission_classes([IsAuthenticated])
 def create_order(request):
-    serializer = OrderCreateSerializer(data=request.data, context = {"request":request})
-    
+    serializer = OrderCreateSerializer(data=request.data, context={"request": request})
+
     if serializer.is_valid():
         order = serializer.save()
-        return Response(
-            OrderSerializer(order).data,
-            status=201
-        )
-    return Response(serializer.errors, status = 400)
+        return Response(OrderSerializer(order).data, status=201)
+    return Response(serializer.errors, status=400)
 
-#List orders
+
+# List orders
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def list_orders(request):
     orders = Order.objects.filter(user=request.user)
 
-    serializer = OrderSerializer(orders, many=True, context={"request": request} )
-    return Response(serializer.data, status = 200)
+    serializer = OrderSerializer(orders, many=True, context={"request": request})
+    return Response(serializer.data, status=200)
 
-#Retrieve a single Order
+
+# Retrieve a single Order
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_order(request, order_id):
     try:
-        order = Order.objects.get(id = order_id, user =request.user)
+        order = Order.objects.get(id=order_id, user=request.user)
     except Order.DoesNotExist:
-        return Response(
-            {"detail": "Order not found"},
-            status = 404
-        )
+        return Response({"detail": "Order not found"}, status=404)
     serialier = OrderSerializer(order, context={"request": request})
-    return Response(serialier.data, status = 200)    
+    return Response(serialier.data, status=200)
 
-#Cancel Order
+
+# Cancel Order
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def cancel_order(request, order_id):
     try:
-        order = Order.objects.get(id = order_id, user =request.user)
+        order = Order.objects.get(id=order_id, user=request.user)
     except Order.DoesNotExist:
+        return Response({"detail": "Order not found"}, status=404)
+    if order.order_status in ["shipped", "delivered"]:
         return Response(
-            {"detail": "Order not found"},
-            status = 404
-        )
-    if order.order_status in ["shipped","delivered"]:
-        return Response(
-            {"detail": "Cannot cancel shipped or delivered order"},
-            status = 400
+            {"detail": "Cannot cancel shipped or delivered order"}, status=400
         )
     order.order_status = "cancelled"
     order.save()
-    return Response({"detail":"Order cancelled successfully"}, status =200)
+    return Response({"detail": "Order cancelled successfully"}, status=200)
 
-#Initiate Payment 
+
+# Initiate Payment
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def initiate_payment(request):
     order_id = request.data.get("order")
     try:
-        order = Order.objects.get(id=order_id, user = request.data)
+        order = Order.objects.get(id=order_id, user=request.user)
     except Order.DoesNotExist:
-        return Response({'detail': 'Order not found'}, status = 404)
-    
+        return Response({"detail": "Order not found"}, status=404)
+
     payment = OrderPayment.objects.create(
-        order = order,
-        payment_method = request.data.get("payment_method"),
-        amount = order.total
+        order=order,
+        payment_method=request.data.get("payment_method"),
+        amount=order.total,
     )
     serializer = OrderPaymentSerializer(payment)
-    return Response (serializer.data, status = 201)
+    return Response(serializer.data, status=201)
 
-#List Payments for a user
+
+# List Payments for a user
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def list_payments(request):
-    payments = OrderPayment.objects.filter(order_user = request.user)
+    payments = OrderPayment.objects.filter(order__user=request.user)
     serializer = OrderPaymentSerializer(payments, many=True)
-    return Response(serializer.data, status = 200)
+    return Response(serializer.data, status=200)
+
 
 @api_view(["POST"])
 def mpesa_callback(request):
@@ -130,9 +135,10 @@ def mpesa_callback(request):
         except OrderPayment.DoesNotExist:
             return Response({"detail": "Payment not found"}, status=404)
 
-        return Response({"detail": "Payment successful"}, status = 200)
+        return Response({"detail": "Payment successful"}, status=200)
 
     return Response({"detail": "Payment failed"}, status=400)
+
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
@@ -140,6 +146,103 @@ def download_invoice(request, order_id):
     order = Order.objects.get(id=order_id, user=request.user)
     return generate_invoice_pdf(order)
 
+
+class AdminOrderPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 50
+
+
+# List all orders and filter/search orders
+@api_view(["GET"])
+@permission_classes([IsAdminUser])
+def admin_order_list(request):
+
+    orders = (
+        Order.objects.select_related("user")
+        .prefetch_related(
+            "items__product",
+            "payments",
+        )
+        .order_by("-created_at")
+    )
+    # Search by order number or customer details
+    search = request.query_params.get("q", "").strip()
+
+    if search:
+        orders = orders.filter(
+            Q(order_number__icontains=search)
+            | Q(user__username__icontains=search)
+            | Q(user__first_name__icontains=search)
+            | Q(user__last_name__icontains=search)
+            | Q(user__email__icontains=search)
+        )
+
+    # Filter by order status
+    order_status = request.query_params.get("status")
+
+    if order_status:
+        orders = orders.filter(order_status=order_status)
+
+    # Filter by delivery status
+    delivery_status = request.query_params.get("delivery_status")
+
+    if delivery_status:
+        orders = orders.filter(delivery_status=delivery_status)
+
+    # Filter by payment status
+    payment_status = request.query_params.get("payment_status")
+
+    if payment_status:
+        orders = orders.filter(payments__payment_status=payment_status).distinct()
+
+    paginator = AdminOrderPagination()
+
+    page = paginator.paginate_queryset(orders, request)
+
+    serializer = AdminOrderSerializer(page, many=True, context={"request": request})
+
+    return paginator.get_paginated_response(serializer.data)
+
+
+# Retrive one order
+@api_view(["GET"])
+@permission_classes([IsAdminUser])
+def admin_order_detail(request, order_id):
+
+    order = get_object_or_404(
+        Order.objects.select_related("user").prefetch_related(
+            "items__product", "payments"
+        ),
+        id=order_id,
+    )
+    serializer = AdminOrderSerializer(order, context={"request": request})
+
+    return Response(serializer.data)
+
+
+# Update order and delivery statuses
+@api_view(["PATCH"])
+@permission_classes([IsAdminUser])
+def admin_update_order(request, order_id):
+
+    order = get_object_or_404(Order, id=order_id)
+
+    serializer = AdminOrderSerializer(order, data=request.data, partial=True)
+
+    if serializer.is_valid():
+        serializer.save()
+
+        return Response(
+            {
+                "message": "Order updated successfully.",
+                "order": AdminOrderSerializer(order).data,
+            }
+        )
+    return Response(serializer.errors, status=404)
+
+
+# Admin Analytics APIs
 # Adjust this threshold to suit your store.
 LOW_STOCK_THRESHOLD = 5
 
@@ -153,9 +256,11 @@ ZERO_MONEY = Value(
     output_field=MONEY_FIELD,
 )
 
+
 def money_value(value):
     """Convert Decimal or None into a JSON-friendly number."""
     return float(value or Decimal("0.00"))
+
 
 def percentage_change(current, previous):
     """Calculate percentage change against the previous period."""
@@ -167,6 +272,7 @@ def percentage_change(current, previous):
         2,
     )
 
+
 def metric(current, previous):
     return {
         "value": money_value(current),
@@ -175,7 +281,8 @@ def metric(current, previous):
             previous,
         ),
     }
-    
+
+
 def get_paid_payments(start, end):
     """
     Return successful payments within a date range.
@@ -184,8 +291,7 @@ def get_paid_payments(start, end):
     for paid records where paid_at was not populated.
     """
     return (
-        OrderPayment.objects
-        .filter(payment_status="paid")
+        OrderPayment.objects.filter(payment_status="paid")
         .annotate(
             paid_date=Coalesce(
                 "paid_at",
@@ -197,6 +303,7 @@ def get_paid_payments(start, end):
             paid_date__lt=end,
         )
     )
+
 
 def get_period_metrics(start, end):
     """Calculate the main metrics for a date range."""
@@ -211,13 +318,9 @@ def get_period_metrics(start, end):
         )
     )["total"]
 
-    paid_order_ids = (
-        payments.values("order_id").distinct()
-    )
+    paid_order_ids = payments.values("order_id").distinct()
 
-    paid_order_count = Order.objects.filter(
-        pk__in=paid_order_ids
-    ).count()
+    paid_order_count = Order.objects.filter(pk__in=paid_order_ids).count()
 
     orders = Order.objects.filter(
         created_at__gte=start,
@@ -226,29 +329,18 @@ def get_period_metrics(start, end):
 
     total_orders = orders.count()
 
-    customer_ids = list(
-        orders.values_list("user_id", flat=True).distinct()
-    )
+    customer_ids = list(orders.values_list("user_id", flat=True).distinct())
 
     customer_count = len(customer_ids)
 
-    customer_order_counts = (
-        orders.values("user_id")
-        .annotate(order_count=Count("id"))
-    )
+    customer_order_counts = orders.values("user_id").annotate(order_count=Count("id"))
 
-    repeat_customers = customer_order_counts.filter(
-        order_count__gt=1
-    ).count()
+    repeat_customers = customer_order_counts.filter(order_count__gt=1).count()
 
-    repeat_rate = (
-        repeat_customers / customer_count * 100
-        if customer_count else 0
-    )
+    repeat_rate = repeat_customers / customer_count * 100 if customer_count else 0
 
     average_order_value = (
-        revenue / paid_order_count
-        if paid_order_count else Decimal("0.00")
+        revenue / paid_order_count if paid_order_count else Decimal("0.00")
     )
 
     return {
@@ -259,6 +351,7 @@ def get_period_metrics(start, end):
         "repeat_customer_rate": repeat_rate,
         "paid_order_count": paid_order_count,
     }
+
 
 def get_date_range(period):
     """Return the selected date range and previous comparison range."""
@@ -292,6 +385,7 @@ def get_date_range(period):
         previous_end,
     )
 
+
 def get_revenue_trend(start, end, period):
     """Group paid revenue and paid orders by day or month."""
 
@@ -311,8 +405,7 @@ def get_revenue_trend(start, end, period):
         label_format = "%d %b"
 
     rows = (
-        payments
-        .annotate(bucket=bucket)
+        payments.annotate(bucket=bucket)
         .values("bucket")
         .annotate(
             revenue=Sum("amount"),
@@ -346,8 +439,7 @@ def get_category_performance(start, end):
     )
 
     items = (
-        OrderItem.objects
-        .filter(
+        OrderItem.objects.filter(
             order__created_at__gte=start,
             order__created_at__lt=end,
         )
@@ -384,8 +476,7 @@ def get_top_products(start, end):
     )
 
     items = (
-        OrderItem.objects
-        .filter(
+        OrderItem.objects.filter(
             order__created_at__gte=start,
             order__created_at__lt=end,
         )
@@ -418,8 +509,7 @@ def get_top_products(start, end):
 
 def get_order_statuses(start, end):
     rows = (
-        Order.objects
-        .filter(
+        Order.objects.filter(
             created_at__gte=start,
             created_at__lt=end,
         )
@@ -459,11 +549,9 @@ def get_payment_methods(start, end):
 
 
 def get_low_stock_products():
-    products = (
-        Product.objects
-        .filter(stock__lte=LOW_STOCK_THRESHOLD)
-        .order_by("stock", "name")[:10]
-    )
+    products = Product.objects.filter(stock__lte=LOW_STOCK_THRESHOLD).order_by(
+        "stock", "name"
+    )[:10]
 
     return [
         {
@@ -476,19 +564,12 @@ def get_low_stock_products():
 
 
 def get_recent_orders():
-    orders = (
-        Order.objects
-        .select_related("user")
-        .order_by("-created_at")[:10]
-    )
+    orders = Order.objects.select_related("user").order_by("-created_at")[:10]
 
     return [
         {
             "order_number": str(order.order_number),
-            "customer_name": (
-                order.user.get_full_name()
-                or order.user.username
-            ),
+            "customer_name": (order.user.get_full_name() or order.user.username),
             "total_amount": money_value(order.total),
             "status": order.order_status,
             "created_at": order.created_at.isoformat(),
@@ -506,60 +587,68 @@ def get_business_insights(current, previous, low_stock_count):
     )
 
     if revenue_change > 0:
-        insights.append({
-            "title": "Revenue is growing",
-            "description": (
-                f"Revenue increased by {revenue_change}% "
-                "compared with the previous period."
-            ),
-            "severity": "success",
-        })
+        insights.append(
+            {
+                "title": "Revenue is growing",
+                "description": (
+                    f"Revenue increased by {revenue_change}% "
+                    "compared with the previous period."
+                ),
+                "severity": "success",
+            }
+        )
     elif revenue_change < 0:
-        insights.append({
-            "title": "Revenue has declined",
-            "description": (
-                f"Revenue decreased by {abs(revenue_change)}% "
-                "compared with the previous period."
-            ),
-            "severity": "warning",
-        })
+        insights.append(
+            {
+                "title": "Revenue has declined",
+                "description": (
+                    f"Revenue decreased by {abs(revenue_change)}% "
+                    "compared with the previous period."
+                ),
+                "severity": "warning",
+            }
+        )
     else:
-        insights.append({
-            "title": "Revenue is unchanged",
-            "description": (
-                "Revenue is at the same level as the previous period."
-            ),
-            "severity": "info",
-        })
+        insights.append(
+            {
+                "title": "Revenue is unchanged",
+                "description": ("Revenue is at the same level as the previous period."),
+                "severity": "info",
+            }
+        )
 
     if low_stock_count:
-        insights.append({
-            "title": "Inventory needs attention",
-            "description": (
-                f"{low_stock_count} products have stock at or "
-                f"below {LOW_STOCK_THRESHOLD} units."
-            ),
-            "severity": "warning",
-        })
+        insights.append(
+            {
+                "title": "Inventory needs attention",
+                "description": (
+                    f"{low_stock_count} products have stock at or "
+                    f"below {LOW_STOCK_THRESHOLD} units."
+                ),
+                "severity": "warning",
+            }
+        )
 
     if current["repeat_customer_rate"] > 30:
-        insights.append({
-            "title": "Customer retention",
-            "description": (
-                "More than 30% of purchasing customers placed "
-                "multiple orders during this period."
-            ),
-            "severity": "success",
-        })
+        insights.append(
+            {
+                "title": "Customer retention",
+                "description": (
+                    "More than 30% of purchasing customers placed "
+                    "multiple orders during this period."
+                ),
+                "severity": "success",
+            }
+        )
 
     if current["orders"] == 0:
-        insights.append({
-            "title": "No orders recorded",
-            "description": (
-                "No orders were created during the selected period."
-            ),
-            "severity": "info",
-        })
+        insights.append(
+            {
+                "title": "No orders recorded",
+                "description": ("No orders were created during the selected period."),
+                "severity": "info",
+            }
+        )
 
     return insights
 
@@ -582,9 +671,7 @@ def advanced_analytics(request):
     low_stock_products = get_low_stock_products()
 
     # Use the total count, not just the ten displayed products.
-    low_stock_count = Product.objects.filter(
-        stock__lte=LOW_STOCK_THRESHOLD
-    ).count()
+    low_stock_count = Product.objects.filter(stock__lte=LOW_STOCK_THRESHOLD).count()
 
     # Conversion rate cannot be calculated without visit tracking.
     conversion_rate = None
@@ -594,77 +681,59 @@ def advanced_analytics(request):
 
     response_data = {
         "period": period,
-
         "revenue": metric(
             current["revenue"],
             previous["revenue"],
         ),
-
         "orders": metric(
             current["orders"],
             previous["orders"],
         ),
-
         "average_order_value": metric(
             current["average_order_value"],
             previous["average_order_value"],
         ),
-
         "customers": metric(
             current["customers"],
             previous["customers"],
         ),
-
         "repeat_customer_rate": {
-            "value": round(
-                current["repeat_customer_rate"], 2
-            ),
+            "value": round(current["repeat_customer_rate"], 2),
             "change_percent": percentage_change(
                 current["repeat_customer_rate"],
                 previous["repeat_customer_rate"],
             ),
         },
-
         "conversion_rate": conversion_rate,
         "estimated_profit": estimated_profit,
-
         "low_stock_count": low_stock_count,
-
         "revenue_trend": get_revenue_trend(
             start,
             end,
             period,
         ),
-
         "category_performance": get_category_performance(
             start,
             end,
         ),
-
         "orders_by_status": get_order_statuses(
             start,
             end,
         ),
-
         "payment_methods": get_payment_methods(
             start,
             end,
         ),
-
         "top_products": get_top_products(
             start,
             end,
         ),
-
         "low_stock_products": low_stock_products,
-
         "recent_orders": get_recent_orders(),
-
         "funnel": {
             "visits": None,
             "orders": current["orders"],
         },
-
         "insights": get_business_insights(
             current,
             previous,

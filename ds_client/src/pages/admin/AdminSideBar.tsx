@@ -42,6 +42,13 @@ export default function AdminSideBar(
                 >
                     {sidebarOpen && <span>Products</span>}
                 </button>
+                <button
+                    onClick={() => setActiveMenu("order management")}
+                    className={`flex items-center gap-2 p-1 rounded w-full mt-3 text-left ${activeMenu === "order management" ? "bg-blue-400" : "hover:bg-blue-700"
+                        }`}
+                >
+                    {sidebarOpen && <span>Orders</span>}
+                </button>
                  <button
                     onClick={() => setActiveMenu("user management")}
                     className={`flex items-center gap-2 p-1 rounded w-full mt-3 text-left ${activeMenu === "user management" ? "bg-blue-400" : "hover:bg-blue-700"

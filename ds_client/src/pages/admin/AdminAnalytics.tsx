@@ -269,7 +269,7 @@ export default function AdminAnalytics() {
             setError("");
 
             const response = await api.get<AnalyticsData>(
-                "/orders/admin/analytics/advanced/",
+                "/admin/orders/advanced-analytics/",
                 { params: { period } }
             );
 

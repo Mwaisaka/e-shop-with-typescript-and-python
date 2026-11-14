@@ -27,8 +27,8 @@ export default function ForgotPassword() {
     };
 
     return (
-        <div className="min-h-screen flex justify-center bg-gray-50 dark:bg-gray-900 px-4">
-            <div className="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
+        <div className="flex justify-center p-6">
+            <div className="w-full max-w-lg bg-white dark:bg-gray-900 shadow-lg rounded-xl p-6">
                 <h2 className="text-2xl font-bold text-center mb-6">
                     Reset Password
                 </h2>
@@ -49,9 +49,9 @@ export default function ForgotPassword() {
                         type="email"
                         required
                         value={email}
-                        placeholder="Enter your email"
+                        placeholder="Enter your registered email"
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                        className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500"
                     />
                     <button
                         type="submit"
@@ -62,7 +62,7 @@ export default function ForgotPassword() {
                     </button>
                 </form>
                 <p className="mt-6 text-center text-sm">
-                    <Link to="/login/" className="text-indigo-600 hover:underline">
+                    <Link to="/login/" className="text-indigo-600  hover:underline">
                         Back to Login
                     </Link>
                 </p>

@@ -15,7 +15,7 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <CartProvider>
-          <div className="min-h-screen bg-gray-100 dark:bg-gray-900 dark:text-gray-100 transition-colors">
+          <div className="min-h-screen bg-gray-200 dark:bg-gray-800 dark:text-white transition-colors">
             <Navbar />
 
             {/* Toast container */}

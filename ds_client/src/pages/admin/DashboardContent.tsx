@@ -4,6 +4,7 @@ import CategoryManagement from "./CategoryManagement";
 import UserManagement from "./UserManagement";
 import AdminAnalytics from "./AdminAnalytics";
 import ProductManagement from "./ProductManagement";
+import OrderManagement from "./OrderManagement";
 
 interface DashboardContentProps {
   activeMenu: string;
@@ -21,5 +22,7 @@ export default function DashboardContent({
     return <AdminAnalytics />;
   if (activeMenu === "product management")
     return <ProductManagement />;
+  if (activeMenu === "order management")
+    return <OrderManagement />;
   return null;
 }

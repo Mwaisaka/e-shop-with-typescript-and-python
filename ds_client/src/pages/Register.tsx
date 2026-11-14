@@ -54,7 +54,7 @@ export default function Register() {
     }
     return (
         <div className=" flex justify-center p-6">
-            <div className="w-full max-w-lg bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6">
+            <div className="w-full max-w-lg bg-white dark:bg-gray-900 shadow-lg rounded-xl p-6">
                 <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">
                     Create an Account
                 </h2>
@@ -71,7 +71,7 @@ export default function Register() {
                         value={form.first_name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                     {/* Last Name */}
                     <input
@@ -80,7 +80,7 @@ export default function Register() {
                         value={form.last_name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                     {/* UserName */}
                     <input
@@ -89,7 +89,7 @@ export default function Register() {
                         value={form.username}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                     {/* Email */}
                     <input
@@ -99,7 +99,7 @@ export default function Register() {
                         value={form.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                     {/* Password */}
                     <div className="relative">
@@ -110,7 +110,7 @@ export default function Register() {
                             value={form.password}
                             onChange={handleChange}
                             required
-                            className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         />
                     </div>
                     {/* Confirm Password */}
@@ -122,7 +122,7 @@ export default function Register() {
                             value={form.confirmPassword}
                             onChange={handleChange}
                             required
-                            className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         />
                         <button
                             type="button"

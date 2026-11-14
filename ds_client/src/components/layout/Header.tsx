@@ -47,7 +47,7 @@ export default function Header() {
                 {/* Left */}
                 <div className="flex items-center gap-4">
                     {/* Shop Logo */}
-                    <Link to="/" className="text-3xl italic font-bold text-indigo-600">
+                    <Link to="/" className="text-3xl italic font-bold text-red-600">
                         Nzisa Fashions
                     </Link>
                </div>

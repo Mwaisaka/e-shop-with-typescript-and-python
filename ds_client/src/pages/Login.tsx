@@ -96,7 +96,7 @@ export default function Login() {
     return (
 
         <div className="flex justify-center p-6">
-            <div className="w-full max-w-lg bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6">
+            <div className="w-full max-w-lg bg-white dark:bg-gray-900 shadow-lg rounded-xl p-6">
                 <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">Welcome to Nzisa Fashions</h2>
                 {error && (
                     <div className="mb-4 p-3 text-sm bg-red-100 text-red-600 rounded">
@@ -113,7 +113,7 @@ export default function Login() {
                             value={identifier}
                             onChange={(e) => setIdentifier(e.target.value)}
                             placeholder="Enter your username/email address"
-                            className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-4 py-2 rounded border bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
                         />
                     </div>
@@ -125,7 +125,7 @@ export default function Login() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter your password"
-                            className="w-full px-4 py-2 mt-4 rounded border bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-4 py-2 mt-4 rounded border bg-gray-50 dark:bg-gray-700  text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
                         />
                         <button
